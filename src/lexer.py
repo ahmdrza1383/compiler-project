@@ -86,7 +86,7 @@ class Lexer:
                 )
             elif self._peek() in ("x", "X"):
                 lexeme += self._advance() + self._advance()
-                while self._current_char().isalnum():
+                while self._current_char() in "0123456789abcdefABCDEF":
                     lexeme += self._advance()
                 return Token(
                     TokenType.INT_LIT,
@@ -280,19 +280,21 @@ class Lexer:
 
         # 8. Delimiters
         if char in "(){}[];,.":
+            start_col = self.col
             self._advance()
             return Token(
                 TokenType.DELIMITER,
                 char,
-                SourceLocation(self.file_name, self.line, self.col - 1),
+                SourceLocation(self.file_name, self.line, start_col),
             )
 
         # 9. Invalid / Unrecognized
+        start_col = self.col
         self._advance()
         return Token(
             TokenType.INVALID,
             char,
-            SourceLocation(self.file_name, self.line, self.col - 1),
+            SourceLocation(self.file_name, self.line, start_col),
         )
 
     def peek_token(self) -> Token:
