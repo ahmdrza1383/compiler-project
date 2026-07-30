@@ -1,29 +1,37 @@
 program ::= (function_decl | struct_decl | var_decl)* EOF
 
-type_spec ::= ('int' | 'float' | 'double' | 'char' | 'void') ('*')*
-            | 'struct' IDENT
+type_spec ::= ( ('int' | 'float' | 'double' | 'char' | 'void') 
+              | 'struct' IDENT 
+              ) ('*')*
 
 struct_decl ::= 'struct' IDENT '{' (type_spec IDENT ';')* '}' ';'
 
-var_decl ::= type_spec IDENT ('[' expr ']')* ('=' expr)? ';'
+var_decl ::= type_spec IDENT ('[' expr ']')* ('=' initializer)? ';'
 
-function_decl ::= type_spec IDENT '(' param_list? ')' ( block | ';' )
+function_decl ::= type_spec IDENT '(' param_list? ')' (block | ';')
 
 param_list ::= param (',' param)*
 
-param ::= type_spec IDENT ('[' ']')?
+param ::= type_spec IDENT ('[' expr? ']')*
+
+initializer ::= expr | '{' (expr (',' expr)*)? '}'
 
 block ::= '{' statement* '}'
 
-statement ::= if_stmt | while_stmt | for_stmt | return_stmt 
-            | break_stmt | continue_stmt
-            | expr_stmt | block | var_decl
+statement ::= matched_stmt | unmatched_stmt
 
-if_stmt ::= 'if' '(' expr ')' statement ('else' statement)?
+matched_stmt ::= if_stmt_matched | while_stmt | for_stmt | return_stmt 
+               | break_stmt | continue_stmt | expr_stmt | block | var_decl
+unmatched_stmt ::= if_stmt_unmatched
 
-while_stmt ::= 'while' '(' expr ')' statement
+if_stmt_matched ::= 'if' '(' expr ')' matched_stmt 'else' matched_stmt
 
-for_stmt ::= 'for' '(' expr? ';' expr? ';' expr? ')' statement
+if_stmt_unmatched ::= 'if' '(' expr ')' statement
+                    | 'if' '(' expr ')' matched_stmt 'else' unmatched_stmt
+
+while_stmt ::= 'while' '(' expr ')' matched_stmt
+
+for_stmt ::= 'for' '(' expr? ';' expr? ';' expr? ')' matched_stmt
 
 return_stmt ::= 'return' expr? ';'
 
