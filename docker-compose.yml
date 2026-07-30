@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  compiler:
+    build: .
+    volumes:
+      - .:/app          # تغییرات کد شما بلافاصله در داخل کانتینر اعمال می‌شود
+    command: python main.py
