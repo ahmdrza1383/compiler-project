@@ -1,43 +1,39 @@
 program ::= (declaration)* EOF
 
-declaration ::= struct_decl | function_decl | var_decl
+declaration ::= struct_prefix | non_struct_decl
 
-struct_decl ::= 'struct' IDENT '{' (type_spec IDENT ';')* '}' ';'
+struct_prefix ::= 'struct' IDENT ( struct_body | type_rest )
 
-type_spec ::= ( ('int' | 'float' | 'double' | 'char' | 'void') 
-              | 'struct' IDENT ) ('*')*
+struct_body ::= '{' (type_spec IDENT ';')* '}' ';'
 
-function_decl ::= type_spec IDENT '(' param_list? ')' (block | ';')
+var_tail ::= ('[' expr ']')* ('=' initializer)? (',' IDENT ('[' expr ']')* ('=' initializer)? )* ';'
+
+type_rest ::= ('*')* IDENT ( '(' param_list? ')' ( block | ';' ) 
+                           | var_tail 
+                           )
+
+non_struct_decl ::= basic_type_spec IDENT ( '(' param_list? ')' ( block | ';' ) 
+                                          | var_tail 
+                                          )
+
+basic_type_spec ::= ('int' | 'float' | 'double' | 'char' | 'void') ('*')*
+
+type_spec ::= basic_type_spec | 'struct' IDENT ('*')*
 
 param_list ::= param (',' param)*
-
 param ::= type_spec IDENT ('[' expr? ']')*
-
-var_decl ::= type_spec var_list ';'
-
-var_list ::= var_init (',' var_init)*
-
-var_init ::= IDENT ('[' expr ']')* ('=' initializer)?
-
-initializer ::= expr | '{' (expr (',' expr)*)? '}'
 
 block ::= '{' statement* '}'
 
 statement ::= if_stmt | while_stmt | for_stmt | return_stmt 
-            | break_stmt | continue_stmt | expr_stmt | block | var_decl
+            | break_stmt | continue_stmt | expr_stmt | block | declaration
 
-if_stmt ::= 'if' '(' expr ')' statement ('else' statement)?
-
+if_stmt ::= 'if' '(' expr ')' statement ('else' statement)?  (* ابهام در کد حل می‌شود *)
 while_stmt ::= 'while' '(' expr ')' statement
-
 for_stmt ::= 'for' '(' expr? ';' expr? ';' expr? ')' statement
-
 return_stmt ::= 'return' expr? ';'
-
 break_stmt ::= 'break' ';'
-
 continue_stmt ::= 'continue' ';'
-
 expr_stmt ::= expr? ';'
 
 expr ::= assignment
@@ -45,15 +41,10 @@ expr ::= assignment
 assignment ::= logical_or ( ('=' | '+=' | '-=' | '*=' | '/=') assignment )?
 
 logical_or ::= logical_and ('||' logical_and)*
-
 logical_and ::= equality ('&&' equality)*
-
 equality ::= relational (('==' | '!=') relational)*
-
 relational ::= additive (('<' | '<=' | '>' | '>=') additive)*
-
 additive ::= multiplicative (('+' | '-') multiplicative)*
-
 multiplicative ::= unary (('*' | '/' | '%') unary)*
 
 unary ::= ('+' | '-' | '*' | '&' | '!' | '++' | '--') unary
@@ -72,3 +63,5 @@ primary ::= INT_LIT | FLOAT_LIT | STRING_LIT | CHAR_LIT
           | '(' expr ')'
 
 arg_list ::= expr (',' expr)*
+
+initializer ::= expr | '{' (expr (',' expr)*)? '}'
