@@ -16,19 +16,19 @@ The following table defines the exact Regular Expressions (Regex) and formal rul
 
 | Token Category | Examples | Formal Regular Expression / Recognition Rule |
 | :--- | :--- | :--- |
-| **Keywords** | `if`, `else`, `while`, `for`, `return`, `int`, `float`, `char`, `void`, `struct` | **Finite set.** Checked before identifiers. Matched using exact string comparison.<br>Regex: `\b(if|else|while|for|return|int|float|char|void|struct)\b` |
-| **Identifiers** | `myVar`, `_count`, `x1` | A letter or underscore, followed by any number of letters, digits, or underscores.<br>Regex: `[a-zA-Z_][a-zA-Z0-9_]*` |
-| **Integer Literals** | `42` (Decimal)<br>`0xFF` (Hexadecimal)<br>`0b1010` (Binary) | Supports 3 bases. Must be checked in order (Binary → Hex → Decimal) to avoid conflicts.<br>Regex: `0[bB][01]+` \| `0[xX][0-9a-fA-F]+` \| `[0-9]+` |
-| **Float Literals** | `3.14`<br>`1.0e-5` (Scientific)<br>`.5f` (Suffix) | Supports decimal points, scientific notation (`e`/`E`), and optional suffix (`f`/`F`).<br>Regex: `[0-9]*\.[0-9]+([eE][+-]?[0-9]+)?[fF]?` \| `[0-9]+[eE][+-]?[0-9]+[fF]?` |
-| **String Literals** | `"hello"`<br>`"hello\n"` | Quoted strings. Supports standard escape sequences (`\n`, `\t`, `\"`, `\\`).<br>Regex: `\"([^"\\]|\\.)*\"` |
-| **Character Literals** | `'a'`<br>`'\t'` | Single character or escape sequence enclosed in single quotes.<br>Regex: `'([^'\\]|\\.)'` |
-| **Operators** | `+`, `-`, `*`, `/`, `%`<br>`=`, `+=`, `-=`, `*=`, `/=`<br>`==`, `!=`, `<`, `>`, `<=`, `>=`<br>`&&`, `||`, `!`<br>`&`<br>`->`<br>`::` | **Longest Match is crucial here.** Multi-character operators must be matched before single-character ones.<br>Regex priority:<br>1. Multi-char: `<=|>=|==|!=|&&|\|\||\+=|-=|\*=|\/=|->|::`<br>2. Single-char: `[+\-*/%=<>!&|]` |
-| **Delimiters (Punctuation)** | `(`, `)`, `{`, `}`, `[`, `]`, `;`, `,`, `.` | Structural punctuation strictly mapped to single-character matches.<br>Regex: `[(){}[\].,;:]` |
-| **Single-line Comments** | `// text` | Matches from `//` to the end of the current line. **Discarded** (no token emitted to parser).<br>Regex: `//[^\n]*` |
-| **Block Comments** | `/* text */` | Matches between `/*` and `*/`. **Discarded**.<br>**Nested support:** As a standard feature, use regex `\/\*([^*]|\*[^\/])*\*\/`. (For Bonus Points, implement a state-machine to support nesting). |
-| **Whitespace** | spaces, tabs, newlines | Tracked for location, but **discarded**.<br>Regex: `[ \t\n\r]+` |
-| **Preprocessor Directives** | `#include`, `#define` | Matches any line starting with `#` (excludes comments starting with `//` or `/*`). Treated as a single special Token class `DIRECTIVE` and passed to the parser (which will usually ignore it).<br>Regex: `#.*` |
-| **Invalid Characters** | `@`, `$`, any other unrecognized symbol | Matches any single character not captured by the above rules.<br>Regex: `.`<br>*(Action: Emit an `INVALID` token with its location, then resume scanning from the next character.)* |
+| **Keywords** | `if`, `else`, `while`, `for`, `return`, `int`, `float`, `double`, `char`, `void`, `struct`, `break`, `continue` | **Finite set.** Checked before identifiers.<br>Regex: `\b(if|else|while|for|return|int|float|double|char|void|struct|break|continue)\b` |
+| **Identifiers** | `myVar`, `_count` | Regex: `[a-zA-Z_][a-zA-Z0-9_]*` |
+| **Integer Literals** | `42` (Decimal), `0xFF` (Hex), `0b1010` (Binary) | Regex: `0[bB][01]+` \| `0[xX][0-9a-fA-F]+` \| `[0-9]+` (Priority: Binary -> Hex -> Decimal) |
+| **Float Literals** | `3.14`, `1.0e-5`, `.5f` | Regex: `[0-9]*\.[0-9]+([eE][+-]?[0-9]+)?[fF]?` \| `[0-9]+[eE][+-]?[0-9]+[fF]?` |
+| **String Literals** | `"hello"`, `"hello\n"` | Regex: `\"([^"\\]|\\.)*\"` |
+| **Character Literals** | `'a'`, `'\t'` | Regex: `'([^'\\]|\\.)'` |
+| **Operators** | `+`, `-`, `*`, `/`, `%`, `=`, `+=`, `-=`, `*=`, `/=`, `==`, `!=`, `<`, `>`, `<=`, `>=`, `&&`, `||`, `!`, `&`, `->`, `::`, `++`, `--` | **Longest Match priority:**<br>1. Multi-char: `<=|>=|==|!=|&&|\|\||\+=|-=|\*=|\/=|->|::|\+\+|--`<br>2. Single-char: `[+\-*/%=<>!&|]` |
+| **Delimiters** | `(`, `)`, `{`, `}`, `[`, `]`, `;`, `,`, `.` | Regex: `[(){}[\].,;:]` |
+| **Single-line Comments** | `// text` | Regex: `//[^\n]*` (Discarded) |
+| **Block Comments** | `/* text */` | Regex: `\/\*([^*]|\*[^\/])*\*\/` (Discarded) |
+| **Preprocessor Directives** | `#include`, `#define` | Regex: `#.*` (Tokenized as `DIRECTIVE` and ignored by Parser) |
+| **Whitespace** | `\t`, `\n`, ` `, `\r` | Regex: `[ \t\n\r]+` (Discarded, Location tracked) |
+| **Invalid Characters** | `@`, `$`, ... | Regex: `.` (Emit `INVALID`, record location, advance 1 char) |
 
 ---
 
