@@ -118,9 +118,6 @@ class FunctionType(Type):
         return False
 
 
-# src/type_checker.py (ادامه)
-
-
 class TypeChecker:
     def __init__(self, symbol_table: SymbolTable):
         self.symbol_table = symbol_table
@@ -158,7 +155,8 @@ class TypeChecker:
 
     def _visit_Identifier(self, node):
         symbol = getattr(node, "symbol", None)
-
+        if not symbol:
+            symbol = self.symbol_table.resolve(node.id_name)
         if symbol:
             node.inferred_type = self._parse_type(symbol.type)
             return node.inferred_type
@@ -167,14 +165,18 @@ class TypeChecker:
             return node.inferred_type
 
     def _visit_BinaryExpr(self, node):
+        op = node.op
+
+        # اصلاح باگ دوم: بررسی انتساب قبل از ارزیابی کامل فرزندان چپ و راست
+        if op in ["=", "+=", "-=", "*=", "/="]:
+            return self._visit_Assignment(node)
+
         left_type = self._visit(node.left)
         right_type = self._visit(node.right)
 
         if left_type is None or right_type is None:
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
-
-        op = node.op
 
         # Arithmetic operators: +, -, *, /, %
         if op in ["+", "-", "*", "/", "%"]:
@@ -189,7 +191,6 @@ class TypeChecker:
                     result_name = order[max(left_idx, right_idx)]
                     node.inferred_type = PrimitiveType(result_name)
                     return node.inferred_type
-
             # Pointer arithmetic: ptr + int or int + ptr
             if isinstance(left_type, PointerType) and isinstance(
                 right_type, PrimitiveType
@@ -201,7 +202,6 @@ class TypeChecker:
             ):
                 node.inferred_type = right_type
                 return node.inferred_type
-
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
@@ -239,18 +239,15 @@ class TypeChecker:
 
     def _visit_UnaryExpr(self, node):
         operand_type = self._visit(node.operand)
-
         if node.op in ["+", "-"]:
             if isinstance(operand_type, PrimitiveType):
                 node.inferred_type = operand_type
             else:
                 node.inferred_type = PrimitiveType("int")
             return node.inferred_type
-
         if node.op == "!":
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
-
         if node.op in ["++", "--"]:
             if isinstance(operand_type, PrimitiveType) or isinstance(
                 operand_type, PointerType
@@ -260,7 +257,6 @@ class TypeChecker:
                 self.errors.append(f"Invalid operand for increment/decrement")
                 node.inferred_type = PrimitiveType("int")
             return node.inferred_type
-
         if node.op == "*":  # Dereference
             if isinstance(operand_type, PointerType):
                 node.inferred_type = operand_type.base_type
@@ -268,11 +264,9 @@ class TypeChecker:
                 self.errors.append(f"Cannot dereference non-pointer type")
                 node.inferred_type = PrimitiveType("int")
             return node.inferred_type
-
         if node.op == "&":  # Address-of
             node.inferred_type = PointerType(operand_type)
             return node.inferred_type
-
         node.inferred_type = PrimitiveType("int")
         return node.inferred_type
 
@@ -280,11 +274,9 @@ class TypeChecker:
         """Handle assignment in BinaryExpr with op '='"""
         left_type = self._visit(node.left)
         right_type = self._visit(node.right)
-
         if left_type is None:
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
-
         if not left_type.is_assignable_from(right_type):
             self.errors.append(
                 f"Type mismatch in assignment: cannot assign {right_type} to {left_type}"
@@ -308,7 +300,6 @@ class TypeChecker:
                 if isinstance(right_type, PointerType):
                     node.inferred_type = left_type
                     return node.inferred_type
-
         node.inferred_type = left_type
         return node.inferred_type
 
@@ -322,13 +313,11 @@ class TypeChecker:
                 return_type, param_types = self._parse_function_signature(
                     func_symbol.signature
                 )
-
                 # Check argument count
                 if len(node.args) != len(param_types):
                     self.errors.append(
                         f"Function {node.func_name.id_name} expects {len(param_types)} arguments, got {len(node.args)}"
                     )
-
                 # Check argument types
                 for i, arg in enumerate(node.args):
                     arg_type = self._visit(arg)
@@ -337,14 +326,12 @@ class TypeChecker:
                             self.errors.append(
                                 f"Argument {i + 1} type mismatch: expected {param_types[i]}, got {arg_type}"
                             )
-
                 node.inferred_type = self._parse_type(return_type)
                 return node.inferred_type
             else:
                 self.errors.append(f"Function '{node.func_name.id_name}' not found")
                 node.inferred_type = PrimitiveType("int")
                 return node.inferred_type
-
         node.inferred_type = PrimitiveType("int")
         return node.inferred_type
 
@@ -360,10 +347,8 @@ class TypeChecker:
     def _visit_FunctionDef(self, node):
         return_type_str = node.return_type.type_name
         expected_return_type = self._parse_type(return_type_str)
-
         if node.body:
             self._visit(node.body)
-
         self._check_return_statements(node.body, expected_return_type)
 
     def _visit_MemberAccess(self, node):
@@ -386,6 +371,7 @@ class TypeChecker:
 
         field_name = node.member.id_name
         field_type = self._find_field_type(struct_type.name, field_name)
+
         if field_type:
             node.inferred_type = field_type
             return field_type
@@ -415,13 +401,10 @@ class TypeChecker:
             init_type = self._visit(node.initializer)
             if init_type is None:
                 return
-
             var_name = node.var_name.id_name
             symbol = self.symbol_table.resolve(var_name)
-
             if symbol:
                 var_type = self._parse_type(symbol.type)
-
                 if not var_type.is_assignable_from(init_type):
                     self.errors.append(
                         f"Type mismatch in variable '{var_name}' initialization: cannot assign {init_type} to {var_type}"
@@ -431,7 +414,6 @@ class TypeChecker:
         """Recursively find ReturnStmt and check their types"""
         if node is None:
             return
-
         if isinstance(node, ReturnStmt):
             if node.value:
                 actual_type = self._visit(node.value)
@@ -449,7 +431,6 @@ class TypeChecker:
                         f"Return type mismatch: expected {expected_type}, got void"
                     )
             return
-
         for child in node.children:
             self._check_return_statements(child, expected_type)
 
@@ -457,22 +438,18 @@ class TypeChecker:
         """Parse string type representation to Type object"""
         if type_str is None:
             return PrimitiveType("int")
-
         # Handle pointer types
         if type_str.endswith("*"):
             base = type_str[:-1].strip()
             return PointerType(self._parse_type(base))
-
         # Handle array types (simplified)
         if "[" in type_str and "]" in type_str:
             base = type_str[: type_str.index("[")].strip()
             return ArrayType(self._parse_type(base))
-
         # Handle struct types
         if type_str.startswith("struct "):
             struct_name = type_str[7:].strip()
             return StructType(struct_name, {})
-
         # Primitive types
         primitive_map = {
             "int": PrimitiveType("int"),
@@ -487,7 +464,6 @@ class TypeChecker:
         """Parse function signature like '(int, char*) -> int'"""
         if not signature:
             return "void", []
-
         # Split into parameters and return type
         if "->" in signature:
             params_part, return_part = signature.split("->")
@@ -496,7 +472,6 @@ class TypeChecker:
         else:
             params_part = signature
             return_part = "void"
-
         # Parse parameters
         if params_part.startswith("(") and params_part.endswith(")"):
             params_part = params_part[1:-1]
@@ -506,7 +481,6 @@ class TypeChecker:
                 p = p.strip()
                 if p:
                     param_types.append(self._parse_type(p))
-
         return return_part, param_types
 
     def _find_field_type(self, struct_name, field_name):

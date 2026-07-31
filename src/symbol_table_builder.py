@@ -14,6 +14,7 @@ from src.ast_node import (
     UnaryExpr,
     CallExpr,
     MemberAccess,
+    ArrayAccess,
 )
 from src.symbol_table import SymbolTable, Symbol, Scope
 from src.token import SourceLocation
@@ -34,17 +35,14 @@ class SymbolTableBuilder:
         if self.verbose:
             print("\nPASS 1: Declaration Scan")
             print("-" * 50)
-
         self._pass1_declaration_scan(self.ast_root)
 
         if self.verbose:
             print("\nPASS 2: Resolution Pass")
             print("-" * 50)
-
         self._pass2_resolution(self.ast_root)
 
-        # بررسی متغیرهای استفاده‌نشده (فقط یک بار در پایان کار)
-        self._check_unused_variables()
+        # self._check_unused_variables()
 
     def _make_location(self, node) -> SourceLocation:
         if hasattr(node, "line") and hasattr(node, "col"):
@@ -52,7 +50,6 @@ class SymbolTableBuilder:
         return SourceLocation(self.source_file, 0, 0)
 
     # ==================== PASS 1 ====================
-
     def _pass1_declaration_scan(self, node):
         if not node:
             return
@@ -63,6 +60,7 @@ class SymbolTableBuilder:
             for param in node.params:
                 if hasattr(param, "var_type"):
                     params.append(self._resolve_type_str(param.var_type, param))
+
             return_type = (
                 node.return_type.type_name if hasattr(node, "return_type") else "void"
             )
@@ -76,34 +74,47 @@ class SymbolTableBuilder:
                 definition_loc=loc,
                 signature=signature,
             )
-            if self.symbol_table.define(func_symbol):
-                if self.verbose:
-                    print(f"  Registered function: {func_name} {signature}")
+
+            existing = self.symbol_table.global_scope.resolve_local(func_name)
+            if existing and existing.kind == "function":
+                if existing.signature != signature:
+                    self.errors.append(f"Conflicting signatures for '{func_name}'")
+                elif isinstance(node, FunctionDef):
+                    if getattr(existing, "is_defined", False):
+                        self.errors.append(f"Redefinition of function '{func_name}'")
+                    else:
+                        existing.is_defined = True
             else:
-                self.errors.append(f"Redefinition of function '{func_name}'")
+                func_symbol.is_defined = isinstance(node, FunctionDef)
+                if self.symbol_table.define(func_symbol):
+                    if self.verbose:
+                        print(f"  Registered function: {func_name} {signature}")
 
         elif isinstance(node, StructDef):
             struct_name = node.struct_name.id_name
             loc = self._make_location(node.struct_name)
-
             struct_symbol = Symbol(
                 name=struct_name,
                 kind="struct",
                 type_spec=f"struct {struct_name}",
                 definition_loc=loc,
             )
+
+            # اصلاح باگ اول: ثبت اسکوپ استراکت فقط در صورت معتبر بودن تعریف اولیه
             if self.symbol_table.define(struct_symbol):
                 if self.verbose:
                     print(f"  Registered struct: {struct_name}")
+                struct_scope = Scope(
+                    parent=self.symbol_table.global_scope, scope_type="struct"
+                )
+                struct_scope.struct_name = struct_name
+                self.symbol_table.global_scope.children.append(struct_scope)
+                self.symbol_table.struct_scopes[struct_name] = struct_scope
             else:
                 self.errors.append(f"Redefinition of struct '{struct_name}'")
-
-            struct_scope = Scope(
-                parent=self.symbol_table.global_scope, scope_type="struct"
-            )
-            struct_scope.struct_name = struct_name
-            self.symbol_table.global_scope.children.append(struct_scope)
-            self.symbol_table.struct_scopes[struct_name] = struct_scope
+                struct_scope = Scope(
+                    parent=self.symbol_table.global_scope, scope_type="struct"
+                )
 
             if hasattr(node, "fields"):
                 for field in node.fields:
@@ -147,12 +158,10 @@ class SymbolTableBuilder:
                 else:
                     self.errors.append(f"Redefinition of global variable '{var_name}'")
 
-        # استفاده از getattr برای جلوگیری از خطا در صورت عدم وجود children در برخی نودها
         for child in getattr(node, "children", []):
             self._pass1_declaration_scan(child)
 
     # ==================== PASS 2 ====================
-
     def _pass2_resolution(self, node):
         if not node:
             return
@@ -173,6 +182,7 @@ class SymbolTableBuilder:
                         else "unknown"
                     )
                     loc = self._make_location(param.var_name)
+
                     param_symbol = Symbol(
                         name=param_name,
                         kind="parameter",
@@ -220,6 +230,15 @@ class SymbolTableBuilder:
                         print(f"    Duplicate (same scope): {var_name}")
                     return
 
+                # اصلاح باگ سوم: حذف کدهای تکراری Shadowing و انجام یکباره آن در اینجا
+                outer_symbol = self.symbol_table.resolve(var_name)
+                if outer_symbol:
+                    self.warnings.append(
+                        f"Variable '{var_name}' shadows outer declaration"
+                    )
+                    if self.verbose:
+                        print(f"    Shadowing: {var_name} shadows outer declaration")
+
                 loc = self._make_location(node.var_name)
                 var_symbol = Symbol(
                     name=var_name,
@@ -235,16 +254,6 @@ class SymbolTableBuilder:
                     var_symbol.set_initialized()
                     self._pass2_resolution(node.initializer)
 
-                outer_symbol = self.symbol_table.resolve(var_name)
-                if (
-                    outer_symbol
-                    and outer_symbol.scope != self.symbol_table.get_current_scope()
-                ):
-                    self.warnings.append(
-                        f"Variable '{var_name}' shadows outer declaration"
-                    )
-                    if self.verbose:
-                        print(f"    Shadowing: {var_name} shadows outer declaration")
                 return
             else:
                 if hasattr(node, "initializer") and node.initializer:
@@ -257,7 +266,7 @@ class SymbolTableBuilder:
                 symbol.set_used()
                 loc = self._make_location(node)
                 symbol.add_reference(loc)
-                # پیوند نماد به گره برای استفاده در TypeChecker
+                # TypeChecker
                 node.symbol = symbol
             else:
                 line = node.line if hasattr(node, "line") else 0
@@ -273,7 +282,6 @@ class SymbolTableBuilder:
                     symbol.set_used()
                     loc = self._make_location(node.func_name)
                     symbol.add_reference(loc)
-                    # پیوند نماد تابع برای استفاده در TypeChecker
                     node.func_name.symbol = symbol
                     if self.verbose:
                         print(f"    Call to function: {func_name}")
@@ -302,6 +310,13 @@ class SymbolTableBuilder:
         elif isinstance(node, MemberAccess):
             if hasattr(node, "obj"):
                 self._pass2_resolution(node.obj)
+            return
+
+        elif isinstance(node, ArrayAccess):
+            if hasattr(node, "array"):
+                self._pass2_resolution(node.array)
+            if hasattr(node, "index"):
+                self._pass2_resolution(node.index)
             return
 
         elif isinstance(node, IfStmt):
@@ -345,21 +360,13 @@ class SymbolTableBuilder:
                 self.warnings.append(f"Unused variable: {symbol.name}")
 
     def _resolve_type_str(self, type_spec_node, var_decl_node=None) -> str:
-        """
-        تبدیل گره TypeSpecifier به رشته (مانند int* یا float[])
-        طراحی‌شده بر اساس ساختار کلاس VarDecl
-        """
         if not type_spec_node:
             return "int"
-
         base = getattr(type_spec_node, "type_name", str(type_spec_node))
         pointers = getattr(type_spec_node, "pointers", 0)
         result = base + ("*" * pointers)
-
-        # اگر متغیر آرایه باشد (بررسی از طریق ویژگی is_array در VarDecl)
         if var_decl_node and getattr(var_decl_node, "is_array", False):
             result += "[]"
-
         return result
 
     def get_symbol_table(self):

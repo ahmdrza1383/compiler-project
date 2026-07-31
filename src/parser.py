@@ -133,7 +133,11 @@ class Parser:
                 self.advance()
                 continue
             try:
-                declarations.append(self.parse_declaration())
+                decl = self.parse_declaration()
+                if isinstance(decl, list):
+                    declarations.extend(decl)
+                else:
+                    declarations.append(decl)
             except ParseError:
                 self.synchronize()
         return Program(declarations)
@@ -269,7 +273,7 @@ class Parser:
             decls.append(self.parse_var_init(type_spec))
 
         self.consume(";", "Expected ';' after variable declaration")
-        return decls[0] if len(decls) == 1 else Block(decls)
+        return decls[0] if len(decls) == 1 else decls
 
     def parse_param_list(self):
         params = [self.parse_param()]
@@ -295,7 +299,11 @@ class Parser:
         stmts = []
         while not self.check("}") and not self.is_at_end():
             try:
-                stmts.append(self.parse_statement())
+                stmt = self.parse_statement()
+                if isinstance(stmt, list):
+                    stmts.extend(stmt)
+                else:
+                    stmts.append(stmt)
             except ParseError:
                 self.synchronize()
         self.consume("}", "Expected '}'")

@@ -1,10 +1,8 @@
 TYPE REPORT
 ======================================================================
-Total Type Errors: 2
+Total Type Errors: 0
 Total Type Warnings: 0
 ----------------------------------------------------------------------
 
-ERRORS:
-  1. Array access on non-array/pointer type: int
-  2. Array access on non-array/pointer type: int
+No type errors or warnings found.
 ======================================================================

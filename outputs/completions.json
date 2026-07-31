@@ -1,0 +1,74 @@
+{
+  "5:15": [
+    {
+      "label": "NEWLINE",
+      "kind": "variable",
+      "type": "char",
+      "detail": "char NEWLINE",
+      "sortOrder": 2
+    },
+    {
+      "label": "PI",
+      "kind": "variable",
+      "type": "float",
+      "detail": "float PI",
+      "sortOrder": 2
+    },
+    {
+      "label": "global_count",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int global_count",
+      "sortOrder": 2
+    },
+    {
+      "label": "greeting",
+      "kind": "variable",
+      "type": "char*",
+      "detail": "char* greeting",
+      "sortOrder": 2
+    },
+    {
+      "label": "create_point",
+      "kind": "function",
+      "type": "struct Point",
+      "detail": "(int, int, float) -> struct Point",
+      "sortOrder": 3
+    },
+    {
+      "label": "factorial",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int) -> int",
+      "sortOrder": 3
+    },
+    {
+      "label": "main",
+      "kind": "function",
+      "type": "int",
+      "detail": "() -> int",
+      "sortOrder": 3
+    },
+    {
+      "label": "process_array",
+      "kind": "function",
+      "type": "void",
+      "detail": "(int[], int) -> void",
+      "sortOrder": 3
+    },
+    {
+      "label": "Node",
+      "kind": "struct",
+      "type": "struct Node",
+      "detail": "struct Node Node",
+      "sortOrder": 4
+    },
+    {
+      "label": "Point",
+      "kind": "struct",
+      "type": "struct Point",
+      "detail": "struct Point Point",
+      "sortOrder": 4
+    }
+  ]
+}

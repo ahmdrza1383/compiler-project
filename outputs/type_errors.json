@@ -1,7 +1,4 @@
 {
-  "errors": [
-    "Array access on non-array/pointer type: int",
-    "Array access on non-array/pointer type: int"
-  ],
+  "errors": [],
   "warnings": []
 }

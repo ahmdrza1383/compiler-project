@@ -1,9 +1,8 @@
 SEMANTIC REPORT
 ======================================================================
 Total Errors: 0
-Total Warnings: 1
+Total Warnings: 0
 ----------------------------------------------------------------------
 
-WARNINGS:
-  1. Unused variable: mode
+No semantic errors or warnings found.
 ======================================================================

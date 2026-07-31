@@ -217,31 +217,27 @@ def main():
         else:
             print("[OK] No type errors.")
 
-        if type_errors or type_warnings:
-            type_output_path = "outputs/type_errors.json"
-            with open(type_output_path, "w", encoding="utf-8") as f:
-                json.dump(
-                    {"errors": type_errors, "warnings": type_warnings}, f, indent=2
-                )
-            print(f"[INFO] Type errors saved to {type_output_path}")
+        type_output_path = "outputs/type_errors.json"
+        with open(type_output_path, "w", encoding="utf-8") as f:
+            json.dump({"errors": type_errors, "warnings": type_warnings}, f, indent=2)
+        print(f"[INFO] Type errors saved to {type_output_path}")
 
-            type_report_path_txt = "outputs/type_report.txt"
-            write_type_report_txt(type_errors, type_warnings, type_report_path_txt)
-            print(f"[INFO] Type report text saved to {type_report_path_txt}")
+        type_report_path_txt = "outputs/type_report.txt"
+        write_type_report_txt(type_errors, type_warnings, type_report_path_txt)
+        print(f"[INFO] Type report text saved to {type_report_path_txt}")
 
         completer = AutoCompleter(symbol_table, ast_root)
-        test_positions = [(3, 10), (5, 15), (7, 20)]  # adjust based on your test file
+        test_positions = [(3, 10), (5, 15), (7, 20)]
         all_completions = {}
         for line, col in test_positions:
             completions = completer.get_completions(source_code, line, col)
             if completions:
                 all_completions[f"{line}:{col}"] = completions
 
-        if all_completions:
-            completion_path = "outputs/completions.json"
-            with open(completion_path, "w", encoding="utf-8") as f:
-                json.dump(all_completions, f, indent=2)
-            print(f"[INFO] Auto-completion results saved to {completion_path}")
+        completion_path = "outputs/completions.json"
+        with open(completion_path, "w", encoding="utf-8") as f:
+            json.dump(all_completions, f, indent=2)
+        print(f"[INFO] Auto-completion results saved to {completion_path}")
 
         all_errors = semantic_errors + type_errors
         all_warnings = semantic_warnings + type_warnings
