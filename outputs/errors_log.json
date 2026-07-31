@@ -1,0 +1,10 @@
+[
+  {
+    "phase": "Parser",
+    "severity": "Error",
+    "message": "Unexpected token",
+    "line": 55,
+    "col": 30,
+    "length": 1
+  }
+]
