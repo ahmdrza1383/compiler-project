@@ -3,40 +3,23 @@ Program
     ├── Type: int
     ├── ID: main (Function)
     └── Block
-        ├── ArrayAccess
-        │   ├── ID: arr (Variable)
-        │   └── Literal: 5
         ├── VarDecl
         │   ├── Type: int
-        │   ├── ID: i (Variable)
-        │   └── Literal: 0
+        │   ├── ID: x (Variable)
+        │   └── Literal: 42
         ├── VarDecl
-        │   ├── Type: int
-        │   ├── ID: sum (Variable)
-        │   └── Literal: 0
-        ├── WhileStmt
-        │   ├── BinaryExpr (<)
-        │   │   ├── ID: i (Variable)
-        │   │   └── Literal: 5
-        │   └── Block
-        │       ├── BinaryExpr (=)
-        │       │   ├── ArrayAccess
-        │       │   │   ├── ID: arr (Variable)
-        │       │   │   └── ID: i (Variable)
-        │       │   └── BinaryExpr (*)
-        │       │       ├── ID: i (Variable)
-        │       │       └── Literal: 2
-        │       ├── BinaryExpr (=)
-        │       │   ├── ID: sum (Variable)
-        │       │   └── BinaryExpr (+)
-        │       │       ├── ID: sum (Variable)
-        │       │       └── ArrayAccess
-        │       │           ├── ID: arr (Variable)
-        │       │           └── ID: i (Variable)
-        │       └── BinaryExpr (=)
-        │           ├── ID: i (Variable)
-        │           └── BinaryExpr (+)
-        │               ├── ID: i (Variable)
-        │               └── Literal: 1
+        │   ├── Type: int*
+        │   └── ID: ptr (Variable)
+        ├── BinaryExpr (=)
+        │   ├── ID: ptr (Variable)
+        │   └── UnaryExpr (&)
+        │       └── ID: x (Variable)
+        ├── BinaryExpr (=)
+        │   ├── UnaryExpr (*)
+        │   │   └── ID: ptr (Variable)
+        │   └── BinaryExpr (+)
+        │       ├── UnaryExpr (*)
+        │       │   └── ID: ptr (Variable)
+        │       └── Literal: 8
         └── ReturnStmt
-            └── ID: sum (Variable)
+            └── ID: x (Variable)

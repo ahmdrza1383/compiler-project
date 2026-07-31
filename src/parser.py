@@ -293,15 +293,16 @@ class Parser:
         if self.check(lexeme="continue"): return self.parse_continue_stmt()
         if self.check(lexeme="{"): return self.parse_block()
         
-        # اصلاح باگ: بررسی دقیق‌تر برای اینکه آیا واقعاً اعلان متغیر جدید است یا صرفاً استفاده از متغیر/آرایه موجود
-        # اگر بعد از نوع داده، یک شناسه و سپس '[' یا '=' بیاید (بدون اینکه نوع جدید تعریف شود)، این یک دستور است نه اعلان جدید.
         if self.peek().lexeme in ["struct", "int", "float", "double", "char", "void"]:
             # بررسی اینکه آیا این خط یک اعلان واقعی است یا استفاده از متغیر
-            # در اعلان واقعی بعد از نوع، حتماً نام متغیر و سپس ';' یا '=' یا '[' می‌آید اما نباید ساختار دستوری ارجاع باشد.
-            # برای اطمینان، چک می‌کنیم که آیا توکن بعدی به علاوه یک توکن دیگر الگوی اعلان دارد یا نه
-            if self.pos + 1 < len(self.tokens) and self.tokens[self.pos + 1].type == TokenType.IDENTIFIER:
-                # اگر توکن بعد از شناسنامه '[' باشد و بعد از آن عدد یا متغیر باشد، این یک اعلان آرایه مثل int arr[5]; است
-                # اما اگر داخل تابع باشیم، اعلان نوع باید به درستی هندل شود.
+            lookahead_pos = self.pos + 1
+            
+            # رد شدن از تمام ستاره‌ها (برای پشتیبانی از پوینترها مثل int **ptr)
+            while lookahead_pos < len(self.tokens) and self.tokens[lookahead_pos].lexeme == '*':
+                lookahead_pos += 1
+                
+            # حالا بررسی می‌کنیم که آیا بعد از نوع پایه (و ستاره‌های احتمالی) یک شناسه آمده است
+            if lookahead_pos < len(self.tokens) and self.tokens[lookahead_pos].type == TokenType.IDENTIFIER:
                 return self.parse_declaration()
 
         return self.parse_expr_stmt()
