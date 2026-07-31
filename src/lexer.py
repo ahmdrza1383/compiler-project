@@ -216,7 +216,6 @@ class Lexer:
             "&&": None,
             "||": None,
             "->": None,
-            "::": None,
             "++": None,
             "--": None,
             "+=": None,
@@ -300,7 +299,7 @@ class Lexer:
             return self._read_operator()
 
         # 8. Delimiters
-        if char in "(){}[];,.":
+        if char in "(){}[];,.:":
             start_col = self.col
             self._advance()
             return Token(
