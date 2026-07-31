@@ -161,6 +161,20 @@ class Parser:
                 return FunctionDecl(base_type_spec, ident, params)
         else:
             ident = Identifier(ident_tok.lexeme, SymbolCategory.VARIABLE, line, col)
+            
+            # --- بخش جدید: شناسایی آرایه در زمان تعریف و تبدیل آن به ArrayAccess ---
+            if self.match("["):
+                # بر اساس ارور قبلی که فرستادی، نام متد شما برای خواندن عبارات parse_expr است
+                array_size = self.parse_expr()
+                
+                self.consume("]", "Expected ']' after array size")
+                self.consume(";", "Expected ';' after array declaration")
+                
+                # برگرداندن نود ArrayAccess به جای ارجاع به parse_var_tail
+                # (اگر اسم آرگومان‌های کلاس ArrayAccess تو فرق دارد، اینجا تنظیمش کن)
+                return ArrayAccess(ident, array_size)
+            # -------------------------------------------------------------------------
+            
             return self.parse_var_tail(base_type_spec, ident)
 
     # // non_struct_decl ::= basic_type_spec IDENT ( '(' param_list? ')' ( block | ';' ) | var_tail )
@@ -269,6 +283,7 @@ class Parser:
         return Block(stmts)
 
     # // statement ::= if_stmt | while_stmt | for_stmt | return_stmt | break_stmt | continue_stmt | expr_stmt | block | declaration
+# // statement ::= if_stmt | while_stmt | for_stmt | return_stmt | break_stmt | continue_stmt | expr_stmt | block | declaration
     def parse_statement(self):
         if self.check(lexeme="if"): return self.parse_if_stmt()
         if self.check(lexeme="while"): return self.parse_while_stmt()
@@ -278,11 +293,18 @@ class Parser:
         if self.check(lexeme="continue"): return self.parse_continue_stmt()
         if self.check(lexeme="{"): return self.parse_block()
         
+        # اصلاح باگ: بررسی دقیق‌تر برای اینکه آیا واقعاً اعلان متغیر جدید است یا صرفاً استفاده از متغیر/آرایه موجود
+        # اگر بعد از نوع داده، یک شناسه و سپس '[' یا '=' بیاید (بدون اینکه نوع جدید تعریف شود)، این یک دستور است نه اعلان جدید.
         if self.peek().lexeme in ["struct", "int", "float", "double", "char", "void"]:
-            return self.parse_declaration()
-            
+            # بررسی اینکه آیا این خط یک اعلان واقعی است یا استفاده از متغیر
+            # در اعلان واقعی بعد از نوع، حتماً نام متغیر و سپس ';' یا '=' یا '[' می‌آید اما نباید ساختار دستوری ارجاع باشد.
+            # برای اطمینان، چک می‌کنیم که آیا توکن بعدی به علاوه یک توکن دیگر الگوی اعلان دارد یا نه
+            if self.pos + 1 < len(self.tokens) and self.tokens[self.pos + 1].type == TokenType.IDENTIFIER:
+                # اگر توکن بعد از شناسنامه '[' باشد و بعد از آن عدد یا متغیر باشد، این یک اعلان آرایه مثل int arr[5]; است
+                # اما اگر داخل تابع باشیم، اعلان نوع باید به درستی هندل شود.
+                return self.parse_declaration()
+
         return self.parse_expr_stmt()
-        
 
     # // if_stmt ::= 'if' '(' expr ')' statement ('else' statement)?
     def parse_if_stmt(self):

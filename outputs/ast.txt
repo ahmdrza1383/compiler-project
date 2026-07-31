@@ -3,34 +3,40 @@ Program
     ├── Type: int
     ├── ID: main (Function)
     └── Block
-        ├── VarDecl
-        │   ├── Type: struct Point
-        │   ├── ID: p (Variable)
-        │   └── InitializerList
-        │       ├── Literal: 1
-        │       └── Literal: 2
+        ├── ArrayAccess
+        │   ├── ID: arr (Variable)
+        │   └── Literal: 5
         ├── VarDecl
         │   ├── Type: int
-        │   ├── ID: x (Variable)
-        │   └── Literal: 0xFF
+        │   ├── ID: i (Variable)
+        │   └── Literal: 0
         ├── VarDecl
-        │   ├── Type: float
-        │   ├── ID: y (Variable)
-        │   └── Literal: 1.0e-5f
-        ├── VarDecl
-        │   ├── Type: char
-        │   ├── ID: c (Variable)
-        │   └── Literal: '\t'
-        └── IfStmt
-            ├── BinaryExpr (&&)
-            │   ├── BinaryExpr (>=)
-            │   │   ├── ID: x (Variable)
-            │   │   └── Literal: 10
-            │   └── BinaryExpr (<=)
-            │       ├── ID: y (Variable)
-            │       └── Literal: 3.14
-            └── Block
-                └── ReturnStmt
-                    └── BinaryExpr (+)
-                        ├── ID: x (Variable)
-                        └── ID: y (Variable)
+        │   ├── Type: int
+        │   ├── ID: sum (Variable)
+        │   └── Literal: 0
+        ├── WhileStmt
+        │   ├── BinaryExpr (<)
+        │   │   ├── ID: i (Variable)
+        │   │   └── Literal: 5
+        │   └── Block
+        │       ├── BinaryExpr (=)
+        │       │   ├── ArrayAccess
+        │       │   │   ├── ID: arr (Variable)
+        │       │   │   └── ID: i (Variable)
+        │       │   └── BinaryExpr (*)
+        │       │       ├── ID: i (Variable)
+        │       │       └── Literal: 2
+        │       ├── BinaryExpr (=)
+        │       │   ├── ID: sum (Variable)
+        │       │   └── BinaryExpr (+)
+        │       │       ├── ID: sum (Variable)
+        │       │       └── ArrayAccess
+        │       │           ├── ID: arr (Variable)
+        │       │           └── ID: i (Variable)
+        │       └── BinaryExpr (=)
+        │           ├── ID: i (Variable)
+        │           └── BinaryExpr (+)
+        │               ├── ID: i (Variable)
+        │               └── Literal: 1
+        └── ReturnStmt
+            └── ID: sum (Variable)

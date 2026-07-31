@@ -1,10 +1,27 @@
-// This is a single line comment
+// Test code for while loop and 1D array
+
 int main() {
-    struct Point p = {1, 2};
-    int x = 0xFF;
-    float y = 1.0e-5f;
-    char c = '\t';
-    if (x >= 10 && y <= 3.14) {
-        return x + y;
+
+    int arr[5];
+
+    int i = 0;
+
+    int sum = 0;
+
+   
+
+    while (i < 5) {
+
+        arr[i] = i * 2;
+
+        sum = sum + arr[i];
+
+        i = i + 1;
+
     }
+
+   
+
+    return sum;
+
 }
