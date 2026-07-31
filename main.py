@@ -1,13 +1,13 @@
 import json
 import sys
 import os
-from src.highlighter import SyntaxHighlighter as ASTHighlighter
+from src.highlighter import SyntaxHighlighter
 from anytree import RenderTree
 
 from src.lexer import Lexer
 from src.token import TokenType
 from src.parser import Parser
-from src.error_reporter import ErrorReporter
+from src.error_reporter import ErrorReporter, Severity
 
 
 def read_source_file(file_path: str) -> str:
@@ -63,7 +63,7 @@ def write_ast_txt(ast_root, output_path: str):
 
 
 def tokenize_source(
-    code: str, filename: str = "<stdin>", reporter: ErrorReporter = None
+        code: str, filename: str = "<stdin>", reporter: ErrorReporter = None
 ):
     if reporter is None:
         reporter = ErrorReporter()
@@ -131,13 +131,39 @@ def main():
     print(
         "[INFO] Error logs successfully written to outputs/errors_log.txt and outputs/errors_log.json"
     )
-    # ===== هایلایت کردن با ASTHighlighter =====
+
+    # ============================================
+    # ===== جمع‌آوری خطاهای Parser برای هایلایتر =====
+    # ============================================
+
+    parser_errors = []
+    if reporter.has_errors():
+        for diag in reporter.diagnostics:
+            # بررسی می‌کنیم که diag چه attribute هایی داره
+            # از خطا مشخصه که باید از col استفاده کنیم، نه column
+            if hasattr(diag, 'severity') and diag.severity == Severity.ERROR:
+                parser_errors.append({
+                    'line': diag.line,
+                    'col': diag.col,  # ← استفاده از col به جای column
+                    'length': diag.length if hasattr(diag, 'length') else 1
+                })
+            elif not hasattr(diag, 'severity'):
+                parser_errors.append({
+                    'line': diag.line,
+                    'col': diag.col,  # ← استفاده از col به جای column
+                    'length': diag.length if hasattr(diag, 'length') else 1
+                })
+
+    # ============================================
+    # ===== هایلایت کردن با SyntaxHighlighter =====
+    # ============================================
+
     print("\n" + "=" * 60)
     print("🎨 PHASE 1: SYNTAX HIGHLIGHTING (Section 4.4 & 4.5)")
     print("=" * 60)
 
-    # ایجاد هایلایتر
-    highlighter = ASTHighlighter(source_code, ast_root, tokens)
+    # ایجاد هایلایتر با اطلاعات خطاها
+    highlighter = SyntaxHighlighter(source_code, ast_root, tokens, parser_errors)
     highlighter.extract_tokens()
 
     # خروجی ANSI

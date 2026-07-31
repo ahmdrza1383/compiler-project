@@ -1,80 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Syntax Highlighted Code</title>
     <style>
-        body { background-color: #1e1e1e; color: #d4d4d4; font-family: Consolas, monospace; padding: 20px; }
-        pre { line-height: 1.5; }
-        .keyword { color: #569cd6; font-weight: bold; }
-        .type_name { color: #4ec9b0; }
-        .class_type { color: #4ec9b0; font-weight: bold; }
-        .function { color: #dcdcaa; }
-        .variable { color: #9cdcfe; }
-        .number { color: #b5cea8; }
-        .string { color: #6a9955; }
-        .operator { color: #d4d4d4; }
-        .error { color: #f44747; text-decoration: underline wavy #f44747; }
+        body {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Courier New', monospace;
+            padding: 20px;
+            margin: 0;
+        }
+        pre {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            overflow: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            tab-size: 4;
+            white-space: pre-wrap;
+        }
+        
+            .kw { color: #0000FF; font-weight: bold; }
+            .type { color: #00FF00; }
+            .class { color: #00FF00; font-weight: bold; }
+            .func { color: #FFD700; }
+            .ident { color: #FFFFFF; }
+            .num { color: #FFA500; }
+            .str { color: #32CD32; }
+            .char { color: #32CD32; }
+            .op { color: #D3D3D3; }
+            .comment { color: #808080; font-style: italic; }
+            .preproc { color: #FF00FF; }
+            .error { color: #FF0000; text-decoration: underline; }
+        
     </style>
 </head>
 <body>
-    <pre><span class="function">FunctionDef</span>="class_type">StructDef</span>x integration test for C-like parser
+    <pre>// Complex integration test for C-like parser
 
-<span class="keyword">struct</span> <span class="class_type">Vector</span> {
-    <span class="type_name">int</span> <span class="variable">x</span>;
-    <span class="type_name">int</span> <span class="variable">y</span>;
-    <span class="type_name">int</span> <span class="variable">z</span>;
+<span class="kw">struct</span> <span class="class">Vector</span> {
+    <span class="type">int</span> <span class="ident">x</span>;
+    <span class="type">int</span> <span class="ident">y</span>;
+    <span class="type">int</span> <span class="ident">z</span>;
 };
 
 // Recursive function to test param lists and block scoping
-<span class="type_name">int</span> <span class="variable">factorial</span>(<span class="type_name">int</span> <span class="variable">n</span>) {
-    <span class="keyword">if</span> (<span class="variable">n</span> <span class="operator"><=</span> <span class="number">1</span>) {
-        <span class="keyword">return</span> <span class="number">1</span>;
-    } <span class="keyword">else</span> {
-        <span class="keyword">return</span> <span class="variable">n</span> <span class="operator">*</span> <span class="variable">factorial</span>(<span class="variable">n</span> <span class="operator">-</span> <span class="number">1</span>);
+<span class="type">int</span> <span class="func">factorial</span>(<span class="type">int</span> <span class="ident">n</span>) {
+    <span class="kw">if</span> (<span class="ident">n</span> <span class="op">&lt;=</span> <span class="num">1</span>) {
+        <span class="kw">return</span> <span class="num">1</span>;
+    } <span class="kw">else</span> {
+        <span class="kw">return</span> <span class="ident">n</span> <span class="op">*</span> <span class="func">factorial</span>(<span class="ident">n</span> <span class="op">-</span> <span class="num">1</span>);
     }
 }
 
 // Function with pointers and multiple parameters
-<span class="type_name">void</span> <span class="variable">update_vector</span>(<span class="keyword">struct</span> <span class="class_type">Vector</span> <span class="operator">*</span><span class="variable">v</span>, <span class="type_name">int</span> <span class="variable">scale</span>) {
-    <span class="keyword">if</span> (<span class="variable">scale</span> <span class="operator">></span> <span class="number">0</span>) {
-        <span class="variable">v</span>.<span class="variable">x</span> <span class="operator">=</span> <span class="variable">v</span>.<span class="variable">x</span> <span class="operator">*</span> <span class="variable">scale</span>;
-        <span class="variable">v</span>.<span class="variable">y</span> <span class="operator">=</span> <span class="variable">v</span>.<span class="variable">y</span> <span class="operator">*</span> <span class="variable">scale</span>;
-        <span class="variable">v</span>.<span class="variable">z</span> <span class="operator">=</span> <span class="variable">v</span>.<span class="variable">z</span> <span class="operator">*</span> <span class="variable">scale</span>;
+<span class="type">void</span> <span class="func">update_vector</span>(<span class="kw">struct</span> <span class="class">Vector</span> <span class="op">*</span><span class="ident">v</span>, <span class="type">int</span> <span class="ident">scale</span>) {
+    <span class="kw">if</span> (<span class="ident">scale</span> <span class="op">&gt;</span> <span class="num">0</span>) {
+        <span class="ident">v</span>.<span class="ident">x</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">x</span> <span class="op">*</span> <span class="ident">scale</span>;
+        <span class="ident">v</span>.<span class="ident">y</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">y</span> <span class="op">*</span> <span class="ident">scale</span>;
+        <span class="ident">v</span>.<span class="ident">z</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">z</span> <span class="op">*</span> <span class="ident">scale</span>;
     }
 }
 
-<span class="type_name">int</span> <span class="variable">main</span>() {
+<span class="type">int</span> <span class="func">main</span>() {
     // Array declaration with initializer (your recent fix)
-    <span class="type_name">int</span> <span class="variable">weights</span>[<span class="number">4</span>] <span class="operator">=</span> {<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>};
+    <span class="type">int</span> <span class="ident">weights</span>[<span class="num">4</span>] <span class="op">=</span> {<span class="num">2</span>, <span class="num">4</span>, <span class="num">6</span>, <span class="num">8</span>};
     
     // Complex pointer declaration and assignment
-    <span class="type_name">int</span> <span class="operator">*</span><span class="variable">weight_ptr</span> <span class="operator">=</span> <span class="operator">&</span><span class="variable">weights</span>[<span class="number">2</span>];
+    <span class="type">int</span> <span class="op">*</span><span class="ident">weight_ptr</span> <span class="op">=</span> <span class="op">&amp;</span><span class="ident">weights</span>[<span class="num">2</span>];
     
     // Struct declaration (assuming your grammar supports it like this)
-    <span class="keyword">struct</span> <span class="class_type">Vector</span> <span class="variable">v1</span> <span class="operator">=</span> {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>};
-    <span class="keyword">struct</span> <span class="class_type">Vector</span> <span class="operator">*</span><span class="variable">v_ptr</span> <span class="operator">=</span> <span class="operator">&</span><span class="variable">v1</span>;
+    <span class="kw">struct</span> <span class="class">Vector</span> <span class="ident">v1</span> <span class="op">=</span> {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>};
+    <span class="kw">struct</span> <span class="class">Vector</span> <span class="op">*</span><span class="ident">v_ptr</span> <span class="op">=</span> <span class="op">&amp;</span><span class="ident">v1</span>;
     
     // Variables for logic flow
-    <span class="type_name">float</span> <span class="variable">threshold</span> <span class="operator">=</span> <span class="number">15.5f</span>;
-    <span class="type_name">char</span> <span class="variable">mode</span> <span class="operator">=</span> <span class="string">'A'</span>;
-    <span class="type_name">int</span> <span class="variable">status</span> <span class="operator">=</span> <span class="number">0</span>;
+    <span class="type">float</span> <span class="ident">threshold</span> <span class="op">=</span> <span class="num">15.5f</span>;
+    <span class="type">char</span> <span class="ident">mode</span> <span class="op">=</span> <span class="char">&#39;A&#39;</span>;
+    <span class="type">int</span> <span class="ident">status</span> <span class="op">=</span> <span class="num">0</span>;
     
     // Complex condition combining logical and relational operators
-    <span class="keyword">if</span> (<span class="operator">*</span><span class="variable">weight_ptr</span> <span class="operator">>=</span> <span class="number">5</span> <span class="operator">&&</span> <span class="variable">threshold</span> <span class="operator"><</span> <span class="number">20.0f</span>) {
-        <span class="variable">status</span> <span class="operator">=</span> <span class="variable">factorial</span>(<span class="operator">*</span><span class="variable">weight_ptr</span>);
-        <span class="variable">update_vector</span>(<span class="variable">v_ptr</span>, <span class="variable">status</span>);
-    } <span class="keyword">else</span> {
-        <span class="variable">status</span> <span class="operator">=</span> <span class="operator">-</span><span class="number">1</span>;
+    <span class="kw">if</span> (<span class="op">*</span><span class="ident">weight_ptr</span> <span class="op">&gt;=</span> <span class="num">5</span> <span class="op">&amp;&amp;</span> <span class="ident">threshold</span> <span class="op">&lt;</span> <span class="num">20.0f</span>) {
+        <span class="ident">status</span> <span class="op">=</span> <span class="func">factorial</span>(<span class="op">*</span><span class="ident">weight_ptr</span>);
+        <span class="func">update_vector</span>(<span class="ident">v_ptr</span>, <span class="ident">status</span>);
+    } <span class="kw">else</span> {
+        <span class="ident">status</span> <span class="op">=</span> <span class="op">-</span><span class="num">1</span>;
     }
     
     // Deep expression evaluation
-    <span class="type_name">int</span> <span class="variable">final_result</span> <span class="operator">=</span> (<span class="variable">status</span> <span class="operator">*</span> <span class="variable">weights</span>[<span class="number">0</span>]) <span class="operator">+</span> (<span class="variable">v1</span>.<span class="variable">x</span> <span class="operator">/</span> <span class="number">2</span>) <span class="operator">-</span> <span class="number">100</span>;
+    <span class="type">int</span> <span class="ident">final_result</span> <span class="op">=</span> (<span class="ident">status</span> <span class="op">*</span> <span class="ident">weights</span>[<span class="num">0</span>]) <span class="op">+</span> (<span class="ident">v1</span>.<span class="ident">x</span> <span class="op">/</span> <span class="num">2</span>) <span class="op">-</span> <span class="num">100</span>;
     
     // Test panic mode with intentional trailing garbage
-    <span class="type_name">float</span> <span class="variable">bad_syntax</span> <span class="operator">=</span> <span class="number">1.0</span> <span class="operator">+</span> <span class="operator">/</span> ;
+    <span class="type">float</span> <span class="ident">bad_syntax</span> <span class="op">=</span> <span class="num">1.0</span> <span class="op">+</span> <span class="error">/</span> ;
     
-    <span class="keyword">return</span> <span class="variable">final_result</span>;
+    <span class="kw">return</span> <span class="ident">final_result</span>;
 }</pre>
 </body>
 </html>
