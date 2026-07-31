@@ -1,17 +1,10 @@
-"""
-ماژول Symbol Table - طبق مستند پروژه بخش 5.1 و 5.1.1
-مدیریت جدول نمادها و سلسله‌مراتب Scope‌ها
-"""
-
 from src.token import SourceLocation
 from typing import List, Optional, Dict, Any
 
 
+
 class Symbol:
     """
-    هر نماد در جدول نمادها
-    طبق بخش 5.1 داک
-
     Fields:
         name: The identifier string
         kind: variable, function, type, parameter, class, field, method
@@ -27,11 +20,11 @@ class Symbol:
     def __init__(
         self,
         name: str,
-        kind: str,  # variable, function, type, parameter, class, field, method
-        type_spec: str,  # int, float, struct Vector, ...
+        kind: str,
+        type_spec: str,
         definition_loc: SourceLocation,
         signature: Optional[str] = None,
-        is_initialized: bool = False
+        is_initialized: bool = False,
     ):
         self.name = name
         self.kind = kind
@@ -55,15 +48,15 @@ class Symbol:
 
     def to_dict(self) -> Dict[str, Any]:
         return {
-            'name': self.name,
-            'kind': self.kind,
-            'type': self.type,
-            'scope': self.scope.scope_type if self.scope else None,
-            'definition_loc': str(self.definition_loc),
-            'references': [str(ref) for ref in self.references],
-            'signature': self.signature,
-            'is_initialized': self.is_initialized,
-            'is_used': self.is_used
+            "name": self.name,
+            "kind": self.kind,
+            "type": self.type,
+            "scope": self.scope.scope_type if self.scope else None,
+            "definition_loc": str(self.definition_loc),
+            "references": [str(ref) for ref in self.references],
+            "signature": self.signature,
+            "is_initialized": self.is_initialized,
+            "is_used": self.is_used,
         }
 
     def __repr__(self) -> str:
@@ -78,11 +71,11 @@ class Scope:
     Scopes are arranged as a tree; name lookup walks from inner to outer.
     """
 
-    def __init__(self, parent: Optional['Scope'] = None, scope_type: str = 'global'):
-        self.parent = parent          # Reference به Scope والد
+    def __init__(self, parent: Optional["Scope"] = None, scope_type: str = "global"):
+        self.parent = parent  # Reference به Scope والد
         self.scope_type = scope_type  # 'global', 'function', 'block', 'struct'
         self.symbols: Dict[str, Symbol] = {}
-        self.children: List['Scope'] = []
+        self.children: List["Scope"] = []
 
     def define(self, symbol: Symbol) -> bool:
         """تعریف یک نماد در Scope جاری"""
@@ -119,27 +112,19 @@ class Scope:
 
 
 class SymbolTable:
-    """
-    مدیریت جدول نمادها
-    طبق بخش 5.1 داک
-    """
-
     def __init__(self):
-        self.global_scope = Scope(scope_type='global')
+        self.global_scope = Scope(scope_type="global")
         self.current_scope = self.global_scope
         self.all_symbols: List[Symbol] = []
+        self.struct_scopes = {}
 
-    # ===== مدیریت Scope (بخش 5.1.1) =====
-
-    def enter_scope(self, scope_type: str = 'block') -> Scope:
-        """ورود به یک Scope جدید"""
+    def enter_scope(self, scope_type: str = "block") -> Scope:
         new_scope = Scope(self.current_scope, scope_type)
         self.current_scope.children.append(new_scope)
         self.current_scope = new_scope
         return new_scope
 
     def exit_scope(self) -> Scope:
-        """خروج از Scope جاری و بازگشت به والد"""
         if self.current_scope.parent:
             self.current_scope = self.current_scope.parent
         return self.current_scope
@@ -171,35 +156,35 @@ class SymbolTable:
 
     def to_dict(self) -> Dict[str, Any]:
         return {
-            'global_scope': self._scope_to_dict(self.global_scope),
-            'all_symbols': [sym.to_dict() for sym in self.all_symbols]
+            "global_scope": self._scope_to_dict(self.global_scope),
+            "all_symbols": [sym.to_dict() for sym in self.all_symbols],
         }
 
     def _scope_to_dict(self, scope: Scope) -> Dict[str, Any]:
         return {
-            'type': scope.scope_type,
-            'symbols': {name: sym.to_dict() for name, sym in scope.symbols.items()},
-            'children': [self._scope_to_dict(child) for child in scope.children]
+            "type": scope.scope_type,
+            "symbols": {name: sym.to_dict() for name, sym in scope.symbols.items()},
+            "children": [self._scope_to_dict(child) for child in scope.children],
         }
 
     def print_table(self):
         """چاپ جدول نمادها - طبق فرمت داک"""
-        print("\n" + "="*70)
+        print("\n" + "=" * 70)
         print("📋 SYMBOL TABLE (بخش 5.1)")
-        print("="*70)
+        print("=" * 70)
         self._print_scope(self.global_scope, 0)
-        print("="*70)
+        print("=" * 70)
 
     def _print_scope(self, scope: Scope, indent: int):
         prefix = "  " * indent
 
-        if scope.scope_type == 'global':
+        if scope.scope_type == "global":
             print(f"{prefix}🌐 Global Scope")
-        elif scope.scope_type == 'function':
+        elif scope.scope_type == "function":
             print(f"{prefix}📦 Function Scope")
-        elif scope.scope_type == 'block':
+        elif scope.scope_type == "block":
             print(f"{prefix}📦 Block Scope")
-        elif scope.scope_type == 'struct':
+        elif scope.scope_type == "struct":
             print(f"{prefix}🏗️  Struct Scope")
         else:
             print(f"{prefix}📦 {scope.scope_type.capitalize()} Scope")
@@ -209,9 +194,11 @@ class SymbolTable:
             refs = len(symbol.references)
             init = "✓" if symbol.is_initialized else "✗"
             used = "✓" if symbol.is_used else "✗"
-            print(f"{prefix}  [{symbol.kind}] '{name}' : {symbol.type}  "
-                  f"defined at {loc.line}:{loc.column}  "
-                  f"(init={init}, used={used}, refs={refs})")
+            print(
+                f"{prefix}  [{symbol.kind}] '{name}' : {symbol.type}  "
+                f"defined at {loc.line}:{loc.column}  "
+                f"(init={init}, used={used}, refs={refs})"
+            )
 
         for child in scope.children:
             print()

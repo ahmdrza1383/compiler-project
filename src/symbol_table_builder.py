@@ -43,6 +43,9 @@ class SymbolTableBuilder:
 
         self._pass2_resolution(self.ast_root)
 
+        # بررسی متغیرهای استفاده‌نشده (فقط یک بار در پایان کار)
+        self._check_unused_variables()
+
     def _make_location(self, node) -> SourceLocation:
         if hasattr(node, "line") and hasattr(node, "col"):
             return SourceLocation(self.source_file, node.line, node.col)
@@ -59,7 +62,7 @@ class SymbolTableBuilder:
             params = []
             for param in node.params:
                 if hasattr(param, "var_type"):
-                    params.append(param.var_type.type_name)
+                    params.append(self._resolve_type_str(param.var_type, param))
             return_type = (
                 node.return_type.type_name if hasattr(node, "return_type") else "void"
             )
@@ -98,14 +101,16 @@ class SymbolTableBuilder:
             struct_scope = Scope(
                 parent=self.symbol_table.global_scope, scope_type="struct"
             )
+            struct_scope.struct_name = struct_name
             self.symbol_table.global_scope.children.append(struct_scope)
+            self.symbol_table.struct_scopes[struct_name] = struct_scope
 
             if hasattr(node, "fields"):
                 for field in node.fields:
                     if isinstance(field, VarDecl):
                         field_name = field.var_name.id_name
                         field_type = (
-                            field.var_type.type_name
+                            self._resolve_type_str(field.var_type, field)
                             if hasattr(field, "var_type")
                             else "unknown"
                         )
@@ -118,16 +123,16 @@ class SymbolTableBuilder:
                         )
                         struct_scope.define(field_symbol)
                         if self.verbose:
-                            print(
-                                f"    Registered field: {field_name} : {field_type} (in struct scope)"
-                            )
+                            print(f"    Registered field: {field_name} : {field_type}")
 
         elif isinstance(node, VarDecl):
-            parent = node.parent
+            parent = getattr(node, "parent", None)
             if isinstance(parent, Program):
                 var_name = node.var_name.id_name
                 var_type = (
-                    node.var_type.type_name if hasattr(node, "var_type") else "unknown"
+                    self._resolve_type_str(node.var_type, node)
+                    if hasattr(node, "var_type")
+                    else "unknown"
                 )
                 loc = self._make_location(node.var_name)
                 var_symbol = Symbol(
@@ -142,7 +147,8 @@ class SymbolTableBuilder:
                 else:
                     self.errors.append(f"Redefinition of global variable '{var_name}'")
 
-        for child in node.children:
+        # استفاده از getattr برای جلوگیری از خطا در صورت عدم وجود children در برخی نودها
+        for child in getattr(node, "children", []):
             self._pass1_declaration_scan(child)
 
     # ==================== PASS 2 ====================
@@ -162,7 +168,7 @@ class SymbolTableBuilder:
                 if hasattr(param, "var_name"):
                     param_name = param.var_name.id_name
                     param_type = (
-                        param.var_type.type_name
+                        self._resolve_type_str(param.var_type, param)
                         if hasattr(param, "var_type")
                         else "unknown"
                     )
@@ -194,11 +200,13 @@ class SymbolTableBuilder:
             return
 
         elif isinstance(node, VarDecl):
-            parent = node.parent
+            parent = getattr(node, "parent", None)
             if isinstance(parent, Block):
                 var_name = node.var_name.id_name
                 var_type = (
-                    node.var_type.type_name if hasattr(node, "var_type") else "unknown"
+                    self._resolve_type_str(node.var_type, node)
+                    if hasattr(node, "var_type")
+                    else "unknown"
                 )
 
                 existing = self.symbol_table.get_current_scope().resolve_local(var_name)
@@ -249,14 +257,12 @@ class SymbolTableBuilder:
                 symbol.set_used()
                 loc = self._make_location(node)
                 symbol.add_reference(loc)
-                if self.verbose:
-                    print(f"    Resolved reference: {node.id_name} -> {symbol.kind}")
+                # پیوند نماد به گره برای استفاده در TypeChecker
+                node.symbol = symbol
             else:
                 line = node.line if hasattr(node, "line") else 0
                 col = node.col if hasattr(node, "col") else 0
                 self.errors.append(f"Undefined symbol: {node.id_name} at {line}:{col}")
-                if self.verbose:
-                    print(f"    Undefined: {node.id_name}")
             return
 
         elif isinstance(node, CallExpr):
@@ -267,6 +273,8 @@ class SymbolTableBuilder:
                     symbol.set_used()
                     loc = self._make_location(node.func_name)
                     symbol.add_reference(loc)
+                    # پیوند نماد تابع برای استفاده در TypeChecker
+                    node.func_name.symbol = symbol
                     if self.verbose:
                         print(f"    Call to function: {func_name}")
                 else:
@@ -294,8 +302,6 @@ class SymbolTableBuilder:
         elif isinstance(node, MemberAccess):
             if hasattr(node, "obj"):
                 self._pass2_resolution(node.obj)
-            # if hasattr(node, "member"):
-            #     self._pass2_resolution(node.member)
             return
 
         elif isinstance(node, IfStmt):
@@ -330,21 +336,37 @@ class SymbolTableBuilder:
                 self._pass2_resolution(node.value)
             return
 
-        for child in node.children:
+        for child in getattr(node, "children", []):
             self._pass2_resolution(child)
-
-        self._check_unused_variables()
 
     def _check_unused_variables(self):
         for symbol in self.symbol_table.all_symbols:
             if symbol.kind in ["variable", "parameter"] and not symbol.is_used:
                 self.warnings.append(f"Unused variable: {symbol.name}")
 
+    def _resolve_type_str(self, type_spec_node, var_decl_node=None) -> str:
+        """
+        تبدیل گره TypeSpecifier به رشته (مانند int* یا float[])
+        طراحی‌شده بر اساس ساختار کلاس VarDecl
+        """
+        if not type_spec_node:
+            return "int"
+
+        base = getattr(type_spec_node, "type_name", str(type_spec_node))
+        pointers = getattr(type_spec_node, "pointers", 0)
+        result = base + ("*" * pointers)
+
+        # اگر متغیر آرایه باشد (بررسی از طریق ویژگی is_array در VarDecl)
+        if var_decl_node and getattr(var_decl_node, "is_array", False):
+            result += "[]"
+
+        return result
+
     def get_symbol_table(self):
         return self.symbol_table
 
     def get_errors(self):
         return self.errors
-    
+
     def get_warnings(self):
         return self.warnings

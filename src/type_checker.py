@@ -157,14 +157,12 @@ class TypeChecker:
         return node.inferred_type
 
     def _visit_Identifier(self, node):
-        """Resolve identifier type from symbol table"""
-        symbol = self.symbol_table.resolve(node.id_name)
+        symbol = getattr(node, "symbol", None)
+
         if symbol:
-            # Convert string type to Type object
             node.inferred_type = self._parse_type(symbol.type)
             return node.inferred_type
         else:
-            # Will be caught by semantic analysis
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
@@ -360,22 +358,74 @@ class TypeChecker:
         return None
 
     def _visit_FunctionDef(self, node):
-        """Type check function body"""
-        # Enter function scope
-        self.symbol_table.enter_scope("function")
-
-        # Check return statement types
         return_type_str = node.return_type.type_name
         expected_return_type = self._parse_type(return_type_str)
 
         if node.body:
             self._visit(node.body)
 
-        # Check all return statements in function
-        # This requires traversing the AST to find ReturnStmt nodes
         self._check_return_statements(node.body, expected_return_type)
 
-        self.symbol_table.exit_scope()
+    def _visit_MemberAccess(self, node):
+        obj_type = self._visit(node.obj)
+        if obj_type is None:
+            node.inferred_type = PrimitiveType("int")
+            return node.inferred_type
+
+        struct_type = None
+        if isinstance(obj_type, StructType):
+            struct_type = obj_type
+        elif isinstance(obj_type, PointerType) and isinstance(
+            obj_type.base_type, StructType
+        ):
+            struct_type = obj_type.base_type
+        else:
+            self.errors.append(f"Member access on non-struct type: {obj_type}")
+            node.inferred_type = PrimitiveType("int")
+            return node.inferred_type
+
+        field_name = node.member.id_name
+        field_type = self._find_field_type(struct_type.name, field_name)
+        if field_type:
+            node.inferred_type = field_type
+            return field_type
+        else:
+            self.errors.append(
+                f"Field '{field_name}' not found in struct '{struct_type.name}'"
+            )
+            node.inferred_type = PrimitiveType("int")
+            return node.inferred_type
+
+    def _visit_ArrayAccess(self, node):
+        array_type = self._visit(node.array)
+        index_type = self._visit(node.index)
+        if isinstance(array_type, ArrayType):
+            node.inferred_type = array_type.base_type
+            return node.inferred_type
+        elif isinstance(array_type, PointerType):
+            node.inferred_type = array_type.base_type
+            return node.inferred_type
+        else:
+            self.errors.append(f"Array access on non-array/pointer type: {array_type}")
+            node.inferred_type = PrimitiveType("int")
+            return node.inferred_type
+
+    def _visit_VarDecl(self, node):
+        if node.initializer:
+            init_type = self._visit(node.initializer)
+            if init_type is None:
+                return
+
+            var_name = node.var_name.id_name
+            symbol = self.symbol_table.resolve(var_name)
+
+            if symbol:
+                var_type = self._parse_type(symbol.type)
+
+                if not var_type.is_assignable_from(init_type):
+                    self.errors.append(
+                        f"Type mismatch in variable '{var_name}' initialization: cannot assign {init_type} to {var_type}"
+                    )
 
     def _check_return_statements(self, node, expected_type):
         """Recursively find ReturnStmt and check their types"""
@@ -458,3 +508,11 @@ class TypeChecker:
                     param_types.append(self._parse_type(p))
 
         return return_part, param_types
+
+    def _find_field_type(self, struct_name, field_name):
+        struct_scope = self.symbol_table.struct_scopes.get(struct_name)
+        if struct_scope:
+            symbol = struct_scope.resolve_local(field_name)
+            if symbol:
+                return self._parse_type(symbol.type)
+        return None

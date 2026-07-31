@@ -1,59 +1,9 @@
 SEMANTIC REPORT
 ======================================================================
-Total Errors: 4
-Total Warnings: 45
+Total Errors: 0
+Total Warnings: 1
 ----------------------------------------------------------------------
 
-ERRORS:
-  1. Cannot dereference non-pointer type
-  2. Incompatible types for comparison: int and float
-  3. Cannot dereference non-pointer type
-  4. Argument 1 type mismatch: expected struct Vector, got int
-
 WARNINGS:
-  1. Unused variable: v
-  2. Unused variable: weights
-  3. Unused variable: weights
-  4. Unused variable: weights
-  5. Unused variable: weights
-  6. Unused variable: weights
-  7. Unused variable: weight_ptr
-  8. Unused variable: weight_ptr
-  9. Unused variable: weight_ptr
-  10. Unused variable: v1
-  11. Unused variable: weight_ptr
-  12. Unused variable: v1
-  13. Unused variable: weight_ptr
-  14. Unused variable: v1
-  15. Unused variable: weight_ptr
-  16. Unused variable: v1
-  17. Unused variable: weight_ptr
-  18. Unused variable: v_ptr
-  19. Unused variable: threshold
-  20. Unused variable: weight_ptr
-  21. Unused variable: v_ptr
-  22. Unused variable: threshold
-  23. Unused variable: mode
-  24. Unused variable: weight_ptr
-  25. Unused variable: v_ptr
-  26. Unused variable: threshold
-  27. Unused variable: mode
-  28. Unused variable: status
-  29. Unused variable: v_ptr
-  30. Unused variable: threshold
-  31. Unused variable: mode
-  32. Unused variable: status
-  33. Unused variable: v_ptr
-  34. Unused variable: mode
-  35. Unused variable: status
-  36. Unused variable: mode
-  37. Unused variable: mode
-  38. Unused variable: final_result
-  39. Unused variable: mode
-  40. Unused variable: final_result
-  41. Unused variable: mode
-  42. Unused variable: final_result
-  43. Unused variable: mode
-  44. Unused variable: final_result
-  45. Unused variable: mode
+  1. Unused variable: mode
 ======================================================================

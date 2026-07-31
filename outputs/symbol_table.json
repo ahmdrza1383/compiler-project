@@ -38,7 +38,7 @@
         "references": [
           "test_code.c:46:9"
         ],
-        "signature": "(struct Vector, int) -> void",
+        "signature": "(struct Vector*, int) -> void",
         "is_initialized": false,
         "is_used": true
       },
@@ -138,7 +138,7 @@
           "v": {
             "name": "v",
             "kind": "parameter",
-            "type": "struct Vector",
+            "type": "struct Vector*",
             "scope": "function",
             "definition_loc": "test_code.c:19:35",
             "references": [
@@ -194,7 +194,7 @@
               "weights": {
                 "name": "weights",
                 "kind": "variable",
-                "type": "int",
+                "type": "int[]",
                 "scope": "block",
                 "definition_loc": "test_code.c:29:9",
                 "references": [
@@ -208,7 +208,7 @@
               "weight_ptr": {
                 "name": "weight_ptr",
                 "kind": "variable",
-                "type": "int",
+                "type": "int*",
                 "scope": "block",
                 "definition_loc": "test_code.c:32:10",
                 "references": [
@@ -236,7 +236,7 @@
               "v_ptr": {
                 "name": "v_ptr",
                 "kind": "variable",
-                "type": "struct Vector",
+                "type": "struct Vector*",
                 "scope": "block",
                 "definition_loc": "test_code.c:36:20",
                 "references": [
@@ -354,7 +354,7 @@
       "references": [
         "test_code.c:46:9"
       ],
-      "signature": "(struct Vector, int) -> void",
+      "signature": "(struct Vector*, int) -> void",
       "is_initialized": false,
       "is_used": true
     },
@@ -387,7 +387,7 @@
     {
       "name": "v",
       "kind": "parameter",
-      "type": "struct Vector",
+      "type": "struct Vector*",
       "scope": "function",
       "definition_loc": "test_code.c:19:35",
       "references": [
@@ -421,7 +421,7 @@
     {
       "name": "weights",
       "kind": "variable",
-      "type": "int",
+      "type": "int[]",
       "scope": "block",
       "definition_loc": "test_code.c:29:9",
       "references": [
@@ -435,7 +435,7 @@
     {
       "name": "weight_ptr",
       "kind": "variable",
-      "type": "int",
+      "type": "int*",
       "scope": "block",
       "definition_loc": "test_code.c:32:10",
       "references": [
@@ -463,7 +463,7 @@
     {
       "name": "v_ptr",
       "kind": "variable",
-      "type": "struct Vector",
+      "type": "struct Vector*",
       "scope": "block",
       "definition_loc": "test_code.c:36:20",
       "references": [

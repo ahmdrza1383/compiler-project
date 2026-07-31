@@ -15,16 +15,16 @@ Scope: global
       Scope: block
       Scope: block
   Scope: function
-    [parameter] 'v' : struct Vector  (def: 19:35, init=yes, used=yes, refs=6)
+    [parameter] 'v' : struct Vector*  (def: 19:35, init=yes, used=yes, refs=6)
     [parameter] 'scale' : int  (def: 19:42, init=yes, used=yes, refs=4)
     Scope: block
       Scope: block
   Scope: function
     Scope: block
-      [variable] 'weights' : int  (def: 29:9, init=yes, used=yes, refs=2)
-      [variable] 'weight_ptr' : int  (def: 32:10, init=yes, used=yes, refs=2)
+      [variable] 'weights' : int[]  (def: 29:9, init=yes, used=yes, refs=2)
+      [variable] 'weight_ptr' : int*  (def: 32:10, init=yes, used=yes, refs=2)
       [variable] 'v1' : struct Vector  (def: 35:19, init=yes, used=yes, refs=2)
-      [variable] 'v_ptr' : struct Vector  (def: 36:20, init=yes, used=yes, refs=1)
+      [variable] 'v_ptr' : struct Vector*  (def: 36:20, init=yes, used=yes, refs=1)
       [variable] 'threshold' : float  (def: 39:11, init=yes, used=yes, refs=1)
       [variable] 'mode' : char  (def: 40:10, init=yes, used=no, refs=0)
       [variable] 'status' : int  (def: 41:9, init=yes, used=yes, refs=4)

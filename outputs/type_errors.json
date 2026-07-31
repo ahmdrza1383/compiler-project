@@ -1,9 +1,7 @@
 {
   "errors": [
-    "Cannot dereference non-pointer type",
-    "Incompatible types for comparison: int and float",
-    "Cannot dereference non-pointer type",
-    "Argument 1 type mismatch: expected struct Vector, got int"
+    "Array access on non-array/pointer type: int",
+    "Array access on non-array/pointer type: int"
   ],
   "warnings": []
 }

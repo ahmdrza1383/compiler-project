@@ -1,12 +1,10 @@
 TYPE REPORT
 ======================================================================
-Total Type Errors: 4
+Total Type Errors: 2
 Total Type Warnings: 0
 ----------------------------------------------------------------------
 
 ERRORS:
-  1. Cannot dereference non-pointer type
-  2. Incompatible types for comparison: int and float
-  3. Cannot dereference non-pointer type
-  4. Argument 1 type mismatch: expected struct Vector, got int
+  1. Array access on non-array/pointer type: int
+  2. Array access on non-array/pointer type: int
 ======================================================================

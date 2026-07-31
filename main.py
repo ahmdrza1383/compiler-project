@@ -230,11 +230,17 @@ def main():
             print(f"[INFO] Type report text saved to {type_report_path_txt}")
 
         completer = AutoCompleter(symbol_table, ast_root)
-        completions = completer.get_completions(source_code, 3, 10)
-        if completions:
+        test_positions = [(3, 10), (5, 15), (7, 20)]  # adjust based on your test file
+        all_completions = {}
+        for line, col in test_positions:
+            completions = completer.get_completions(source_code, line, col)
+            if completions:
+                all_completions[f"{line}:{col}"] = completions
+
+        if all_completions:
             completion_path = "outputs/completions.json"
             with open(completion_path, "w", encoding="utf-8") as f:
-                json.dump(completions, f, indent=2)
+                json.dump(all_completions, f, indent=2)
             print(f"[INFO] Auto-completion results saved to {completion_path}")
 
         all_errors = semantic_errors + type_errors
