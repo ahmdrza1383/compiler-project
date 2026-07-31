@@ -25,6 +25,7 @@ class SymbolTableBuilder:
         self.source_file = source_file
         self.symbol_table = SymbolTable()
         self.errors = []
+        self.warnings = []
         self.verbose = verbose
 
         if not ast_root:
@@ -225,6 +226,17 @@ class SymbolTableBuilder:
                 if hasattr(node, "initializer") and node.initializer:
                     var_symbol.set_initialized()
                     self._pass2_resolution(node.initializer)
+
+                outer_symbol = self.symbol_table.resolve(var_name)
+                if (
+                    outer_symbol
+                    and outer_symbol.scope != self.symbol_table.get_current_scope()
+                ):
+                    self.warnings.append(
+                        f"Variable '{var_name}' shadows outer declaration"
+                    )
+                    if self.verbose:
+                        print(f"    Shadowing: {var_name} shadows outer declaration")
                 return
             else:
                 if hasattr(node, "initializer") and node.initializer:
@@ -321,8 +333,18 @@ class SymbolTableBuilder:
         for child in node.children:
             self._pass2_resolution(child)
 
+        self._check_unused_variables()
+
+    def _check_unused_variables(self):
+        for symbol in self.symbol_table.all_symbols:
+            if symbol.kind in ["variable", "parameter"] and not symbol.is_used:
+                self.warnings.append(f"Unused variable: {symbol.name}")
+
     def get_symbol_table(self):
         return self.symbol_table
 
     def get_errors(self):
         return self.errors
+    
+    def get_warnings(self):
+        return self.warnings

@@ -1,34 +1,34 @@
 SYMBOL TABLE
 ======================================================================
-└─ Scope: global
-    [struct] 'Vector' : struct Vector  (def: 3:8, init=✗, used=✓, refs=1)
-    [function] 'factorial' : int  (def: 10:5, init=✗, used=✓, refs=2)
-    [function] 'update_vector' : void  (def: 19:6, init=✗, used=✓, refs=1)
-    [function] 'main' : int  (def: 27:5, init=✗, used=✗, refs=0)
-  └─ Scope: struct
-      [field] 'x' : int  (def: 4:9, init=✗, used=✗, refs=0)
-      [field] 'y' : int  (def: 5:9, init=✗, used=✗, refs=0)
-      [field] 'z' : int  (def: 6:9, init=✗, used=✗, refs=0)
-  └─ Scope: function
-      [parameter] 'n' : int  (def: 10:19, init=✓, used=✓, refs=3)
-    └─ Scope: block
-      └─ Scope: block
-      └─ Scope: block
-  └─ Scope: function
-      [parameter] 'v' : struct Vector  (def: 19:35, init=✓, used=✓, refs=6)
-      [parameter] 'scale' : int  (def: 19:42, init=✓, used=✓, refs=4)
-    └─ Scope: block
-      └─ Scope: block
-  └─ Scope: function
-    └─ Scope: block
-        [variable] 'weights' : int  (def: 29:9, init=✓, used=✓, refs=2)
-        [variable] 'weight_ptr' : int  (def: 32:10, init=✓, used=✓, refs=2)
-        [variable] 'v1' : struct Vector  (def: 35:19, init=✓, used=✓, refs=2)
-        [variable] 'v_ptr' : struct Vector  (def: 36:20, init=✓, used=✓, refs=1)
-        [variable] 'threshold' : float  (def: 39:11, init=✓, used=✓, refs=1)
-        [variable] 'mode' : char  (def: 40:10, init=✓, used=✗, refs=0)
-        [variable] 'status' : int  (def: 41:9, init=✓, used=✓, refs=4)
-        [variable] 'final_result' : int  (def: 52:9, init=✓, used=✓, refs=1)
-      └─ Scope: block
-      └─ Scope: block
+Scope: global
+  [struct] 'Vector' : struct Vector  (def: 3:8, init=no, used=yes, refs=1)
+  [function] 'factorial' : int  (def: 10:5, init=no, used=yes, refs=2)
+  [function] 'update_vector' : void  (def: 19:6, init=no, used=yes, refs=1)
+  [function] 'main' : int  (def: 27:5, init=no, used=no, refs=0)
+  Scope: struct
+    [field] 'x' : int  (def: 4:9, init=no, used=no, refs=0)
+    [field] 'y' : int  (def: 5:9, init=no, used=no, refs=0)
+    [field] 'z' : int  (def: 6:9, init=no, used=no, refs=0)
+  Scope: function
+    [parameter] 'n' : int  (def: 10:19, init=yes, used=yes, refs=3)
+    Scope: block
+      Scope: block
+      Scope: block
+  Scope: function
+    [parameter] 'v' : struct Vector  (def: 19:35, init=yes, used=yes, refs=6)
+    [parameter] 'scale' : int  (def: 19:42, init=yes, used=yes, refs=4)
+    Scope: block
+      Scope: block
+  Scope: function
+    Scope: block
+      [variable] 'weights' : int  (def: 29:9, init=yes, used=yes, refs=2)
+      [variable] 'weight_ptr' : int  (def: 32:10, init=yes, used=yes, refs=2)
+      [variable] 'v1' : struct Vector  (def: 35:19, init=yes, used=yes, refs=2)
+      [variable] 'v_ptr' : struct Vector  (def: 36:20, init=yes, used=yes, refs=1)
+      [variable] 'threshold' : float  (def: 39:11, init=yes, used=yes, refs=1)
+      [variable] 'mode' : char  (def: 40:10, init=yes, used=no, refs=0)
+      [variable] 'status' : int  (def: 41:9, init=yes, used=yes, refs=4)
+      [variable] 'final_result' : int  (def: 52:9, init=yes, used=yes, refs=1)
+      Scope: block
+      Scope: block
 ======================================================================
