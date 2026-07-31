@@ -3,7 +3,6 @@ from .ast_node import *
 from .symbol_table import SymbolTable, Symbol
 from .token import SourceLocation
 
-
 class Type(ABC):
     @abstractmethod
     def __str__(self):
@@ -11,14 +10,11 @@ class Type(ABC):
 
     @abstractmethod
     def is_assignable_from(self, other: "Type") -> bool:
-        """Check if a value of 'other' type can be assigned to this type"""
         pass
 
     @abstractmethod
     def is_compatible_with(self, other: "Type") -> bool:
-        """Check if two types are compatible (for binary operations)"""
         pass
-
 
 class PrimitiveType(Type):
     def __init__(self, name: str):
@@ -28,7 +24,6 @@ class PrimitiveType(Type):
         return self.name
 
     def is_assignable_from(self, other: Type) -> bool:
-        # Implicit widening rules: char -> int -> float -> double
         if isinstance(other, PrimitiveType):
             order = ["char", "int", "float", "double"]
             if self.name in order and other.name in order:
@@ -40,7 +35,6 @@ class PrimitiveType(Type):
             return self.name == other.name
         return False
 
-
 class PointerType(Type):
     def __init__(self, base_type: Type):
         self.base_type = base_type
@@ -51,7 +45,6 @@ class PointerType(Type):
     def is_assignable_from(self, other: Type) -> bool:
         if isinstance(other, PointerType):
             return self.base_type.is_assignable_from(other.base_type)
-        # void* can accept any pointer
         if isinstance(self.base_type, PrimitiveType) and self.base_type.name == "void":
             return isinstance(other, PointerType)
         return False
@@ -61,22 +54,19 @@ class PointerType(Type):
             return self.base_type.is_compatible_with(other.base_type)
         return False
 
-
 class StructType(Type):
     def __init__(self, name: str, fields: dict):
         self.name = name
-        self.fields = fields  # field_name -> Type
+        self.fields = fields
 
     def __str__(self):
         return f"struct {self.name}"
 
     def is_assignable_from(self, other: Type) -> bool:
-        # Structs are assignable only if exactly the same type
         return isinstance(other, StructType) and self.name == other.name
 
     def is_compatible_with(self, other: Type) -> bool:
         return self.is_assignable_from(other)
-
 
 class ArrayType(Type):
     def __init__(self, base_type: Type, size: int = None):
@@ -89,18 +79,14 @@ class ArrayType(Type):
         return f"{self.base_type}[]"
 
     def is_assignable_from(self, other: Type) -> bool:
-        # Array to pointer decay is handled separately
         if isinstance(other, ArrayType):
             if self.size is not None and other.size is not None:
-                return self.size == other.size and self.base_type.is_assignable_from(
-                    other.base_type
-                )
+                return self.size == other.size and self.base_type.is_assignable_from(other.base_type)
             return self.base_type.is_assignable_from(other.base_type)
         return False
 
     def is_compatible_with(self, other: Type) -> bool:
         return self.is_assignable_from(other)
-
 
 class FunctionType(Type):
     def __init__(self, param_types: list, return_type: Type):
@@ -112,20 +98,33 @@ class FunctionType(Type):
         return f"({params}) -> {self.return_type}"
 
     def is_assignable_from(self, other: Type) -> bool:
-        return False  # Functions are not assignable
+        return False
 
     def is_compatible_with(self, other: Type) -> bool:
         return False
-
 
 class TypeChecker:
     def __init__(self, symbol_table: SymbolTable):
         self.symbol_table = symbol_table
         self.errors = []
         self.warnings = []
+        self.scope_stack = [set()]
+
+    def _report_error(self, node, message):
+        """Helper to extract line/col robustly and format the error"""
+        line, col = "?", "?"
+        if hasattr(node, 'line') and hasattr(node, 'col'):
+            line, col = node.line, node.col
+        elif hasattr(node, 'var_name') and hasattr(node.var_name, 'line'):
+            line, col = node.var_name.line, node.var_name.col
+        elif hasattr(node, 'left') and hasattr(node.left, 'line'):
+            line, col = node.left.line, node.left.col
+        elif hasattr(node, 'func_name') and hasattr(node.func_name, 'line'):
+            line, col = node.func_name.line, node.func_name.col
+            
+        self.errors.append(f"{message} at Line {line}, Col {col}")
 
     def check(self, node):
-        """Main entry point for type checking"""
         if node is None:
             return None
         return self._visit(node)
@@ -139,8 +138,20 @@ class TypeChecker:
             self._visit(child)
         return None
 
+    def _visit_Program(self, node):
+        self.scope_stack = [set()]
+        for child in node.children:
+            self._visit(child)
+        return None
+
+    def _visit_Block(self, node):
+        self.scope_stack.append(set())
+        for child in node.children:
+            self._visit(child)
+        self.scope_stack.pop()
+        return None
+
     def _visit_Literal(self, node):
-        """Determine type of literal"""
         if node.type == "INT_LIT":
             node.inferred_type = PrimitiveType("int")
         elif node.type == "FLOAT_LIT":
@@ -157,17 +168,18 @@ class TypeChecker:
         symbol = getattr(node, "symbol", None)
         if not symbol:
             symbol = self.symbol_table.resolve(node.id_name)
+            
         if symbol:
             node.inferred_type = self._parse_type(symbol.type)
             return node.inferred_type
         else:
+            self._report_error(node, f"Undefined symbol '{node.id_name}'")
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
     def _visit_BinaryExpr(self, node):
         op = node.op
 
-        # اصلاح باگ دوم: بررسی انتساب قبل از ارزیابی کامل فرزندان چپ و راست
         if op in ["=", "+=", "-=", "*=", "/="]:
             return self._visit_Assignment(node)
 
@@ -178,12 +190,8 @@ class TypeChecker:
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
-        # Arithmetic operators: +, -, *, /, %
         if op in ["+", "-", "*", "/", "%"]:
-            # If either is float/double, result is float/double
-            if isinstance(left_type, PrimitiveType) and isinstance(
-                right_type, PrimitiveType
-            ):
+            if isinstance(left_type, PrimitiveType) and isinstance(right_type, PrimitiveType):
                 order = ["char", "int", "float", "double"]
                 if left_type.name in order and right_type.name in order:
                     left_idx = order.index(left_type.name)
@@ -191,46 +199,29 @@ class TypeChecker:
                     result_name = order[max(left_idx, right_idx)]
                     node.inferred_type = PrimitiveType(result_name)
                     return node.inferred_type
-            # Pointer arithmetic: ptr + int or int + ptr
-            if isinstance(left_type, PointerType) and isinstance(
-                right_type, PrimitiveType
-            ):
+                    
+            if isinstance(left_type, PointerType) and isinstance(right_type, PrimitiveType):
                 node.inferred_type = left_type
                 return node.inferred_type
-            if isinstance(left_type, PrimitiveType) and isinstance(
-                right_type, PointerType
-            ):
+            if isinstance(left_type, PrimitiveType) and isinstance(right_type, PointerType):
                 node.inferred_type = right_type
                 return node.inferred_type
+                
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
-        # Comparison operators: <, <=, >, >=, ==, !=
         if op in ["<", "<=", ">", ">=", "==", "!="]:
-            # Both operands must be comparable
-            if left_type.is_compatible_with(
-                right_type
-            ) or right_type.is_compatible_with(left_type):
-                node.inferred_type = PrimitiveType("int")
-            else:
-                self.errors.append(
-                    f"Incompatible types for comparison: {left_type} and {right_type}"
-                )
-                node.inferred_type = PrimitiveType("int")
+            if not (left_type.is_compatible_with(right_type) or right_type.is_compatible_with(left_type)):
+                self._report_error(node, f"Incompatible types for comparison: {left_type} and {right_type}")
+            node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
-        # Logical operators: &&, ||
         if op in ["&&", "||"]:
-            # Both operands must be scalar (int, pointer, etc.)
-            if isinstance(left_type, PrimitiveType) or isinstance(
-                left_type, PointerType
-            ):
-                if isinstance(right_type, PrimitiveType) or isinstance(
-                    right_type, PointerType
-                ):
-                    node.inferred_type = PrimitiveType("int")
-                    return node.inferred_type
-            self.errors.append(f"Logical operator requires scalar operands")
+            if (isinstance(left_type, PrimitiveType) or isinstance(left_type, PointerType)) and \
+               (isinstance(right_type, PrimitiveType) or isinstance(right_type, PointerType)):
+                node.inferred_type = PrimitiveType("int")
+                return node.inferred_type
+            self._report_error(node, f"Logical operator requires scalar operands")
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
@@ -245,111 +236,100 @@ class TypeChecker:
             else:
                 node.inferred_type = PrimitiveType("int")
             return node.inferred_type
+            
         if node.op == "!":
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
+            
         if node.op in ["++", "--"]:
-            if isinstance(operand_type, PrimitiveType) or isinstance(
-                operand_type, PointerType
-            ):
+            if isinstance(operand_type, PrimitiveType) or isinstance(operand_type, PointerType):
                 node.inferred_type = operand_type
             else:
-                self.errors.append(f"Invalid operand for increment/decrement")
+                self._report_error(node, f"Invalid operand for increment/decrement")
                 node.inferred_type = PrimitiveType("int")
             return node.inferred_type
-        if node.op == "*":  # Dereference
+            
+        if node.op == "*": 
             if isinstance(operand_type, PointerType):
                 node.inferred_type = operand_type.base_type
             else:
-                self.errors.append(f"Cannot dereference non-pointer type")
+                self._report_error(node, f"Cannot dereference non-pointer type")
                 node.inferred_type = PrimitiveType("int")
             return node.inferred_type
-        if node.op == "&":  # Address-of
+            
+        if node.op == "&": 
             node.inferred_type = PointerType(operand_type)
             return node.inferred_type
+            
         node.inferred_type = PrimitiveType("int")
         return node.inferred_type
 
     def _visit_Assignment(self, node):
-        """Handle assignment in BinaryExpr with op '='"""
         left_type = self._visit(node.left)
         right_type = self._visit(node.right)
+        
         if left_type is None:
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
+            
+        if right_type is None:
+            node.inferred_type = left_type
+            return node.inferred_type
+
         if not left_type.is_assignable_from(right_type):
-            self.errors.append(
-                f"Type mismatch in assignment: cannot assign {right_type} to {left_type}"
-            )
-            # Try implicit conversion
-            if isinstance(left_type, PrimitiveType) and isinstance(
-                right_type, PrimitiveType
-            ):
-                # Implicit widening allowed
-                order = ["char", "int", "float", "double"]
-                if left_type.name in order and right_type.name in order:
-                    if order.index(right_type.name) <= order.index(left_type.name):
-                        node.inferred_type = left_type
-                        return node.inferred_type
-            # Pointer to void* allowed
-            if (
-                isinstance(left_type, PointerType)
-                and isinstance(left_type.base_type, PrimitiveType)
-                and left_type.base_type.name == "void"
-            ):
-                if isinstance(right_type, PointerType):
-                    node.inferred_type = left_type
-                    return node.inferred_type
+            var_name = node.left.id_name if isinstance(node.left, Identifier) else "expression"
+            self._report_error(node, f"Type mismatch in assignment to '{var_name}': cannot assign {right_type} to {left_type}")
+            
         node.inferred_type = left_type
         return node.inferred_type
 
     def _visit_CallExpr(self, node):
-        """Type check function call"""
-        # Resolve function symbol
         if isinstance(node.func_name, Identifier):
             func_symbol = self.symbol_table.resolve(node.func_name.id_name)
             if func_symbol and func_symbol.kind == "function":
-                # Parse function signature
-                return_type, param_types = self._parse_function_signature(
-                    func_symbol.signature
-                )
-                # Check argument count
+                return_type, param_types = self._parse_function_signature(func_symbol.signature)
+                
                 if len(node.args) != len(param_types):
-                    self.errors.append(
-                        f"Function {node.func_name.id_name} expects {len(param_types)} arguments, got {len(node.args)}"
-                    )
-                # Check argument types
+                    self._report_error(node, f"Function {node.func_name.id_name} expects {len(param_types)} arguments, got {len(node.args)}")
+                    
                 for i, arg in enumerate(node.args):
                     arg_type = self._visit(arg)
                     if i < len(param_types):
                         if not param_types[i].is_assignable_from(arg_type):
-                            self.errors.append(
-                                f"Argument {i + 1} type mismatch: expected {param_types[i]}, got {arg_type}"
-                            )
+                            self._report_error(node, f"Argument {i + 1} type mismatch: expected {param_types[i]}, got {arg_type}")
+                            
                 node.inferred_type = self._parse_type(return_type)
                 return node.inferred_type
             else:
-                self.errors.append(f"Function '{node.func_name.id_name}' not found")
+                self._report_error(node, f"Function '{node.func_name.id_name}' not found")
                 node.inferred_type = PrimitiveType("int")
                 return node.inferred_type
+                
         node.inferred_type = PrimitiveType("int")
         return node.inferred_type
 
     def _visit_ReturnStmt(self, node):
-        """Type check return statement"""
         if node.value:
             return_type = self._visit(node.value)
-            # The actual return type should be compared with function return type
-            # This will be done at function level
             return return_type
         return None
 
     def _visit_FunctionDef(self, node):
         return_type_str = node.return_type.type_name
         expected_return_type = self._parse_type(return_type_str)
+        
+        self.scope_stack.append(set())
+        
+        # پیمایش پارامترها در داخل Scope اختصاصی تابع
+        if hasattr(node, 'params'):
+            for param in node.params:
+                self._visit(param)
+        
         if node.body:
             self._visit(node.body)
         self._check_return_statements(node.body, expected_return_type)
+        
+        self.scope_stack.pop()
 
     def _visit_MemberAccess(self, node):
         obj_type = self._visit(node.obj)
@@ -360,12 +340,10 @@ class TypeChecker:
         struct_type = None
         if isinstance(obj_type, StructType):
             struct_type = obj_type
-        elif isinstance(obj_type, PointerType) and isinstance(
-            obj_type.base_type, StructType
-        ):
+        elif isinstance(obj_type, PointerType) and isinstance(obj_type.base_type, StructType):
             struct_type = obj_type.base_type
         else:
-            self.errors.append(f"Member access on non-struct type: {obj_type}")
+            self._report_error(node, f"Member access on non-struct type: {obj_type}")
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
@@ -376,15 +354,14 @@ class TypeChecker:
             node.inferred_type = field_type
             return field_type
         else:
-            self.errors.append(
-                f"Field '{field_name}' not found in struct '{struct_type.name}'"
-            )
+            self._report_error(node, f"Field '{field_name}' not found in struct '{struct_type.name}'")
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
     def _visit_ArrayAccess(self, node):
         array_type = self._visit(node.array)
         index_type = self._visit(node.index)
+        
         if isinstance(array_type, ArrayType):
             node.inferred_type = array_type.base_type
             return node.inferred_type
@@ -392,65 +369,62 @@ class TypeChecker:
             node.inferred_type = array_type.base_type
             return node.inferred_type
         else:
-            self.errors.append(f"Array access on non-array/pointer type: {array_type}")
+            self._report_error(node, f"Array access on non-array/pointer type: {array_type}")
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
     def _visit_VarDecl(self, node):
+        var_name = node.var_name.id_name
+        
+        if var_name in self.scope_stack[-1]:
+            self._report_error(node, f"Redefinition of variable '{var_name}'")
+        else:
+            self.scope_stack[-1].add(var_name)
+
         if node.initializer:
             init_type = self._visit(node.initializer)
             if init_type is None:
                 return
-            var_name = node.var_name.id_name
-            symbol = self.symbol_table.resolve(var_name)
-            if symbol:
-                var_type = self._parse_type(symbol.type)
-                if not var_type.is_assignable_from(init_type):
-                    self.errors.append(
-                        f"Type mismatch in variable '{var_name}' initialization: cannot assign {init_type} to {var_type}"
-                    )
+            
+            # استخراج نام پایه و تعداد پوینترها مستقیماً از درخت نحو
+            base_type_name = node.var_type.type_name
+            pointers_count = getattr(node.var_type, "pointers", 0)
+            full_type_str = f"{base_type_name}{'*' * pointers_count}"
+            
+            var_type = self._parse_type(full_type_str)
+            
+            if not var_type.is_assignable_from(init_type):
+                self._report_error(node, f"Type mismatch in variable '{var_name}' initialization: cannot assign {init_type} to {var_type}")
 
     def _check_return_statements(self, node, expected_type):
-        """Recursively find ReturnStmt and check their types"""
         if node is None:
             return
         if isinstance(node, ReturnStmt):
             if node.value:
                 actual_type = self._visit(node.value)
                 if not expected_type.is_assignable_from(actual_type):
-                    self.errors.append(
-                        f"Return type mismatch: expected {expected_type}, got {actual_type}"
-                    )
+                    self._report_error(node, f"Return type mismatch: expected {expected_type}, got {actual_type}")
             else:
-                # void return
-                if (
-                    not isinstance(expected_type, PrimitiveType)
-                    or expected_type.name != "void"
-                ):
-                    self.errors.append(
-                        f"Return type mismatch: expected {expected_type}, got void"
-                    )
+                if not isinstance(expected_type, PrimitiveType) or expected_type.name != "void":
+                    self._report_error(node, f"Return type mismatch: expected {expected_type}, got void")
             return
+            
         for child in node.children:
             self._check_return_statements(child, expected_type)
 
     def _parse_type(self, type_str: str) -> Type:
-        """Parse string type representation to Type object"""
         if type_str is None:
             return PrimitiveType("int")
-        # Handle pointer types
         if type_str.endswith("*"):
             base = type_str[:-1].strip()
             return PointerType(self._parse_type(base))
-        # Handle array types (simplified)
         if "[" in type_str and "]" in type_str:
             base = type_str[: type_str.index("[")].strip()
             return ArrayType(self._parse_type(base))
-        # Handle struct types
         if type_str.startswith("struct "):
             struct_name = type_str[7:].strip()
             return StructType(struct_name, {})
-        # Primitive types
+            
         primitive_map = {
             "int": PrimitiveType("int"),
             "float": PrimitiveType("float"),
@@ -461,10 +435,8 @@ class TypeChecker:
         return primitive_map.get(type_str, PrimitiveType("int"))
 
     def _parse_function_signature(self, signature: str):
-        """Parse function signature like '(int, char*) -> int'"""
         if not signature:
             return "void", []
-        # Split into parameters and return type
         if "->" in signature:
             params_part, return_part = signature.split("->")
             params_part = params_part.strip()
@@ -472,9 +444,10 @@ class TypeChecker:
         else:
             params_part = signature
             return_part = "void"
-        # Parse parameters
+            
         if params_part.startswith("(") and params_part.endswith(")"):
             params_part = params_part[1:-1]
+            
         param_types = []
         if params_part:
             for p in params_part.split(","):
@@ -489,4 +462,20 @@ class TypeChecker:
             symbol = struct_scope.resolve_local(field_name)
             if symbol:
                 return self._parse_type(symbol.type)
+        return None
+
+    def _visit_StructDef(self, node):
+        # ایجاد یک Scope جدید برای فیلدهای استراکت
+        self.scope_stack.append(set())
+        for child in node.children:
+            self._visit(child)
+        self.scope_stack.pop()
+        return None
+
+    def _visit_FunctionDecl(self, node):
+        # ایجاد یک Scope جدید برای پارامترهای Prototype تابع
+        self.scope_stack.append(set())
+        for child in node.children:
+            self._visit(child)
+        self.scope_stack.pop()
         return None

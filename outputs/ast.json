@@ -366,7 +366,9 @@
               "statements": [
                 {
                   "name": "ReturnStmt",
-                  "value": "1"
+                  "value": "1",
+                  "line": 32,
+                  "col": 9
                 }
               ]
             },
@@ -409,7 +411,9 @@
                         }
                       ]
                     }
-                  }
+                  },
+                  "line": 34,
+                  "col": 9
                 }
               ]
             }
@@ -855,7 +859,9 @@
               "category": "Variable",
               "line": 61,
               "col": 12
-            }
+            },
+            "line": 61,
+            "col": 5
           }
         ]
       }
@@ -1667,7 +1673,9 @@
           },
           {
             "name": "ReturnStmt",
-            "value": "0"
+            "value": "0",
+            "line": 120,
+            "col": 5
           }
         ]
       }

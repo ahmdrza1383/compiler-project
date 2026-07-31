@@ -370,12 +370,15 @@ class Parser:
         return ForStmt(init, cond, step, body)
 
     def parse_return_stmt(self):
-        self.consume("return", "Expected 'return'")
+        return_tok = self.consume("return", "Expected 'return'")
+        line, col = self._loc(return_tok)
+        
         val = None
         if not self.check(";"):
             val = self.parse_expr()
         self.consume(";", "Expected ';'")
-        return ReturnStmt(val)
+        
+        return ReturnStmt(val, line, col)
 
     def parse_break_stmt(self):
         self.consume("break", "Expected 'break'")

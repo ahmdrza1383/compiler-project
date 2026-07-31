@@ -136,8 +136,8 @@ class ForStmt(ASTNode):
 
 
 class ReturnStmt(ASTNode):
-    def __init__(self, value=None):
-        super().__init__(value=value)
+    def __init__(self, value=None, line=0, col=0):
+        super().__init__(value=value, line=line, col=col)
 
 
 class CallExpr(ASTNode):

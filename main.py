@@ -126,6 +126,12 @@ def write_type_report_txt(errors, warnings, output_path: str):
             f.write("\nNo type errors or warnings found.\n")
         f.write("=" * 70 + "\n")
 
+def clear_file(output_path: str, default_content: str = ""):
+    """این تابع فایل‌های قدیمی را با یک محتوای پیش‌فرض (مثل {} یا پیام متنی) بازنویسی می‌کند"""
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(default_content)
+
 
 def main():
     source_file = "test_code.c"
