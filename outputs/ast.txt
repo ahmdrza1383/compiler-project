@@ -1,0 +1,36 @@
+Program
+└── FunctionDef
+    ├── Type: int
+    ├── ID: main (Function)
+    └── Block
+        ├── VarDecl
+        │   ├── Type: struct Point
+        │   ├── ID: p (Variable)
+        │   └── InitializerList
+        │       ├── Literal: 1
+        │       └── Literal: 2
+        ├── VarDecl
+        │   ├── Type: int
+        │   ├── ID: x (Variable)
+        │   └── Literal: 0xFF
+        ├── VarDecl
+        │   ├── Type: float
+        │   ├── ID: y (Variable)
+        │   └── Literal: 1.0e-5f
+        ├── VarDecl
+        │   ├── Type: char
+        │   ├── ID: c (Variable)
+        │   └── Literal: '\t'
+        └── IfStmt
+            ├── BinaryExpr (&&)
+            │   ├── BinaryExpr (>=)
+            │   │   ├── ID: x (Variable)
+            │   │   └── Literal: 10
+            │   └── BinaryExpr (<=)
+            │       ├── ID: y (Variable)
+            │       └── Literal: 3.14
+            └── Block
+                └── ReturnStmt
+                    └── BinaryExpr (+)
+                        ├── ID: x (Variable)
+                        └── ID: y (Variable)
