@@ -1,37 +1,164 @@
 Program
+├── StructDef
+│   ├── ID: Vector (Struct)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: x (Variable)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: y (Variable)
+│   └── VarDecl
+│       ├── Type: int
+│       └── ID: z (Variable)
+├── FunctionDef
+│   ├── Type: int
+│   ├── ID: factorial (Function)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: n (Variable)
+│   └── Block
+│       └── IfStmt
+│           ├── BinaryExpr (<=)
+│           │   ├── ID: n (Variable)
+│           │   └── Literal: 1
+│           ├── Block
+│           │   └── ReturnStmt
+│           │       └── Literal: 1
+│           └── Block
+│               └── ReturnStmt
+│                   └── BinaryExpr (*)
+│                       ├── ID: n (Variable)
+│                       └── CallExpr
+│                           ├── ID: factorial (Function)
+│                           └── BinaryExpr (-)
+│                               ├── ID: n (Variable)
+│                               └── Literal: 1
+├── FunctionDef
+│   ├── Type: void
+│   ├── ID: update_vector (Function)
+│   ├── VarDecl
+│   │   ├── Type: struct Vector*
+│   │   └── ID: v (Variable)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: scale (Variable)
+│   └── Block
+│       └── IfStmt
+│           ├── BinaryExpr (>)
+│           │   ├── ID: scale (Variable)
+│           │   └── Literal: 0
+│           └── Block
+│               ├── BinaryExpr (=)
+│               │   ├── MemberAccess
+│               │   │   ├── ID: v (Variable)
+│               │   │   └── ID: x (Variable)
+│               │   └── BinaryExpr (*)
+│               │       ├── MemberAccess
+│               │       │   ├── ID: v (Variable)
+│               │       │   └── ID: x (Variable)
+│               │       └── ID: scale (Variable)
+│               ├── BinaryExpr (=)
+│               │   ├── MemberAccess
+│               │   │   ├── ID: v (Variable)
+│               │   │   └── ID: y (Variable)
+│               │   └── BinaryExpr (*)
+│               │       ├── MemberAccess
+│               │       │   ├── ID: v (Variable)
+│               │       │   └── ID: y (Variable)
+│               │       └── ID: scale (Variable)
+│               └── BinaryExpr (=)
+│                   ├── MemberAccess
+│                   │   ├── ID: v (Variable)
+│                   │   └── ID: z (Variable)
+│                   └── BinaryExpr (*)
+│                       ├── MemberAccess
+│                       │   ├── ID: v (Variable)
+│                       │   └── ID: z (Variable)
+│                       └── ID: scale (Variable)
 └── FunctionDef
     ├── Type: int
     ├── ID: main (Function)
     └── Block
         ├── VarDecl
-        │   ├── Type: struct Point
-        │   ├── ID: p (Variable)
-        │   └── InitializerList
-        │       ├── Literal: 1
-        │       └── Literal: 2
-        ├── VarDecl
         │   ├── Type: int
-        │   ├── ID: x (Variable)
-        │   ├── Literal: 5
-        │   └── Literal: 1
+        │   ├── ID: weights (Variable)
+        │   ├── Literal: 4
+        │   └── InitializerList
+        │       ├── Literal: 2
+        │       ├── Literal: 4
+        │       ├── Literal: 6
+        │       └── Literal: 8
+        ├── VarDecl
+        │   ├── Type: int*
+        │   ├── ID: weight_ptr (Variable)
+        │   └── UnaryExpr (&)
+        │       └── ArrayAccess
+        │           ├── ID: weights (Variable)
+        │           └── Literal: 2
+        ├── VarDecl
+        │   ├── Type: struct Vector
+        │   ├── ID: v1 (Variable)
+        │   └── InitializerList
+        │       ├── Literal: 10
+        │       ├── Literal: 20
+        │       └── Literal: 30
+        ├── VarDecl
+        │   ├── Type: struct Vector*
+        │   ├── ID: v_ptr (Variable)
+        │   └── UnaryExpr (&)
+        │       └── ID: v1 (Variable)
         ├── VarDecl
         │   ├── Type: float
-        │   ├── ID: y (Variable)
-        │   └── Literal: 1.0e-5f
+        │   ├── ID: threshold (Variable)
+        │   └── Literal: 15.5f
         ├── VarDecl
         │   ├── Type: char
-        │   ├── ID: c (Variable)
-        │   └── Literal: '\t'
-        └── IfStmt
-            ├── BinaryExpr (&&)
-            │   ├── BinaryExpr (>=)
-            │   │   ├── ID: x (Variable)
-            │   │   └── Literal: 10
-            │   └── BinaryExpr (<=)
-            │       ├── ID: y (Variable)
-            │       └── Literal: 3.14
-            └── Block
-                └── ReturnStmt
-                    └── BinaryExpr (+)
-                        ├── ID: x (Variable)
-                        └── ID: y (Variable)
+        │   ├── ID: mode (Variable)
+        │   └── Literal: 'A'
+        ├── VarDecl
+        │   ├── Type: int
+        │   ├── ID: status (Variable)
+        │   └── Literal: 0
+        ├── IfStmt
+        │   ├── BinaryExpr (&&)
+        │   │   ├── BinaryExpr (>=)
+        │   │   │   ├── UnaryExpr (*)
+        │   │   │   │   └── ID: weight_ptr (Variable)
+        │   │   │   └── Literal: 5
+        │   │   └── BinaryExpr (<)
+        │   │       ├── ID: threshold (Variable)
+        │   │       └── Literal: 20.0f
+        │   ├── Block
+        │   │   ├── BinaryExpr (=)
+        │   │   │   ├── ID: status (Variable)
+        │   │   │   └── CallExpr
+        │   │   │       ├── ID: factorial (Function)
+        │   │   │       └── UnaryExpr (*)
+        │   │   │           └── ID: weight_ptr (Variable)
+        │   │   └── CallExpr
+        │   │       ├── ID: update_vector (Function)
+        │   │       ├── ID: v_ptr (Variable)
+        │   │       └── ID: status (Variable)
+        │   └── Block
+        │       └── BinaryExpr (=)
+        │           ├── ID: status (Variable)
+        │           └── UnaryExpr (-)
+        │               └── Literal: 1
+        ├── VarDecl
+        │   ├── Type: int
+        │   ├── ID: final_result (Variable)
+        │   └── BinaryExpr (-)
+        │       ├── BinaryExpr (+)
+        │       │   ├── BinaryExpr (*)
+        │       │   │   ├── ID: status (Variable)
+        │       │   │   └── ArrayAccess
+        │       │   │       ├── ID: weights (Variable)
+        │       │   │       └── Literal: 0
+        │       │   └── BinaryExpr (/)
+        │       │       ├── MemberAccess
+        │       │       │   ├── ID: v1 (Variable)
+        │       │       │   └── ID: x (Variable)
+        │       │       └── Literal: 2
+        │       └── Literal: 100
+        └── ReturnStmt
+            └── ID: final_result (Variable)

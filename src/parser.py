@@ -138,12 +138,17 @@ class Parser:
         return fields
 
     # // type_rest ::= ('*')* IDENT ( '(' param_list? ')' ( block | ';' ) | var_tail )
-# // type_rest ::= ('*')* IDENT ( '(' param_list? ')' ( block | ';' ) | var_tail )
+    # // type_rest ::= ('*')* IDENT ( '(' param_list? ')' ( block | ';' ) | var_tail )
+    # // type_rest ::= ('*')* IDENT ( '(' param_list? ')' ( block | ';' ) | var_tail )
     def parse_type_rest(self, base_type_spec):
         pointers = 0
         while self.match("*"):
             pointers += 1
-        base_type_spec.pointers += pointers
+            
+        if pointers > 0:
+            base_type_spec.pointers += pointers
+            # به‌روزرسانی رشته نمایشی نام در گره AST برای اینکه ستاره‌ها در درخت دیده شوند
+            base_type_spec.name = f"Type: {base_type_spec.type_name}" + ("*" * base_type_spec.pointers)
         
         ident_tok = self.consume_type(TokenType.IDENTIFIER, "Expected identifier")
         line, col = self._loc(ident_tok)

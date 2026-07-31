@@ -2,6 +2,419 @@
   "name": "Program",
   "declarations": [
     {
+      "name": "StructDef",
+      "struct_name": {
+        "name": "ID: Vector (Struct)",
+        "id_name": "Vector",
+        "category": "Struct",
+        "line": 3,
+        "col": 8
+      },
+      "fields": [
+        {
+          "name": "VarDecl",
+          "var_type": {
+            "name": "Type: int",
+            "type_name": "int",
+            "pointers": 0,
+            "category": "Type"
+          },
+          "var_name": {
+            "name": "ID: x (Variable)",
+            "id_name": "x",
+            "category": "Variable",
+            "line": 4,
+            "col": 9
+          },
+          "is_array": false,
+          "array_size": null,
+          "initializer": null
+        },
+        {
+          "name": "VarDecl",
+          "var_type": {
+            "name": "Type: int",
+            "type_name": "int",
+            "pointers": 0,
+            "category": "Type"
+          },
+          "var_name": {
+            "name": "ID: y (Variable)",
+            "id_name": "y",
+            "category": "Variable",
+            "line": 5,
+            "col": 9
+          },
+          "is_array": false,
+          "array_size": null,
+          "initializer": null
+        },
+        {
+          "name": "VarDecl",
+          "var_type": {
+            "name": "Type: int",
+            "type_name": "int",
+            "pointers": 0,
+            "category": "Type"
+          },
+          "var_name": {
+            "name": "ID: z (Variable)",
+            "id_name": "z",
+            "category": "Variable",
+            "line": 6,
+            "col": 9
+          },
+          "is_array": false,
+          "array_size": null,
+          "initializer": null
+        }
+      ]
+    },
+    {
+      "name": "FunctionDef",
+      "return_type": {
+        "name": "Type: int",
+        "type_name": "int",
+        "pointers": 0,
+        "category": "Type"
+      },
+      "func_name": {
+        "name": "ID: factorial (Function)",
+        "id_name": "factorial",
+        "category": "Function",
+        "line": 10,
+        "col": 5
+      },
+      "params": [
+        {
+          "name": "VarDecl",
+          "var_type": {
+            "name": "Type: int",
+            "type_name": "int",
+            "pointers": 0,
+            "category": "Type"
+          },
+          "var_name": {
+            "name": "ID: n (Variable)",
+            "id_name": "n",
+            "category": "Variable",
+            "line": 10,
+            "col": 19
+          },
+          "is_array": false,
+          "array_size": null,
+          "initializer": null
+        }
+      ],
+      "body": {
+        "name": "Block",
+        "statements": [
+          {
+            "name": "IfStmt",
+            "condition": {
+              "name": "BinaryExpr (<=)",
+              "op": "<=",
+              "left": {
+                "name": "ID: n (Variable)",
+                "id_name": "n",
+                "category": "Variable",
+                "line": 11,
+                "col": 9
+              },
+              "right": "1"
+            },
+            "then_branch": {
+              "name": "Block",
+              "statements": [
+                {
+                  "name": "ReturnStmt",
+                  "value": "1"
+                }
+              ]
+            },
+            "else_branch": {
+              "name": "Block",
+              "statements": [
+                {
+                  "name": "ReturnStmt",
+                  "value": {
+                    "name": "BinaryExpr (*)",
+                    "op": "*",
+                    "left": {
+                      "name": "ID: n (Variable)",
+                      "id_name": "n",
+                      "category": "Variable",
+                      "line": 14,
+                      "col": 16
+                    },
+                    "right": {
+                      "name": "CallExpr",
+                      "func_name": {
+                        "name": "ID: factorial (Function)",
+                        "id_name": "factorial",
+                        "category": "Function",
+                        "line": 14,
+                        "col": 20
+                      },
+                      "args": [
+                        {
+                          "name": "BinaryExpr (-)",
+                          "op": "-",
+                          "left": {
+                            "name": "ID: n (Variable)",
+                            "id_name": "n",
+                            "category": "Variable",
+                            "line": 14,
+                            "col": 30
+                          },
+                          "right": "1"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "FunctionDef",
+      "return_type": {
+        "name": "Type: void",
+        "type_name": "void",
+        "pointers": 0,
+        "category": "Type"
+      },
+      "func_name": {
+        "name": "ID: update_vector (Function)",
+        "id_name": "update_vector",
+        "category": "Function",
+        "line": 19,
+        "col": 6
+      },
+      "params": [
+        {
+          "name": "VarDecl",
+          "var_type": {
+            "name": "Type: struct Vector*",
+            "type_name": "struct Vector",
+            "pointers": 1,
+            "category": "Type"
+          },
+          "var_name": {
+            "name": "ID: v (Variable)",
+            "id_name": "v",
+            "category": "Variable",
+            "line": 19,
+            "col": 35
+          },
+          "is_array": false,
+          "array_size": null,
+          "initializer": null
+        },
+        {
+          "name": "VarDecl",
+          "var_type": {
+            "name": "Type: int",
+            "type_name": "int",
+            "pointers": 0,
+            "category": "Type"
+          },
+          "var_name": {
+            "name": "ID: scale (Variable)",
+            "id_name": "scale",
+            "category": "Variable",
+            "line": 19,
+            "col": 42
+          },
+          "is_array": false,
+          "array_size": null,
+          "initializer": null
+        }
+      ],
+      "body": {
+        "name": "Block",
+        "statements": [
+          {
+            "name": "IfStmt",
+            "condition": {
+              "name": "BinaryExpr (>)",
+              "op": ">",
+              "left": {
+                "name": "ID: scale (Variable)",
+                "id_name": "scale",
+                "category": "Variable",
+                "line": 20,
+                "col": 9
+              },
+              "right": "0"
+            },
+            "then_branch": {
+              "name": "Block",
+              "statements": [
+                {
+                  "name": "BinaryExpr (=)",
+                  "op": "=",
+                  "left": {
+                    "name": "MemberAccess",
+                    "obj": {
+                      "name": "ID: v (Variable)",
+                      "id_name": "v",
+                      "category": "Variable",
+                      "line": 21,
+                      "col": 9
+                    },
+                    "member": {
+                      "name": "ID: x (Variable)",
+                      "id_name": "x",
+                      "category": "Variable",
+                      "line": 21,
+                      "col": 11
+                    },
+                    "is_pointer": false
+                  },
+                  "right": {
+                    "name": "BinaryExpr (*)",
+                    "op": "*",
+                    "left": {
+                      "name": "MemberAccess",
+                      "obj": {
+                        "name": "ID: v (Variable)",
+                        "id_name": "v",
+                        "category": "Variable",
+                        "line": 21,
+                        "col": 15
+                      },
+                      "member": {
+                        "name": "ID: x (Variable)",
+                        "id_name": "x",
+                        "category": "Variable",
+                        "line": 21,
+                        "col": 17
+                      },
+                      "is_pointer": false
+                    },
+                    "right": {
+                      "name": "ID: scale (Variable)",
+                      "id_name": "scale",
+                      "category": "Variable",
+                      "line": 21,
+                      "col": 21
+                    }
+                  }
+                },
+                {
+                  "name": "BinaryExpr (=)",
+                  "op": "=",
+                  "left": {
+                    "name": "MemberAccess",
+                    "obj": {
+                      "name": "ID: v (Variable)",
+                      "id_name": "v",
+                      "category": "Variable",
+                      "line": 22,
+                      "col": 9
+                    },
+                    "member": {
+                      "name": "ID: y (Variable)",
+                      "id_name": "y",
+                      "category": "Variable",
+                      "line": 22,
+                      "col": 11
+                    },
+                    "is_pointer": false
+                  },
+                  "right": {
+                    "name": "BinaryExpr (*)",
+                    "op": "*",
+                    "left": {
+                      "name": "MemberAccess",
+                      "obj": {
+                        "name": "ID: v (Variable)",
+                        "id_name": "v",
+                        "category": "Variable",
+                        "line": 22,
+                        "col": 15
+                      },
+                      "member": {
+                        "name": "ID: y (Variable)",
+                        "id_name": "y",
+                        "category": "Variable",
+                        "line": 22,
+                        "col": 17
+                      },
+                      "is_pointer": false
+                    },
+                    "right": {
+                      "name": "ID: scale (Variable)",
+                      "id_name": "scale",
+                      "category": "Variable",
+                      "line": 22,
+                      "col": 21
+                    }
+                  }
+                },
+                {
+                  "name": "BinaryExpr (=)",
+                  "op": "=",
+                  "left": {
+                    "name": "MemberAccess",
+                    "obj": {
+                      "name": "ID: v (Variable)",
+                      "id_name": "v",
+                      "category": "Variable",
+                      "line": 23,
+                      "col": 9
+                    },
+                    "member": {
+                      "name": "ID: z (Variable)",
+                      "id_name": "z",
+                      "category": "Variable",
+                      "line": 23,
+                      "col": 11
+                    },
+                    "is_pointer": false
+                  },
+                  "right": {
+                    "name": "BinaryExpr (*)",
+                    "op": "*",
+                    "left": {
+                      "name": "MemberAccess",
+                      "obj": {
+                        "name": "ID: v (Variable)",
+                        "id_name": "v",
+                        "category": "Variable",
+                        "line": 23,
+                        "col": 15
+                      },
+                      "member": {
+                        "name": "ID: z (Variable)",
+                        "id_name": "z",
+                        "category": "Variable",
+                        "line": 23,
+                        "col": 17
+                      },
+                      "is_pointer": false
+                    },
+                    "right": {
+                      "name": "ID: scale (Variable)",
+                      "id_name": "scale",
+                      "category": "Variable",
+                      "line": 23,
+                      "col": 21
+                    }
+                  }
+                }
+              ]
+            },
+            "else_branch": null
+          }
+        ]
+      }
+    },
+    {
       "name": "FunctionDef",
       "return_type": {
         "name": "Type: int",
@@ -13,7 +426,7 @@
         "name": "ID: main (Function)",
         "id_name": "main",
         "category": "Function",
-        "line": 2,
+        "line": 27,
         "col": 5
       },
       "params": [],
@@ -23,17 +436,106 @@
           {
             "name": "VarDecl",
             "var_type": {
-              "name": "Type: struct Point",
-              "type_name": "struct Point",
+              "name": "Type: int",
+              "type_name": "int",
               "pointers": 0,
               "category": "Type"
             },
             "var_name": {
-              "name": "ID: p (Variable)",
-              "id_name": "p",
+              "name": "ID: weights (Variable)",
+              "id_name": "weights",
               "category": "Variable",
-              "line": 3,
-              "col": 18
+              "line": 29,
+              "col": 9
+            },
+            "is_array": true,
+            "array_size": "4",
+            "initializer": {
+              "name": "InitializerList",
+              "elements": [
+                {
+                  "name": "Literal: 2",
+                  "value": "2",
+                  "type": "INT_LIT",
+                  "category": "Literal",
+                  "line": 29,
+                  "col": 23
+                },
+                {
+                  "name": "Literal: 4",
+                  "value": "4",
+                  "type": "INT_LIT",
+                  "category": "Literal",
+                  "line": 29,
+                  "col": 26
+                },
+                {
+                  "name": "Literal: 6",
+                  "value": "6",
+                  "type": "INT_LIT",
+                  "category": "Literal",
+                  "line": 29,
+                  "col": 29
+                },
+                {
+                  "name": "Literal: 8",
+                  "value": "8",
+                  "type": "INT_LIT",
+                  "category": "Literal",
+                  "line": 29,
+                  "col": 32
+                }
+              ]
+            }
+          },
+          {
+            "name": "VarDecl",
+            "var_type": {
+              "name": "Type: int*",
+              "type_name": "int",
+              "pointers": 1,
+              "category": "Type"
+            },
+            "var_name": {
+              "name": "ID: weight_ptr (Variable)",
+              "id_name": "weight_ptr",
+              "category": "Variable",
+              "line": 32,
+              "col": 10
+            },
+            "is_array": false,
+            "array_size": null,
+            "initializer": {
+              "name": "UnaryExpr (&)",
+              "op": "&",
+              "operand": {
+                "name": "ArrayAccess",
+                "array": {
+                  "name": "ID: weights (Variable)",
+                  "id_name": "weights",
+                  "category": "Variable",
+                  "line": 32,
+                  "col": 24
+                },
+                "index": "2"
+              },
+              "is_postfix": false
+            }
+          },
+          {
+            "name": "VarDecl",
+            "var_type": {
+              "name": "Type: struct Vector",
+              "type_name": "struct Vector",
+              "pointers": 0,
+              "category": "Type"
+            },
+            "var_name": {
+              "name": "ID: v1 (Variable)",
+              "id_name": "v1",
+              "category": "Variable",
+              "line": 35,
+              "col": 19
             },
             "is_array": false,
             "array_size": null,
@@ -41,20 +543,239 @@
               "name": "InitializerList",
               "elements": [
                 {
-                  "name": "Literal: 1",
-                  "value": "1",
+                  "name": "Literal: 10",
+                  "value": "10",
                   "type": "INT_LIT",
                   "category": "Literal",
-                  "line": 3,
-                  "col": 23
+                  "line": 35,
+                  "col": 25
                 },
                 {
-                  "name": "Literal: 2",
-                  "value": "2",
+                  "name": "Literal: 20",
+                  "value": "20",
                   "type": "INT_LIT",
                   "category": "Literal",
-                  "line": 3,
-                  "col": 26
+                  "line": 35,
+                  "col": 29
+                },
+                {
+                  "name": "Literal: 30",
+                  "value": "30",
+                  "type": "INT_LIT",
+                  "category": "Literal",
+                  "line": 35,
+                  "col": 33
+                }
+              ]
+            }
+          },
+          {
+            "name": "VarDecl",
+            "var_type": {
+              "name": "Type: struct Vector*",
+              "type_name": "struct Vector",
+              "pointers": 1,
+              "category": "Type"
+            },
+            "var_name": {
+              "name": "ID: v_ptr (Variable)",
+              "id_name": "v_ptr",
+              "category": "Variable",
+              "line": 36,
+              "col": 20
+            },
+            "is_array": false,
+            "array_size": null,
+            "initializer": {
+              "name": "UnaryExpr (&)",
+              "op": "&",
+              "operand": {
+                "name": "ID: v1 (Variable)",
+                "id_name": "v1",
+                "category": "Variable",
+                "line": 36,
+                "col": 29
+              },
+              "is_postfix": false
+            }
+          },
+          {
+            "name": "VarDecl",
+            "var_type": {
+              "name": "Type: float",
+              "type_name": "float",
+              "pointers": 0,
+              "category": "Type"
+            },
+            "var_name": {
+              "name": "ID: threshold (Variable)",
+              "id_name": "threshold",
+              "category": "Variable",
+              "line": 39,
+              "col": 11
+            },
+            "is_array": false,
+            "array_size": null,
+            "initializer": "15.5f"
+          },
+          {
+            "name": "VarDecl",
+            "var_type": {
+              "name": "Type: char",
+              "type_name": "char",
+              "pointers": 0,
+              "category": "Type"
+            },
+            "var_name": {
+              "name": "ID: mode (Variable)",
+              "id_name": "mode",
+              "category": "Variable",
+              "line": 40,
+              "col": 10
+            },
+            "is_array": false,
+            "array_size": null,
+            "initializer": "'A'"
+          },
+          {
+            "name": "VarDecl",
+            "var_type": {
+              "name": "Type: int",
+              "type_name": "int",
+              "pointers": 0,
+              "category": "Type"
+            },
+            "var_name": {
+              "name": "ID: status (Variable)",
+              "id_name": "status",
+              "category": "Variable",
+              "line": 41,
+              "col": 9
+            },
+            "is_array": false,
+            "array_size": null,
+            "initializer": "0"
+          },
+          {
+            "name": "IfStmt",
+            "condition": {
+              "name": "BinaryExpr (&&)",
+              "op": "&&",
+              "left": {
+                "name": "BinaryExpr (>=)",
+                "op": ">=",
+                "left": {
+                  "name": "UnaryExpr (*)",
+                  "op": "*",
+                  "operand": {
+                    "name": "ID: weight_ptr (Variable)",
+                    "id_name": "weight_ptr",
+                    "category": "Variable",
+                    "line": 44,
+                    "col": 10
+                  },
+                  "is_postfix": false
+                },
+                "right": "5"
+              },
+              "right": {
+                "name": "BinaryExpr (<)",
+                "op": "<",
+                "left": {
+                  "name": "ID: threshold (Variable)",
+                  "id_name": "threshold",
+                  "category": "Variable",
+                  "line": 44,
+                  "col": 29
+                },
+                "right": "20.0f"
+              }
+            },
+            "then_branch": {
+              "name": "Block",
+              "statements": [
+                {
+                  "name": "BinaryExpr (=)",
+                  "op": "=",
+                  "left": {
+                    "name": "ID: status (Variable)",
+                    "id_name": "status",
+                    "category": "Variable",
+                    "line": 45,
+                    "col": 9
+                  },
+                  "right": {
+                    "name": "CallExpr",
+                    "func_name": {
+                      "name": "ID: factorial (Function)",
+                      "id_name": "factorial",
+                      "category": "Function",
+                      "line": 45,
+                      "col": 18
+                    },
+                    "args": [
+                      {
+                        "name": "UnaryExpr (*)",
+                        "op": "*",
+                        "operand": {
+                          "name": "ID: weight_ptr (Variable)",
+                          "id_name": "weight_ptr",
+                          "category": "Variable",
+                          "line": 45,
+                          "col": 29
+                        },
+                        "is_postfix": false
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "CallExpr",
+                  "func_name": {
+                    "name": "ID: update_vector (Function)",
+                    "id_name": "update_vector",
+                    "category": "Function",
+                    "line": 46,
+                    "col": 9
+                  },
+                  "args": [
+                    {
+                      "name": "ID: v_ptr (Variable)",
+                      "id_name": "v_ptr",
+                      "category": "Variable",
+                      "line": 46,
+                      "col": 23
+                    },
+                    {
+                      "name": "ID: status (Variable)",
+                      "id_name": "status",
+                      "category": "Variable",
+                      "line": 46,
+                      "col": 30
+                    }
+                  ]
+                }
+              ]
+            },
+            "else_branch": {
+              "name": "Block",
+              "statements": [
+                {
+                  "name": "BinaryExpr (=)",
+                  "op": "=",
+                  "left": {
+                    "name": "ID: status (Variable)",
+                    "id_name": "status",
+                    "category": "Variable",
+                    "line": 48,
+                    "col": 9
+                  },
+                  "right": {
+                    "name": "UnaryExpr (-)",
+                    "op": "-",
+                    "operand": "1",
+                    "is_postfix": false
+                  }
                 }
               ]
             }
@@ -68,111 +789,78 @@
               "category": "Type"
             },
             "var_name": {
-              "name": "ID: x (Variable)",
-              "id_name": "x",
+              "name": "ID: final_result (Variable)",
+              "id_name": "final_result",
               "category": "Variable",
-              "line": 4,
+              "line": 52,
               "col": 9
             },
-            "is_array": true,
-            "array_size": "5",
-            "initializer": "1"
-          },
-          {
-            "name": "VarDecl",
-            "var_type": {
-              "name": "Type: float",
-              "type_name": "float",
-              "pointers": 0,
-              "category": "Type"
-            },
-            "var_name": {
-              "name": "ID: y (Variable)",
-              "id_name": "y",
-              "category": "Variable",
-              "line": 5,
-              "col": 11
-            },
             "is_array": false,
             "array_size": null,
-            "initializer": "1.0e-5f"
-          },
-          {
-            "name": "VarDecl",
-            "var_type": {
-              "name": "Type: char",
-              "type_name": "char",
-              "pointers": 0,
-              "category": "Type"
-            },
-            "var_name": {
-              "name": "ID: c (Variable)",
-              "id_name": "c",
-              "category": "Variable",
-              "line": 6,
-              "col": 10
-            },
-            "is_array": false,
-            "array_size": null,
-            "initializer": "'\\t'"
-          },
-          {
-            "name": "IfStmt",
-            "condition": {
-              "name": "BinaryExpr (&&)",
-              "op": "&&",
+            "initializer": {
+              "name": "BinaryExpr (-)",
+              "op": "-",
               "left": {
-                "name": "BinaryExpr (>=)",
-                "op": ">=",
+                "name": "BinaryExpr (+)",
+                "op": "+",
                 "left": {
-                  "name": "ID: x (Variable)",
-                  "id_name": "x",
-                  "category": "Variable",
-                  "line": 7,
-                  "col": 9
+                  "name": "BinaryExpr (*)",
+                  "op": "*",
+                  "left": {
+                    "name": "ID: status (Variable)",
+                    "id_name": "status",
+                    "category": "Variable",
+                    "line": 52,
+                    "col": 25
+                  },
+                  "right": {
+                    "name": "ArrayAccess",
+                    "array": {
+                      "name": "ID: weights (Variable)",
+                      "id_name": "weights",
+                      "category": "Variable",
+                      "line": 52,
+                      "col": 34
+                    },
+                    "index": "0"
+                  }
                 },
-                "right": "10"
-              },
-              "right": {
-                "name": "BinaryExpr (<=)",
-                "op": "<=",
-                "left": {
-                  "name": "ID: y (Variable)",
-                  "id_name": "y",
-                  "category": "Variable",
-                  "line": 7,
-                  "col": 20
-                },
-                "right": "3.14"
-              }
-            },
-            "then_branch": {
-              "name": "Block",
-              "statements": [
-                {
-                  "name": "ReturnStmt",
-                  "value": {
-                    "name": "BinaryExpr (+)",
-                    "op": "+",
-                    "left": {
+                "right": {
+                  "name": "BinaryExpr (/)",
+                  "op": "/",
+                  "left": {
+                    "name": "MemberAccess",
+                    "obj": {
+                      "name": "ID: v1 (Variable)",
+                      "id_name": "v1",
+                      "category": "Variable",
+                      "line": 52,
+                      "col": 49
+                    },
+                    "member": {
                       "name": "ID: x (Variable)",
                       "id_name": "x",
                       "category": "Variable",
-                      "line": 8,
-                      "col": 16
+                      "line": 52,
+                      "col": 52
                     },
-                    "right": {
-                      "name": "ID: y (Variable)",
-                      "id_name": "y",
-                      "category": "Variable",
-                      "line": 8,
-                      "col": 20
-                    }
-                  }
+                    "is_pointer": false
+                  },
+                  "right": "2"
                 }
-              ]
-            },
-            "else_branch": null
+              },
+              "right": "100"
+            }
+          },
+          {
+            "name": "ReturnStmt",
+            "value": {
+              "name": "ID: final_result (Variable)",
+              "id_name": "final_result",
+              "category": "Variable",
+              "line": 57,
+              "col": 12
+            }
           }
         ]
       }
