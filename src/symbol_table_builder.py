@@ -15,7 +15,7 @@ from src.ast_node import (
     CallExpr,
     MemberAccess,
 )
-from src.symbol_table import SymbolTable, Symbol
+from src.symbol_table import SymbolTable, Symbol, Scope
 from src.token import SourceLocation
 
 
@@ -25,19 +25,19 @@ class SymbolTableBuilder:
         self.source_file = source_file
         self.symbol_table = SymbolTable()
         self.errors = []
-        self.verbose = verbose  
+        self.verbose = verbose
 
         if not ast_root:
             return
 
         if self.verbose:
-            print("\n📌 PASS 1: Declaration Scan (بخش 5.1.2)")
+            print("\nPASS 1: Declaration Scan")
             print("-" * 50)
 
         self._pass1_declaration_scan(self.ast_root)
 
         if self.verbose:
-            print("\n📌 PASS 2: Resolution Pass (بخش 5.1.2)")
+            print("\nPASS 2: Resolution Pass")
             print("-" * 50)
 
         self._pass2_resolution(self.ast_root)
@@ -47,11 +47,12 @@ class SymbolTableBuilder:
             return SourceLocation(self.source_file, node.line, node.col)
         return SourceLocation(self.source_file, 0, 0)
 
+    # ==================== PASS 1 ====================
+
     def _pass1_declaration_scan(self, node):
         if not node:
             return
 
-        # --- ثبت توابع ---
         if isinstance(node, (FunctionDef, FunctionDecl)):
             func_name = node.func_name.id_name
             params = []
@@ -73,14 +74,14 @@ class SymbolTableBuilder:
             )
             if self.symbol_table.define(func_symbol):
                 if self.verbose:
-                    print(f"  ✅ Registered function: {func_name} {signature}")
+                    print(f"  Registered function: {func_name} {signature}")
             else:
                 self.errors.append(f"Redefinition of function '{func_name}'")
 
-        # --- ثبت ساختارها و فیلدهای آنها ---
         elif isinstance(node, StructDef):
             struct_name = node.struct_name.id_name
             loc = self._make_location(node.struct_name)
+
             struct_symbol = Symbol(
                 name=struct_name,
                 kind="struct",
@@ -89,11 +90,15 @@ class SymbolTableBuilder:
             )
             if self.symbol_table.define(struct_symbol):
                 if self.verbose:
-                    print(f"  ✅ Registered struct: {struct_name}")
+                    print(f"  Registered struct: {struct_name}")
             else:
                 self.errors.append(f"Redefinition of struct '{struct_name}'")
 
-            # ثبت فیلدهای ساختار
+            struct_scope = Scope(
+                parent=self.symbol_table.global_scope, scope_type="struct"
+            )
+            self.symbol_table.global_scope.children.append(struct_scope)
+
             if hasattr(node, "fields"):
                 for field in node.fields:
                     if isinstance(field, VarDecl):
@@ -110,13 +115,12 @@ class SymbolTableBuilder:
                             type_spec=field_type,
                             definition_loc=loc,
                         )
-                        self.symbol_table.define(field_symbol)
+                        struct_scope.define(field_symbol)
                         if self.verbose:
                             print(
-                                f"    ✅ Registered field: {field_name} : {field_type}"
+                                f"    Registered field: {field_name} : {field_type} (in struct scope)"
                             )
 
-        # --- ثبت متغیرهای گلوبال (والد = Program) ---
         elif isinstance(node, VarDecl):
             parent = node.parent
             if isinstance(parent, Program):
@@ -133,29 +137,26 @@ class SymbolTableBuilder:
                 )
                 if self.symbol_table.define(var_symbol):
                     if self.verbose:
-                        print(
-                            f"  ✅ Registered global variable: {var_name} : {var_type}"
-                        )
+                        print(f"  Registered global variable: {var_name} : {var_type}")
                 else:
                     self.errors.append(f"Redefinition of global variable '{var_name}'")
 
-        # --- ادامه پیمایش ---
         for child in node.children:
             self._pass1_declaration_scan(child)
+
+    # ==================== PASS 2 ====================
 
     def _pass2_resolution(self, node):
         if not node:
             return
 
-        # --- ورود به تابع ---
         if isinstance(node, FunctionDef):
             func_name = node.func_name.id_name
             if self.verbose:
-                print(f"\n  🔍 Analyzing function: {func_name}")
+                print(f"\n  Analyzing function: {func_name}")
 
             self.symbol_table.enter_scope("function")
 
-            # ثبت پارامترها
             for param in node.params:
                 if hasattr(param, "var_name"):
                     param_name = param.var_name.id_name
@@ -174,19 +175,16 @@ class SymbolTableBuilder:
                     )
                     self.symbol_table.define(param_symbol)
                     if self.verbose:
-                        print(
-                            f"    ✅ Registered parameter: {param_name} : {param_type}"
-                        )
+                        print(f"    Registered parameter: {param_name} : {param_type}")
 
             if hasattr(node, "body"):
                 self._pass2_resolution(node.body)
 
             self.symbol_table.exit_scope()
             if self.verbose:
-                print(f"  ✅ Finished analyzing: {func_name}")
+                print(f"  Finished analyzing: {func_name}")
             return
 
-        # --- ورود به بلوک ---
         elif isinstance(node, Block):
             self.symbol_table.enter_scope("block")
             for stmt in node.statements if hasattr(node, "statements") else []:
@@ -194,7 +192,6 @@ class SymbolTableBuilder:
             self.symbol_table.exit_scope()
             return
 
-        # --- ثبت متغیرهای محلی (والد = Block) ---
         elif isinstance(node, VarDecl):
             parent = node.parent
             if isinstance(parent, Block):
@@ -203,8 +200,7 @@ class SymbolTableBuilder:
                     node.var_type.type_name if hasattr(node, "var_type") else "unknown"
                 )
 
-                # بررسی تکراری بودن در Scope جاری
-                existing = self.symbol_table.resolve(var_name)
+                existing = self.symbol_table.get_current_scope().resolve_local(var_name)
                 if existing:
                     line = node.var_name.line if hasattr(node.var_name, "line") else 0
                     col = node.var_name.col if hasattr(node.var_name, "col") else 0
@@ -212,7 +208,7 @@ class SymbolTableBuilder:
                         f"Duplicate declaration: {var_name} at {line}:{col}"
                     )
                     if self.verbose:
-                        print(f"    ⚠️  Duplicate: {var_name}")
+                        print(f"    Duplicate (same scope): {var_name}")
                     return
 
                 loc = self._make_location(node.var_name)
@@ -224,19 +220,17 @@ class SymbolTableBuilder:
                 )
                 self.symbol_table.define(var_symbol)
                 if self.verbose:
-                    print(f"    ✅ Registered local variable: {var_name} : {var_type}")
+                    print(f"    Registered local variable: {var_name} : {var_type}")
 
                 if hasattr(node, "initializer") and node.initializer:
                     var_symbol.set_initialized()
                     self._pass2_resolution(node.initializer)
                 return
             else:
-                # اگر والد Program یا StructDef است، قبلاً ثبت شده، فقط ادامه پیمایش
                 if hasattr(node, "initializer") and node.initializer:
                     self._pass2_resolution(node.initializer)
                 return
 
-        # --- شناسه‌ها (حل کردن ارجاعات) ---
         elif isinstance(node, Identifier):
             symbol = self.symbol_table.resolve(node.id_name)
             if symbol:
@@ -244,16 +238,15 @@ class SymbolTableBuilder:
                 loc = self._make_location(node)
                 symbol.add_reference(loc)
                 if self.verbose:
-                    print(f"    🔍 Resolved reference: {node.id_name} -> {symbol.kind}")
+                    print(f"    Resolved reference: {node.id_name} -> {symbol.kind}")
             else:
                 line = node.line if hasattr(node, "line") else 0
                 col = node.col if hasattr(node, "col") else 0
                 self.errors.append(f"Undefined symbol: {node.id_name} at {line}:{col}")
                 if self.verbose:
-                    print(f"    ❌ Undefined: {node.id_name}")
+                    print(f"    Undefined: {node.id_name}")
             return
 
-        # --- فراخوانی تابع ---
         elif isinstance(node, CallExpr):
             if hasattr(node, "func_name") and isinstance(node.func_name, Identifier):
                 func_name = node.func_name.id_name
@@ -263,7 +256,7 @@ class SymbolTableBuilder:
                     loc = self._make_location(node.func_name)
                     symbol.add_reference(loc)
                     if self.verbose:
-                        print(f"    📞 Call to function: {func_name}")
+                        print(f"    Call to function: {func_name}")
                 else:
                     line = node.func_name.line if hasattr(node.func_name, "line") else 0
                     col = node.func_name.col if hasattr(node.func_name, "col") else 0
@@ -271,13 +264,12 @@ class SymbolTableBuilder:
                         f"Undefined function: {func_name} at {line}:{col}"
                     )
                     if self.verbose:
-                        print(f"    ❌ Undefined function: {func_name}")
+                        print(f"    Undefined function: {func_name}")
 
             for arg in node.args if hasattr(node, "args") else []:
                 self._pass2_resolution(arg)
             return
 
-        # --- سایر گره‌ها (پیمایش معمولی) ---
         elif isinstance(node, (BinaryExpr, UnaryExpr)):
             if hasattr(node, "left"):
                 self._pass2_resolution(node.left)
@@ -290,8 +282,8 @@ class SymbolTableBuilder:
         elif isinstance(node, MemberAccess):
             if hasattr(node, "obj"):
                 self._pass2_resolution(node.obj)
-            if hasattr(node, "member"):
-                self._pass2_resolution(node.member)
+            # if hasattr(node, "member"):
+            #     self._pass2_resolution(node.member)
             return
 
         elif isinstance(node, IfStmt):
@@ -326,7 +318,6 @@ class SymbolTableBuilder:
                 self._pass2_resolution(node.value)
             return
 
-        # --- پیمایش فرزندان ---
         for child in node.children:
             self._pass2_resolution(child)
 

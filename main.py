@@ -8,8 +8,7 @@ from src.token import TokenType
 from src.parser import Parser
 from src.error_reporter import ErrorReporter, Severity
 from src.highlighter import SyntaxHighlighter
-from src.symbol_table_builder import SymbolTableBuilder  # <-- جدید
-from src.symbol_table import SymbolTable
+from src.symbol_table_builder import SymbolTableBuilder
 
 
 def read_source_file(file_path: str) -> str:
@@ -57,6 +56,31 @@ def write_ast_txt(ast_root, output_path: str):
         for pre, fill, node in RenderTree(ast_root):
             f.write(f"{pre}{node.name}\n")
     print(f"[INFO] AST (TXT Tree) successfully written to {output_path}")
+
+
+def write_symbol_table_txt(symbol_table: "SymbolTable", output_path: str):
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("SYMBOL TABLE\n")
+        f.write("=" * 70 + "\n")
+        _print_scope_text(symbol_table.global_scope, 0, f)
+        f.write("=" * 70 + "\n")
+
+
+def _print_scope_text(scope, indent: int, file):
+    prefix = "  " * indent
+    file.write(f"{prefix}└─ Scope: {scope.scope_type}\n")
+    for name, symbol in scope.symbols.items():
+        loc = symbol.definition_loc
+        refs = len(symbol.references)
+        init = "✓" if symbol.is_initialized else "✗"
+        used = "✓" if symbol.is_used else "✗"
+        file.write(
+            f"{prefix}    [{symbol.kind}] '{name}' : {symbol.type}  "
+            f"(def: {loc.line}:{loc.column}, init={init}, used={used}, refs={refs})\n"
+        )
+    for child in scope.children:
+        _print_scope_text(child, indent + 1, file)
 
 
 def main():
@@ -162,12 +186,15 @@ def main():
         else:
             print("\nNO SEMANTIC ERRORS FOUND")
 
-        # ذخیره جدول به فایل JSON
         st_path = "outputs/symbol_table.json"
         os.makedirs(os.path.dirname(st_path), exist_ok=True)
         with open(st_path, "w", encoding="utf-8") as f:
             json.dump(symbol_table.to_dict(), f, indent=2)
         print(f"\n[INFO] Symbol Table saved to {st_path}")
+
+        st_txt_path = "outputs/symbol_table.txt"
+        write_symbol_table_txt(symbol_table, st_txt_path)
+        print(f"[INFO] Symbol Table text saved to {st_txt_path}")
     else:
         print("No AST available to build Symbol Table")
 

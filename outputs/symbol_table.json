@@ -15,48 +15,6 @@
         "is_initialized": false,
         "is_used": true
       },
-      "x": {
-        "name": "x",
-        "kind": "field",
-        "type": "int",
-        "scope": "global",
-        "definition_loc": "test_code.c:4:9",
-        "references": [
-          "test_code.c:21:11",
-          "test_code.c:21:17"
-        ],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": true
-      },
-      "y": {
-        "name": "y",
-        "kind": "field",
-        "type": "int",
-        "scope": "global",
-        "definition_loc": "test_code.c:5:9",
-        "references": [
-          "test_code.c:22:11",
-          "test_code.c:22:17"
-        ],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": true
-      },
-      "z": {
-        "name": "z",
-        "kind": "field",
-        "type": "int",
-        "scope": "global",
-        "definition_loc": "test_code.c:6:9",
-        "references": [
-          "test_code.c:23:11",
-          "test_code.c:23:17"
-        ],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": true
-      },
       "factorial": {
         "name": "factorial",
         "kind": "function",
@@ -71,17 +29,6 @@
         "is_initialized": false,
         "is_used": true
       },
-      "n": {
-        "name": "n",
-        "kind": "variable",
-        "type": "int",
-        "scope": "global",
-        "definition_loc": "test_code.c:10:19",
-        "references": [],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": false
-      },
       "update_vector": {
         "name": "update_vector",
         "kind": "function",
@@ -95,28 +42,6 @@
         "is_initialized": false,
         "is_used": true
       },
-      "v": {
-        "name": "v",
-        "kind": "variable",
-        "type": "struct Vector",
-        "scope": "global",
-        "definition_loc": "test_code.c:19:35",
-        "references": [],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": false
-      },
-      "scale": {
-        "name": "scale",
-        "kind": "variable",
-        "type": "int",
-        "scope": "global",
-        "definition_loc": "test_code.c:19:42",
-        "references": [],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": false
-      },
       "main": {
         "name": "main",
         "kind": "function",
@@ -127,110 +52,48 @@
         "signature": "() -> int",
         "is_initialized": false,
         "is_used": false
-      },
-      "weights": {
-        "name": "weights",
-        "kind": "variable",
-        "type": "int",
-        "scope": "global",
-        "definition_loc": "test_code.c:29:9",
-        "references": [],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": false
-      },
-      "weight_ptr": {
-        "name": "weight_ptr",
-        "kind": "variable",
-        "type": "int",
-        "scope": "global",
-        "definition_loc": "test_code.c:32:10",
-        "references": [
-          "test_code.c:44:10",
-          "test_code.c:45:29"
-        ],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": true
-      },
-      "v1": {
-        "name": "v1",
-        "kind": "variable",
-        "type": "struct Vector",
-        "scope": "global",
-        "definition_loc": "test_code.c:35:19",
-        "references": [],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": false
-      },
-      "v_ptr": {
-        "name": "v_ptr",
-        "kind": "variable",
-        "type": "struct Vector",
-        "scope": "global",
-        "definition_loc": "test_code.c:36:20",
-        "references": [
-          "test_code.c:46:23"
-        ],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": true
-      },
-      "threshold": {
-        "name": "threshold",
-        "kind": "variable",
-        "type": "float",
-        "scope": "global",
-        "definition_loc": "test_code.c:39:11",
-        "references": [
-          "test_code.c:44:29"
-        ],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": true
-      },
-      "mode": {
-        "name": "mode",
-        "kind": "variable",
-        "type": "char",
-        "scope": "global",
-        "definition_loc": "test_code.c:40:10",
-        "references": [],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": false
-      },
-      "status": {
-        "name": "status",
-        "kind": "variable",
-        "type": "int",
-        "scope": "global",
-        "definition_loc": "test_code.c:41:9",
-        "references": [
-          "test_code.c:45:9",
-          "test_code.c:46:30",
-          "test_code.c:48:9"
-        ],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": true
-      },
-      "final_result": {
-        "name": "final_result",
-        "kind": "variable",
-        "type": "int",
-        "scope": "global",
-        "definition_loc": "test_code.c:52:9",
-        "references": [
-          "test_code.c:57:12"
-        ],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": true
       }
     },
     "children": [
+      {
+        "type": "struct",
+        "symbols": {
+          "x": {
+            "name": "x",
+            "kind": "field",
+            "type": "int",
+            "scope": "struct",
+            "definition_loc": "test_code.c:4:9",
+            "references": [],
+            "signature": null,
+            "is_initialized": false,
+            "is_used": false
+          },
+          "y": {
+            "name": "y",
+            "kind": "field",
+            "type": "int",
+            "scope": "struct",
+            "definition_loc": "test_code.c:5:9",
+            "references": [],
+            "signature": null,
+            "is_initialized": false,
+            "is_used": false
+          },
+          "z": {
+            "name": "z",
+            "kind": "field",
+            "type": "int",
+            "scope": "struct",
+            "definition_loc": "test_code.c:6:9",
+            "references": [],
+            "signature": null,
+            "is_initialized": false,
+            "is_used": false
+          }
+        },
+        "children": []
+      },
       {
         "type": "function",
         "symbols": {
@@ -327,7 +190,116 @@
         "children": [
           {
             "type": "block",
-            "symbols": {},
+            "symbols": {
+              "weights": {
+                "name": "weights",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:29:9",
+                "references": [
+                  "test_code.c:32:24",
+                  "test_code.c:52:34"
+                ],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": true
+              },
+              "weight_ptr": {
+                "name": "weight_ptr",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:32:10",
+                "references": [
+                  "test_code.c:44:10",
+                  "test_code.c:45:29"
+                ],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": true
+              },
+              "v1": {
+                "name": "v1",
+                "kind": "variable",
+                "type": "struct Vector",
+                "scope": "block",
+                "definition_loc": "test_code.c:35:19",
+                "references": [
+                  "test_code.c:36:29",
+                  "test_code.c:52:49"
+                ],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": true
+              },
+              "v_ptr": {
+                "name": "v_ptr",
+                "kind": "variable",
+                "type": "struct Vector",
+                "scope": "block",
+                "definition_loc": "test_code.c:36:20",
+                "references": [
+                  "test_code.c:46:23"
+                ],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": true
+              },
+              "threshold": {
+                "name": "threshold",
+                "kind": "variable",
+                "type": "float",
+                "scope": "block",
+                "definition_loc": "test_code.c:39:11",
+                "references": [
+                  "test_code.c:44:29"
+                ],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": true
+              },
+              "mode": {
+                "name": "mode",
+                "kind": "variable",
+                "type": "char",
+                "scope": "block",
+                "definition_loc": "test_code.c:40:10",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
+              },
+              "status": {
+                "name": "status",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:41:9",
+                "references": [
+                  "test_code.c:45:9",
+                  "test_code.c:46:30",
+                  "test_code.c:48:9",
+                  "test_code.c:52:25"
+                ],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": true
+              },
+              "final_result": {
+                "name": "final_result",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:52:9",
+                "references": [
+                  "test_code.c:57:12"
+                ],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": true
+              }
+            },
             "children": [
               {
                 "type": "block",
@@ -360,48 +332,6 @@
       "is_used": true
     },
     {
-      "name": "x",
-      "kind": "field",
-      "type": "int",
-      "scope": "global",
-      "definition_loc": "test_code.c:4:9",
-      "references": [
-        "test_code.c:21:11",
-        "test_code.c:21:17"
-      ],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": true
-    },
-    {
-      "name": "y",
-      "kind": "field",
-      "type": "int",
-      "scope": "global",
-      "definition_loc": "test_code.c:5:9",
-      "references": [
-        "test_code.c:22:11",
-        "test_code.c:22:17"
-      ],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": true
-    },
-    {
-      "name": "z",
-      "kind": "field",
-      "type": "int",
-      "scope": "global",
-      "definition_loc": "test_code.c:6:9",
-      "references": [
-        "test_code.c:23:11",
-        "test_code.c:23:17"
-      ],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": true
-    },
-    {
       "name": "factorial",
       "kind": "function",
       "type": "int",
@@ -414,17 +344,6 @@
       "signature": "(int) -> int",
       "is_initialized": false,
       "is_used": true
-    },
-    {
-      "name": "n",
-      "kind": "variable",
-      "type": "int",
-      "scope": "global",
-      "definition_loc": "test_code.c:10:19",
-      "references": [],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": false
     },
     {
       "name": "update_vector",
@@ -440,28 +359,6 @@
       "is_used": true
     },
     {
-      "name": "v",
-      "kind": "variable",
-      "type": "struct Vector",
-      "scope": "global",
-      "definition_loc": "test_code.c:19:35",
-      "references": [],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": false
-    },
-    {
-      "name": "scale",
-      "kind": "variable",
-      "type": "int",
-      "scope": "global",
-      "definition_loc": "test_code.c:19:42",
-      "references": [],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": false
-    },
-    {
       "name": "main",
       "kind": "function",
       "type": "int",
@@ -471,107 +368,6 @@
       "signature": "() -> int",
       "is_initialized": false,
       "is_used": false
-    },
-    {
-      "name": "weights",
-      "kind": "variable",
-      "type": "int",
-      "scope": "global",
-      "definition_loc": "test_code.c:29:9",
-      "references": [],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": false
-    },
-    {
-      "name": "weight_ptr",
-      "kind": "variable",
-      "type": "int",
-      "scope": "global",
-      "definition_loc": "test_code.c:32:10",
-      "references": [
-        "test_code.c:44:10",
-        "test_code.c:45:29"
-      ],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": true
-    },
-    {
-      "name": "v1",
-      "kind": "variable",
-      "type": "struct Vector",
-      "scope": "global",
-      "definition_loc": "test_code.c:35:19",
-      "references": [],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": false
-    },
-    {
-      "name": "v_ptr",
-      "kind": "variable",
-      "type": "struct Vector",
-      "scope": "global",
-      "definition_loc": "test_code.c:36:20",
-      "references": [
-        "test_code.c:46:23"
-      ],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": true
-    },
-    {
-      "name": "threshold",
-      "kind": "variable",
-      "type": "float",
-      "scope": "global",
-      "definition_loc": "test_code.c:39:11",
-      "references": [
-        "test_code.c:44:29"
-      ],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": true
-    },
-    {
-      "name": "mode",
-      "kind": "variable",
-      "type": "char",
-      "scope": "global",
-      "definition_loc": "test_code.c:40:10",
-      "references": [],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": false
-    },
-    {
-      "name": "status",
-      "kind": "variable",
-      "type": "int",
-      "scope": "global",
-      "definition_loc": "test_code.c:41:9",
-      "references": [
-        "test_code.c:45:9",
-        "test_code.c:46:30",
-        "test_code.c:48:9"
-      ],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": true
-    },
-    {
-      "name": "final_result",
-      "kind": "variable",
-      "type": "int",
-      "scope": "global",
-      "definition_loc": "test_code.c:52:9",
-      "references": [
-        "test_code.c:57:12"
-      ],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": true
     },
     {
       "name": "n",
@@ -617,6 +413,114 @@
         "test_code.c:21:21",
         "test_code.c:22:21",
         "test_code.c:23:21"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "weights",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:29:9",
+      "references": [
+        "test_code.c:32:24",
+        "test_code.c:52:34"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "weight_ptr",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:32:10",
+      "references": [
+        "test_code.c:44:10",
+        "test_code.c:45:29"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "v1",
+      "kind": "variable",
+      "type": "struct Vector",
+      "scope": "block",
+      "definition_loc": "test_code.c:35:19",
+      "references": [
+        "test_code.c:36:29",
+        "test_code.c:52:49"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "v_ptr",
+      "kind": "variable",
+      "type": "struct Vector",
+      "scope": "block",
+      "definition_loc": "test_code.c:36:20",
+      "references": [
+        "test_code.c:46:23"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "threshold",
+      "kind": "variable",
+      "type": "float",
+      "scope": "block",
+      "definition_loc": "test_code.c:39:11",
+      "references": [
+        "test_code.c:44:29"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "mode",
+      "kind": "variable",
+      "type": "char",
+      "scope": "block",
+      "definition_loc": "test_code.c:40:10",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "status",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:41:9",
+      "references": [
+        "test_code.c:45:9",
+        "test_code.c:46:30",
+        "test_code.c:48:9",
+        "test_code.c:52:25"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "final_result",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:52:9",
+      "references": [
+        "test_code.c:57:12"
       ],
       "signature": null,
       "is_initialized": true,
