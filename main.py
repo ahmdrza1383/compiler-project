@@ -1,6 +1,7 @@
 import json
 import sys
 import os
+from src.highlighter import SyntaxHighlighter as ASTHighlighter
 from anytree import RenderTree
 
 from src.lexer import Lexer
@@ -130,6 +131,28 @@ def main():
     print(
         "[INFO] Error logs successfully written to outputs/errors_log.txt and outputs/errors_log.json"
     )
+    # ===== هایلایت کردن با ASTHighlighter =====
+    print("\n" + "=" * 60)
+    print("🎨 PHASE 1: SYNTAX HIGHLIGHTING (Section 4.4 & 4.5)")
+    print("=" * 60)
+
+    # ایجاد هایلایتر
+    highlighter = ASTHighlighter(source_code, ast_root, tokens)
+    highlighter.extract_tokens()
+
+    # خروجی ANSI
+    print("\n📺 ANSI Output:")
+    print("-" * 40)
+    print(highlighter.to_ansi())
+    print("-" * 40)
+
+    # خروجی HTML
+    html_path = "outputs/highlighted_code.html"
+    os.makedirs(os.path.dirname(html_path), exist_ok=True)
+    with open(html_path, "w", encoding="utf-8") as f:
+        f.write(highlighter.to_html())
+    print(f"\n✅ HTML saved to: {html_path}")
+    print("   (Open this file in your browser to see colored code)")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Syntax Highlighted Code</title>
+    <style>
+        body { background-color: #1e1e1e; color: #d4d4d4; font-family: Consolas, monospace; padding: 20px; }
+        pre { line-height: 1.5; }
+        .keyword { color: #569cd6; font-weight: bold; }
+        .type_name { color: #4ec9b0; }
+        .class_type { color: #4ec9b0; font-weight: bold; }
+        .function { color: #dcdcaa; }
+        .variable { color: #9cdcfe; }
+        .number { color: #b5cea8; }
+        .string { color: #6a9955; }
+        .operator { color: #d4d4d4; }
+        .error { color: #f44747; text-decoration: underline wavy #f44747; }
+    </style>
+</head>
+<body>
+    <pre><span class="function">FunctionDef</span>="class_type">StructDef</span>x integration test for C-like parser
+
+<span class="keyword">struct</span> <span class="class_type">Vector</span> {
+    <span class="type_name">int</span> <span class="variable">x</span>;
+    <span class="type_name">int</span> <span class="variable">y</span>;
+    <span class="type_name">int</span> <span class="variable">z</span>;
+};
+
+// Recursive function to test param lists and block scoping
+<span class="type_name">int</span> <span class="variable">factorial</span>(<span class="type_name">int</span> <span class="variable">n</span>) {
+    <span class="keyword">if</span> (<span class="variable">n</span> <span class="operator"><=</span> <span class="number">1</span>) {
+        <span class="keyword">return</span> <span class="number">1</span>;
+    } <span class="keyword">else</span> {
+        <span class="keyword">return</span> <span class="variable">n</span> <span class="operator">*</span> <span class="variable">factorial</span>(<span class="variable">n</span> <span class="operator">-</span> <span class="number">1</span>);
+    }
+}
+
+// Function with pointers and multiple parameters
+<span class="type_name">void</span> <span class="variable">update_vector</span>(<span class="keyword">struct</span> <span class="class_type">Vector</span> <span class="operator">*</span><span class="variable">v</span>, <span class="type_name">int</span> <span class="variable">scale</span>) {
+    <span class="keyword">if</span> (<span class="variable">scale</span> <span class="operator">></span> <span class="number">0</span>) {
+        <span class="variable">v</span>.<span class="variable">x</span> <span class="operator">=</span> <span class="variable">v</span>.<span class="variable">x</span> <span class="operator">*</span> <span class="variable">scale</span>;
+        <span class="variable">v</span>.<span class="variable">y</span> <span class="operator">=</span> <span class="variable">v</span>.<span class="variable">y</span> <span class="operator">*</span> <span class="variable">scale</span>;
+        <span class="variable">v</span>.<span class="variable">z</span> <span class="operator">=</span> <span class="variable">v</span>.<span class="variable">z</span> <span class="operator">*</span> <span class="variable">scale</span>;
+    }
+}
+
+<span class="type_name">int</span> <span class="variable">main</span>() {
+    // Array declaration with initializer (your recent fix)
+    <span class="type_name">int</span> <span class="variable">weights</span>[<span class="number">4</span>] <span class="operator">=</span> {<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>};
+    
+    // Complex pointer declaration and assignment
+    <span class="type_name">int</span> <span class="operator">*</span><span class="variable">weight_ptr</span> <span class="operator">=</span> <span class="operator">&</span><span class="variable">weights</span>[<span class="number">2</span>];
+    
+    // Struct declaration (assuming your grammar supports it like this)
+    <span class="keyword">struct</span> <span class="class_type">Vector</span> <span class="variable">v1</span> <span class="operator">=</span> {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>};
+    <span class="keyword">struct</span> <span class="class_type">Vector</span> <span class="operator">*</span><span class="variable">v_ptr</span> <span class="operator">=</span> <span class="operator">&</span><span class="variable">v1</span>;
+    
+    // Variables for logic flow
+    <span class="type_name">float</span> <span class="variable">threshold</span> <span class="operator">=</span> <span class="number">15.5f</span>;
+    <span class="type_name">char</span> <span class="variable">mode</span> <span class="operator">=</span> <span class="string">'A'</span>;
+    <span class="type_name">int</span> <span class="variable">status</span> <span class="operator">=</span> <span class="number">0</span>;
+    
+    // Complex condition combining logical and relational operators
+    <span class="keyword">if</span> (<span class="operator">*</span><span class="variable">weight_ptr</span> <span class="operator">>=</span> <span class="number">5</span> <span class="operator">&&</span> <span class="variable">threshold</span> <span class="operator"><</span> <span class="number">20.0f</span>) {
+        <span class="variable">status</span> <span class="operator">=</span> <span class="variable">factorial</span>(<span class="operator">*</span><span class="variable">weight_ptr</span>);
+        <span class="variable">update_vector</span>(<span class="variable">v_ptr</span>, <span class="variable">status</span>);
+    } <span class="keyword">else</span> {
+        <span class="variable">status</span> <span class="operator">=</span> <span class="operator">-</span><span class="number">1</span>;
+    }
+    
+    // Deep expression evaluation
+    <span class="type_name">int</span> <span class="variable">final_result</span> <span class="operator">=</span> (<span class="variable">status</span> <span class="operator">*</span> <span class="variable">weights</span>[<span class="number">0</span>]) <span class="operator">+</span> (<span class="variable">v1</span>.<span class="variable">x</span> <span class="operator">/</span> <span class="number">2</span>) <span class="operator">-</span> <span class="number">100</span>;
+    
+    // Test panic mode with intentional trailing garbage
+    <span class="type_name">float</span> <span class="variable">bad_syntax</span> <span class="operator">=</span> <span class="number">1.0</span> <span class="operator">+</span> <span class="operator">/</span> ;
+    
+    <span class="keyword">return</span> <span class="variable">final_result</span>;
+}</pre>
+</body>
+</html>
