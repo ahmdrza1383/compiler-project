@@ -1,15 +1,21 @@
 from .token import Token, TokenType, SourceLocation
+from .error_reporter import ErrorReporter, Severity
 
 
 class Lexer:
-    def __init__(self, source_code: str, file_name: str = "<stdin>"):
+    def __init__(
+        self,
+        source_code: str,
+        file_name: str = "<stdin>",
+        reporter: ErrorReporter = None,
+    ):
         self.source = source_code
         self.file_name = file_name
         self.pos = 0
         self.line = 1
         self.col = 1
         self.length = len(source_code)
-        self.diagnostics = []
+        self.reporter = reporter if reporter else ErrorReporter()
 
         self.keywords = {
             "if",
@@ -52,16 +58,7 @@ class Lexer:
             self._advance()
 
     def _add_error(self, message: str, line: int, column: int, length: int):
-        self.diagnostics.append(
-            {
-                "severity": "Error",
-                "message": message,
-                "file": self.file_name,
-                "line": line,
-                "column": column,
-                "length": length,
-            }
-        )
+        self.reporter.report("Lexer", Severity.ERROR, message, line, column, length)
 
     def get_diagnostics(self):
         return self.diagnostics

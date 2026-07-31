@@ -4,6 +4,7 @@ import os
 from anytree import RenderTree
 
 from src.lexer import Lexer
+from src.token import TokenType
 from src.parser import Parser
 from src.error_reporter import ErrorReporter
 
@@ -44,6 +45,21 @@ def write_ast_txt(ast_root, output_path: str):
     print(f"[INFO] AST (TXT Tree) successfully written to {output_path}")
 
 
+def tokenize_source(code: str, filename: str = "<stdin>"):
+    lexer = Lexer(code, filename)
+    tokens = []
+
+    while True:
+        token = lexer.next_token()
+        tokens.append(token)
+        if token.type == TokenType.EOF:
+            break
+
+    diagnostics = lexer.get_diagnostics()
+
+    return tokens, diagnostics
+
+
 def main():
     source_file = "test_code.c"
     if len(sys.argv) > 1:
@@ -57,7 +73,7 @@ def main():
 
     reporter = ErrorReporter()
 
-    lexer = Lexer(source_code, file_name=source_file)
+    lexer = Lexer(source_code, file_name=source_file, reporter=reporter)
     tokens = []
     while True:
         token = lexer.next_token()
