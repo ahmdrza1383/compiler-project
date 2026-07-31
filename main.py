@@ -26,6 +26,22 @@ def write_tokens_to_file(tokens: list, output_path: str):
     print(f"[INFO] Tokens successfully written to {output_path}")
 
 
+def write_tokens_to_text_file(tokens: list["Token"], output_path: str):
+    """توکن‌ها را به صورت متنی و جدولی در فایل ذخیره می‌کند"""
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(f"{'TOKEN TYPE':<15} | {'LEXEME':<25} | {'LOCATION'}\n")
+        f.write("-" * 65 + "\n")
+
+        for t in tokens:
+            safe_lexeme = t.lexeme.replace("\n", "\\n").replace("\r", "\\r")
+
+            f.write(f"[{t.type.value:<13}] | {safe_lexeme:<25} | {t.location}\n")
+
+    print(f"[INFO] Tokens text successfully written to {output_path}")
+
+
 def write_ast_json(ast_root, output_path: str):
     if not ast_root:
         return
@@ -102,13 +118,13 @@ def main():
         print("\n[OK] No syntax errors found.")
         print("-" * 50)
 
-    # ۳. تولید خروجی‌ها به صورت یکجا
     write_tokens_to_file(tokens, "outputs/tokens.json")
+    write_tokens_to_text_file(tokens, "outputs/tokens.txt")
+
     if ast_root:
         write_ast_json(ast_root, "outputs/ast.json")
         write_ast_txt(ast_root, "outputs/ast.txt")
 
-    # خروجی گرفتن از فایل‌های لاگ خطا
     reporter.export_txt("outputs/errors_log.txt")
     reporter.export_json("outputs/errors_log.json")
     print(

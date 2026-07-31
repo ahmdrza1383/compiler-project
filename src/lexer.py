@@ -84,66 +84,80 @@ class Lexer:
     def _read_number(self) -> Token:
         start_col = self.col
         lexeme = ""
+        token_type = TokenType.INT_LIT
 
-        # تشخیص باینری یا هگز (اولویت Longest Match)
-        if self._current_char() == "0":
+        # 1. تشخیص باینری و هگز
+        if self._current_char() == "0" and self._peek() in ("b", "B", "x", "X"):
             if self._peek() in ("b", "B"):
                 lexeme += self._advance() + self._advance()
                 while self._current_char() in "01":
                     lexeme += self._advance()
-                return Token(
-                    TokenType.INT_LIT,
-                    lexeme,
-                    SourceLocation(self.file_name, self.line, start_col),
-                )
             elif self._peek() in ("x", "X"):
                 lexeme += self._advance() + self._advance()
                 while self._current_char() in "0123456789abcdefABCDEF":
                     lexeme += self._advance()
-                return Token(
-                    TokenType.INT_LIT,
-                    lexeme,
-                    SourceLocation(self.file_name, self.line, start_col),
-                )
-
-        # تشخیص اعداد اعشاری و علمی
-        is_float = False
-        while self._current_char().isdigit():
-            lexeme += self._advance()
-
-        if self._current_char() == ".":
-            is_float = True
-            lexeme += self._advance()
+        else:
+            # 2. تشخیص اعداد دهدهی، اعشاری و علمی
+            is_float = False
             while self._current_char().isdigit():
                 lexeme += self._advance()
 
-        if self._current_char() in ("e", "E"):
-            is_float = True
-            lexeme += self._advance()
-            if self._current_char() in ("+", "-"):
+            if self._current_char() == ".":
+                is_float = True
                 lexeme += self._advance()
-            while self._current_char().isdigit():
+                while self._current_char().isdigit():
+                    lexeme += self._advance()
+
+            if self._current_char() in ("e", "E"):
+                is_float = True
+                lexeme += self._advance()
+                if self._current_char() in ("+", "-"):
+                    lexeme += self._advance()
+                while self._current_char().isdigit():
+                    lexeme += self._advance()
+
+            if self._current_char() in ("f", "F"):
+                is_float = True
                 lexeme += self._advance()
 
-        if self._current_char() in ("f", "F"):
-            is_float = True
-            lexeme += self._advance()
+            token_type = TokenType.FLOAT_LIT if is_float else TokenType.INT_LIT
 
-        token_type = TokenType.FLOAT_LIT if is_float else TokenType.INT_LIT
+        # 3. === رفع باگ: بررسی چسبیدن حروف غیرمجاز به عدد ===
+        # اگر بلافاصله بعد از پایان پردازش عدد، به حرف الفبا یا '_' رسیدیم، یعنی توکن خراب است
+        if self._current_char().isalpha() or self._current_char() == "_":
+            # کل عبارت خراب را تا انتها می‌خوانیم تا توکن اشتباه دیگری تولید نشود
+            while self._current_char().isalnum() or self._current_char() == "_":
+                lexeme += self._advance()
+
+            # ثبت خطا در ErrorReporter
+            self._add_error(
+                f"Invalid numeric literal '{lexeme}'", self.line, start_col, len(lexeme)
+            )
+
+            # برگرداندن توکن نامعتبر
+            return Token(
+                TokenType.INVALID,
+                lexeme,
+                SourceLocation(self.file_name, self.line, start_col),
+            )
+
         return Token(
             token_type, lexeme, SourceLocation(self.file_name, self.line, start_col)
         )
 
     def _read_string(self) -> Token:
         start_col = self.col
-        lexeme = '"'
-        self._advance()
-        while self.pos < self.length and self._current_char() != '"':
+        lexeme = self._advance()
+
+        while self.pos < self.length and self._current_char() not in ('"', "\n"):
             if self._current_char() == "\\":
                 lexeme += self._advance()
-            lexeme += self._advance()
+                if self.pos < self.length:
+                    lexeme += self._advance()
+            else:
+                lexeme += self._advance()
 
-        if self.pos >= self.length:
+        if self.pos >= self.length or self._current_char() == "\n":
             self._add_error(
                 "Unterminated string literal", self.line, start_col, len(lexeme)
             )
@@ -162,13 +176,36 @@ class Lexer:
 
     def _read_char(self) -> Token:
         start_col = self.col
-        lexeme = "'"
-        self._advance()
-        if self._current_char() == "\\":
-            lexeme += self._advance()
-        lexeme += self._advance()
+        lexeme = self._advance()
+
+        while self.pos < self.length and self._current_char() not in ("'", "\n"):
+            if self._current_char() == "\\":
+                lexeme += self._advance()
+                if self.pos < self.length and self._current_char() != "\n":
+                    lexeme += self._advance()
+            else:
+                lexeme += self._advance()
+
         if self._current_char() == "'":
             lexeme += self._advance()
+
+            if (
+                len(lexeme) == 2
+                or (len(lexeme) > 3 and lexeme[1] != "\\")
+                or (len(lexeme) > 4)
+            ):
+                self._add_error(
+                    f"Invalid character literal: {lexeme}",
+                    self.line,
+                    start_col,
+                    len(lexeme),
+                )
+                return Token(
+                    TokenType.INVALID,
+                    lexeme,
+                    SourceLocation(self.file_name, self.line, start_col),
+                )
+
             return Token(
                 TokenType.CHAR_LIT,
                 lexeme,
