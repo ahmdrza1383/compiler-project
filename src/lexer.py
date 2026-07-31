@@ -1,4 +1,3 @@
-import re
 from .token import Token, TokenType, SourceLocation
 
 
@@ -10,6 +9,7 @@ class Lexer:
         self.line = 1
         self.col = 1
         self.length = len(source_code)
+        self.diagnostics = []
 
         self.keywords = {
             "if",
@@ -50,6 +50,21 @@ class Lexer:
     def _skip_whitespace(self):
         while self.pos < self.length and self._current_char() in " \t\r\n":
             self._advance()
+
+    def _add_error(self, message: str, line: int, column: int, length: int):
+        self.diagnostics.append(
+            {
+                "severity": "Error",
+                "message": message,
+                "file": self.file_name,
+                "line": line,
+                "column": column,
+                "length": length,
+            }
+        )
+
+    def get_diagnostics(self):
+        return self.diagnostics
 
     def _read_identifier(self) -> Token:
         start_col = self.col
@@ -125,21 +140,23 @@ class Lexer:
     def _read_string(self) -> Token:
         start_col = self.col
         lexeme = '"'
-        self._advance()  # رد کردن "
+        self._advance()
         while self.pos < self.length and self._current_char() != '"':
-            if self._current_char() == "\\":  # هندل کردن escape
+            if self._current_char() == "\\":
                 lexeme += self._advance()
             lexeme += self._advance()
 
         if self.pos >= self.length:
-            # خطای رشته تمام نشده
+            self._add_error(
+                "Unterminated string literal", self.line, start_col, len(lexeme)
+            )
             return Token(
                 TokenType.INVALID,
                 lexeme,
                 SourceLocation(self.file_name, self.line, start_col),
             )
 
-        lexeme += self._advance()  # اضافه کردن " پایانی
+        lexeme += self._advance()
         return Token(
             TokenType.STRING_LIT,
             lexeme,
@@ -161,19 +178,21 @@ class Lexer:
                 SourceLocation(self.file_name, self.line, start_col),
             )
         else:
+            self._add_error(
+                "Unterminated character literal", self.line, start_col, len(lexeme)
+            )
             return Token(
                 TokenType.INVALID,
                 lexeme,
                 SourceLocation(self.file_name, self.line, start_col),
             )
 
-    def _read_comment(self) -> str:
-        """کامنت‌ها را می‌خواند و برمی‌گرداند (قرار نیست توکن شوند)"""
-        lexeme = ""
+    def _read_comment(self) -> bool:
+        """خواندن کامنت و بازگرداندن True اگر کامل بسته شد، در غیر این صورت False"""
         if self._current_char() == "/" and self._peek() == "/":
             while self._current_char() != "\n" and self.pos < self.length:
-                lexeme += self._advance()
-            return lexeme
+                self._advance()
+            return True
 
         if self._current_char() == "/" and self._peek() == "*":
             self._advance()
@@ -182,18 +201,16 @@ class Lexer:
                 if self._current_char() == "*" and self._peek() == "/":
                     self._advance()
                     self._advance()
-                    return lexeme
-                lexeme += self._advance()
-            # خطای کامنت تمام نشده
-            return lexeme
+                    return True
+                self._advance()
+            return False
 
-        return ""
+        return True
 
     def _read_operator(self) -> Token:
         start_col = self.col
         char = self._current_char()
 
-        # اولویت اول: عملگرهای دوکاراکتری که در گرامر داریم
         two_char_ops = {
             ">=": None,
             "<=": None,
@@ -211,20 +228,18 @@ class Lexer:
             "/=": None,
         }
 
-        # بررسی دو کاراکتر اول
         if self.pos + 1 < self.length:
             candidate = char + self.source[self.pos + 1]
             if candidate in two_char_ops:
-                self._advance()  # مصرف کاراکتر اول (مثلاً >)
-                self._advance()  # مصرف کاراکتر دوم (مثلاً =)
+                self._advance()
+                self._advance()
                 return Token(
                     TokenType.OPERATOR,
-                    candidate,  # مستقیماً از خود candidate استفاده می‌کنیم
+                    candidate,
                     SourceLocation(self.file_name, self.line, start_col),
                 )
 
-        # اگر دوکاراکتری نبود، تک‌کاراکتری
-        lexeme = self._advance()  # اینجا advance کاراکتر را برمی‌گرداند و جلو می‌رود
+        lexeme = self._advance()
         return Token(
             TokenType.OPERATOR,
             lexeme,
@@ -255,7 +270,15 @@ class Lexer:
 
         # 2. Comments (Discard)
         if char == "/" and self._peek() in ("/", "*"):
-            self._read_comment()
+            start_pos = self.pos
+            start_line = self.line
+            start_col = self.col
+            closed = self._read_comment()
+            if not closed:
+                length = self.pos - start_pos
+                self._add_error(
+                    "Unterminated block comment", start_line, start_col, length
+                )
             return self.next_token()
 
         # 3. Identifiers & Keywords
@@ -290,7 +313,8 @@ class Lexer:
 
         # 9. Invalid / Unrecognized
         start_col = self.col
-        self._advance()
+        char = self._advance()
+        self._add_error(f"Unrecognized character '{char}'", self.line, start_col, 1)
         return Token(
             TokenType.INVALID,
             char,

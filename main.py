@@ -7,6 +7,7 @@ from src.lexer import Lexer
 from src.parser import Parser
 from src.error_reporter import ErrorReporter
 
+
 def read_source_file(file_path: str) -> str:
     try:
         with open(file_path, "r", encoding="utf-8") as f:
@@ -15,13 +16,14 @@ def read_source_file(file_path: str) -> str:
         print(f"[ERROR] File '{file_path}' not found.")
         return ""
 
+
 def write_tokens_to_file(tokens: list, output_path: str):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    # اضافه شدن چک برای جلوگیری از خطای توکن‌هایی که متد to_dict ندارند
-    token_dicts = [t.to_dict() if hasattr(t, 'to_dict') else t.__dict__ for t in tokens]
+    token_dicts = [t.to_dict() if hasattr(t, "to_dict") else t.__dict__ for t in tokens]
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(token_dicts, f, indent=2)
     print(f"[INFO] Tokens successfully written to {output_path}")
+
 
 def write_ast_json(ast_root, output_path: str):
     if not ast_root:
@@ -31,6 +33,7 @@ def write_ast_json(ast_root, output_path: str):
         json.dump(ast_root.to_dict(), f, indent=2)
     print(f"[INFO] AST (JSON) successfully written to {output_path}")
 
+
 def write_ast_txt(ast_root, output_path: str):
     if not ast_root:
         return
@@ -39,6 +42,7 @@ def write_ast_txt(ast_root, output_path: str):
         for pre, fill, node in RenderTree(ast_root):
             f.write(f"{pre}{node.name}\n")
     print(f"[INFO] AST (TXT Tree) successfully written to {output_path}")
+
 
 def main():
     source_file = "test_code.c"
@@ -51,10 +55,8 @@ def main():
 
     print(f"[INFO] Compiling {source_file} ...\n")
 
-    # راه‌اندازی سیستم گزارش خطا
     reporter = ErrorReporter()
 
-    # ۱. تحلیل لغوی (Lexer)
     lexer = Lexer(source_code, file_name=source_file)
     tokens = []
     while True:
@@ -66,13 +68,12 @@ def main():
     # ۲. تحلیل نحوی (Parser) و تولید AST در حافظه
     parser = Parser(tokens, reporter)
     ast_root = None
-    
+
     try:
         ast_root = parser.parse()
     except Exception as e:
         print(f"[ERROR] An unexpected error occurred during parsing: {e}")
 
-    # چاپ خطاهای سینتکسی در کنسول با استفاده از reporter
     if reporter.has_errors():
         print("\n[!] SYNTAX ERRORS FOUND:")
         for diag in reporter.diagnostics:
@@ -87,22 +88,14 @@ def main():
     if ast_root:
         write_ast_json(ast_root, "outputs/ast.json")
         write_ast_txt(ast_root, "outputs/ast.txt")
-        
+
     # خروجی گرفتن از فایل‌های لاگ خطا
     reporter.export_txt("outputs/errors_log.txt")
     reporter.export_json("outputs/errors_log.json")
-    print("[INFO] Error logs successfully written to outputs/errors_log.txt and outputs/errors_log.json")
-    
-    # چاپ بخشی از درخت برای دیباگ در کنسول
-    if ast_root:
-        print("=" * 50)
-        print("AST PREVIEW (DEBUG)")
-        print("=" * 50)
-        for pre, fill, node in RenderTree(ast_root):
-            print(f"{pre}{node.name}")
-            # برای کوتاه شدن لاگ فقط ۱۵ خط اول چاپ می‌شود
-            if node.depth > 15: 
-                pass
+    print(
+        "[INFO] Error logs successfully written to outputs/errors_log.txt and outputs/errors_log.json"
+    )
+
 
 if __name__ == "__main__":
     main()

@@ -2,9 +2,12 @@ from src.token import Token, TokenType
 from src.ast_node import *
 from src.error_reporter import ErrorReporter, Severity
 
+
 class ParseError(Exception):
     """استثنای داخلی برای مدیریت Panic-Mode"""
+
     pass
+
 
 class Parser:
     def __init__(self, tokens: list[Token], reporter: ErrorReporter = None):
@@ -13,14 +16,14 @@ class Parser:
         self.reporter = reporter if reporter else ErrorReporter()
 
     # --- توابع کمکی پارسر ---
-    
+
     def _loc(self, token: Token):
         """یک تابع کمکی هوشمند برای استخراج امن سطر و ستون بدون توجه به نام متغیرها در کلاس‌های دیگر"""
-        loc = getattr(token, 'location', None)
+        loc = getattr(token, "location", None)
         if not loc:
             return 0, 0
-        line = getattr(loc, 'line', getattr(loc, 'line_num', 0))
-        col = getattr(loc, 'col', getattr(loc, 'column', getattr(loc, 'col_num', 0)))
+        line = getattr(loc, "line", getattr(loc, "line_num", 0))
+        col = getattr(loc, "col", getattr(loc, "column", getattr(loc, "col_num", 0)))
         return line, col
 
     def peek(self) -> Token:
@@ -32,7 +35,9 @@ class Parser:
         return self.tokens[self.pos - 1]
 
     def is_at_end(self) -> bool:
-        return self.pos >= len(self.tokens) or self.tokens[self.pos].type == TokenType.EOF
+        return (
+            self.pos >= len(self.tokens) or self.tokens[self.pos].type == TokenType.EOF
+        )
 
     def advance(self) -> Token:
         if not self.is_at_end():
@@ -54,7 +59,7 @@ class Parser:
                 self.advance()
                 return True
         return False
-        
+
     def match_type(self, *token_types) -> bool:
         for tt in token_types:
             if self.check(token_type=tt):
@@ -65,25 +70,27 @@ class Parser:
     def consume(self, lexeme: str, message: str) -> Token:
         if self.check(lexeme=lexeme):
             return self.advance()
-            
+
         if self.is_at_end():
-            self.error(self.peek(), f"Missing closing delimiter or unexpected EOF. {message}")
-            
+            self.error(
+                self.peek(), f"Missing closing delimiter or unexpected EOF. {message}"
+            )
+
         self.error(self.peek(), f"Unexpected token '{self.peek().lexeme}'. {message}")
 
     def consume_type(self, token_type: TokenType, message: str) -> Token:
         if self.check(token_type=token_type):
             return self.advance()
-            
+
         if self.is_at_end():
             self.error(self.peek(), f"Unexpected EOF. {message}")
-            
+
         self.error(self.peek(), f"Unexpected token '{self.peek().lexeme}'. {message}")
 
     def error(self, token: Token, message: str):
         line, col = self._loc(token)
         length = len(token.lexeme) if token.lexeme else 1
-        
+
         # ثبت ارور ساختاریافته در ریپورتر
         self.reporter.report("Parser", Severity.ERROR, message, line, col, length)
         raise ParseError()
@@ -92,11 +99,24 @@ class Parser:
         """Panic-Mode Recovery: پریدن از توکن‌ها تا رسیدن به یک نقطه امن"""
         if self.is_at_end():
             return
-            
+
         self.advance()
-        sync_tokens = ['if', 'while', 'for', 'return', 'break', 'continue', 'struct', 'int', 'float', 'double', 'char', 'void']
+        sync_tokens = [
+            "if",
+            "while",
+            "for",
+            "return",
+            "break",
+            "continue",
+            "struct",
+            "int",
+            "float",
+            "double",
+            "char",
+            "void",
+        ]
         while not self.is_at_end():
-            if self.previous().lexeme in [';', '}']:
+            if self.previous().lexeme in [";", "}"]:
                 return
             if self.peek().lexeme in sync_tokens:
                 return
@@ -125,7 +145,7 @@ class Parser:
         ident_tok = self.consume_type(TokenType.IDENTIFIER, "Expected struct name")
         line, col = self._loc(ident_tok)
         ident = Identifier(ident_tok.lexeme, SymbolCategory.CLASS_STRUCT, line, col)
-        
+
         if self.check("{"):
             fields = self.parse_struct_body()
             return StructDef(ident, fields)
@@ -151,14 +171,16 @@ class Parser:
         pointers = 0
         while self.match("*"):
             pointers += 1
-            
+
         if pointers > 0:
             base_type_spec.pointers += pointers
-            base_type_spec.name = f"Type: {base_type_spec.type_name}" + ("*" * base_type_spec.pointers)
-        
+            base_type_spec.name = f"Type: {base_type_spec.type_name}" + (
+                "*" * base_type_spec.pointers
+            )
+
         ident_tok = self.consume_type(TokenType.IDENTIFIER, "Expected identifier")
         line, col = self._loc(ident_tok)
-        
+
         if self.match("("):
             ident = Identifier(ident_tok.lexeme, SymbolCategory.FUNCTION, line, col)
             params = []
@@ -174,7 +196,7 @@ class Parser:
         else:
             ident = Identifier(ident_tok.lexeme, SymbolCategory.VARIABLE, line, col)
             return self.parse_var_tail(base_type_spec, ident)
-        
+
     def parse_non_struct_decl(self):
         type_spec = self.parse_basic_type_spec()
         return self.parse_type_rest(type_spec)
@@ -201,44 +223,48 @@ class Parser:
         pointers = 0
         while self.match("*"):
             pointers += 1
-            
-        ident_tok = self.consume_type(TokenType.IDENTIFIER, "Expected identifier in variable initialization")
+
+        ident_tok = self.consume_type(
+            TokenType.IDENTIFIER, "Expected identifier in variable initialization"
+        )
         line, col = self._loc(ident_tok)
         ident = Identifier(ident_tok.lexeme, SymbolCategory.VARIABLE, line, col)
-        
+
         is_array = False
         array_size = None
         initz = None
-        
+
         if self.match("["):
             is_array = True
             array_size = self.parse_expr()
             self.consume("]", "Expected ']'")
-            
+
         if self.match("="):
             initz = self.parse_initializer()
-            
-        var_type = TypeSpecifier(base_type_spec.type_name, base_type_spec.pointers + pointers)
+
+        var_type = TypeSpecifier(
+            base_type_spec.type_name, base_type_spec.pointers + pointers
+        )
         return VarDecl(var_type, ident, is_array, array_size, initz)
 
     def parse_var_tail(self, type_spec, first_ident):
         is_array = False
         array_size = None
         initializer = None
-        
+
         if self.match("["):
             is_array = True
             array_size = self.parse_expr()
             self.consume("]", "Expected ']'")
-            
+
         if self.match("="):
-            initializer = self.parse_initializer() 
-            
+            initializer = self.parse_initializer()
+
         decls = [VarDecl(type_spec, first_ident, is_array, array_size, initializer)]
-        
+
         while self.match(","):
             decls.append(self.parse_var_init(type_spec))
-            
+
         self.consume(";", "Expected ';' after variable declaration")
         return decls[0] if len(decls) == 1 else Block(decls)
 
@@ -273,19 +299,32 @@ class Parser:
         return Block(stmts)
 
     def parse_statement(self):
-        if self.check(lexeme="if"): return self.parse_if_stmt()
-        if self.check(lexeme="while"): return self.parse_while_stmt()
-        if self.check(lexeme="for"): return self.parse_for_stmt()
-        if self.check(lexeme="return"): return self.parse_return_stmt()
-        if self.check(lexeme="break"): return self.parse_break_stmt()
-        if self.check(lexeme="continue"): return self.parse_continue_stmt()
-        if self.check(lexeme="{"): return self.parse_block()
-        
+        if self.check(lexeme="if"):
+            return self.parse_if_stmt()
+        if self.check(lexeme="while"):
+            return self.parse_while_stmt()
+        if self.check(lexeme="for"):
+            return self.parse_for_stmt()
+        if self.check(lexeme="return"):
+            return self.parse_return_stmt()
+        if self.check(lexeme="break"):
+            return self.parse_break_stmt()
+        if self.check(lexeme="continue"):
+            return self.parse_continue_stmt()
+        if self.check(lexeme="{"):
+            return self.parse_block()
+
         if self.peek().lexeme in ["struct", "int", "float", "double", "char", "void"]:
             lookahead_pos = self.pos + 1
-            while lookahead_pos < len(self.tokens) and self.tokens[lookahead_pos].lexeme == '*':
+            while (
+                lookahead_pos < len(self.tokens)
+                and self.tokens[lookahead_pos].lexeme == "*"
+            ):
                 lookahead_pos += 1
-            if lookahead_pos < len(self.tokens) and self.tokens[lookahead_pos].type == TokenType.IDENTIFIER:
+            if (
+                lookahead_pos < len(self.tokens)
+                and self.tokens[lookahead_pos].type == TokenType.IDENTIFIER
+            ):
                 return self.parse_declaration()
 
         return self.parse_expr_stmt()
@@ -418,7 +457,9 @@ class Parser:
                 expr = ArrayAccess(expr, idx)
             elif self.match(".", "->"):
                 is_ptr = self.previous().lexeme == "->"
-                ident_tok = self.consume_type(TokenType.IDENTIFIER, "Expected property name")
+                ident_tok = self.consume_type(
+                    TokenType.IDENTIFIER, "Expected property name"
+                )
                 line, col = self._loc(ident_tok)
                 ident = Identifier(ident_tok.lexeme, SymbolCategory.VARIABLE, line, col)
                 expr = MemberAccess(expr, ident, is_ptr)
@@ -438,21 +479,26 @@ class Parser:
         return expr
 
     def parse_primary(self):
-        if self.match_type(TokenType.INT_LIT, TokenType.FLOAT_LIT, TokenType.STRING_LIT, TokenType.CHAR_LIT):
+        if self.match_type(
+            TokenType.INT_LIT,
+            TokenType.FLOAT_LIT,
+            TokenType.STRING_LIT,
+            TokenType.CHAR_LIT,
+        ):
             tok = self.previous()
             line, col = self._loc(tok)
             return Literal(tok.lexeme, tok.type.name, line, col)
-        
+
         if self.match_type(TokenType.IDENTIFIER):
             tok = self.previous()
             line, col = self._loc(tok)
             return Identifier(tok.lexeme, SymbolCategory.VARIABLE, line, col)
-            
+
         if self.match("("):
             expr = self.parse_expr()
             self.consume(")", "Expected ')'")
             return expr
-            
+
         self.error(self.peek(), "Unexpected token")
 
     def parse_arg_list(self):

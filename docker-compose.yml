@@ -3,5 +3,5 @@ services:
   compiler:
     build: .
     volumes:
-      - .:/app          # تغییرات کد شما بلافاصله در داخل کانتینر اعمال می‌شود
+      - .:/app
     command: python main.py
