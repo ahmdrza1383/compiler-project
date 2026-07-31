@@ -129,6 +129,9 @@ class Parser:
     def parse(self) -> Program:
         declarations = []
         while not self.is_at_end():
+            if self.peek().type == TokenType.INVALID:
+                self.advance()
+                continue
             try:
                 declarations.append(self.parse_declaration())
             except ParseError:

@@ -60,8 +60,8 @@ class Lexer:
     def _add_error(self, message: str, line: int, column: int, length: int):
         self.reporter.report("Lexer", Severity.ERROR, message, line, column, length)
 
-    def get_diagnostics(self):
-        return self.diagnostics
+    def has_errors(self) -> bool:
+        return self.reporter.has_errors()
 
     def _read_identifier(self) -> Token:
         start_col = self.col
@@ -223,6 +223,7 @@ class Lexer:
             "-=": None,
             "*=": None,
             "/=": None,
+            "%=": None,
         }
 
         if self.pos + 1 < self.length:

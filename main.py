@@ -45,8 +45,13 @@ def write_ast_txt(ast_root, output_path: str):
     print(f"[INFO] AST (TXT Tree) successfully written to {output_path}")
 
 
-def tokenize_source(code: str, filename: str = "<stdin>"):
-    lexer = Lexer(code, filename)
+def tokenize_source(
+    code: str, filename: str = "<stdin>", reporter: ErrorReporter = None
+):
+    if reporter is None:
+        reporter = ErrorReporter()
+
+    lexer = Lexer(code, filename, reporter)
     tokens = []
 
     while True:
@@ -55,9 +60,7 @@ def tokenize_source(code: str, filename: str = "<stdin>"):
         if token.type == TokenType.EOF:
             break
 
-    diagnostics = lexer.get_diagnostics()
-
-    return tokens, diagnostics
+    return tokens, reporter.diagnostics
 
 
 def main():
@@ -78,7 +81,7 @@ def main():
     while True:
         token = lexer.next_token()
         tokens.append(token)
-        if token.type.name == "EOF":
+        if token.type == TokenType.EOF:
             break
 
     # ۲. تحلیل نحوی (Parser) و تولید AST در حافظه
