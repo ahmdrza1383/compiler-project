@@ -1,40 +1,42 @@
-"""
-ماژول Syntax Highlighter - طبق مستند پروژه بخش 4.4 و 4.5
-بر اساس خروجی‌های Lexer و Parser (فاز یک)
-با پشتیبانی از خطاهای Parser
-"""
-
 from src.token import TokenType
 from src.ast_node import (
-    ASTNode, Identifier, Literal, SymbolCategory, TypeSpecifier,
-    FunctionDef, FunctionDecl, StructDef, VarDecl, MemberAccess,
-    CallExpr
+    ASTNode,
+    Identifier,
+    Literal,
+    SymbolCategory,
+    TypeSpecifier,
+    FunctionDef,
+    FunctionDecl,
+    StructDef,
+    VarDecl,
+    MemberAccess,
+    CallExpr,
 )
 
 
 class SyntaxHighlighter:
-    """
-    هایلایتر سینتکس مبتنی بر خروجی‌های Lexer و Parser
-    طبق بخش 4.4 و 4.5 داک پروژه
-    """
-
     CATEGORY_COLORS = {
-        'keyword': {'ansi': '\033[34;1m', 'css': '#0000FF', 'class': 'kw'},
-        'type_name': {'ansi': '\033[92m', 'css': '#00FF00', 'class': 'type'},
-        'class_type': {'ansi': '\033[92;1m', 'css': '#00FF00', 'class': 'class'},
-        'function': {'ansi': '\033[33;1m', 'css': '#FFD700', 'class': 'func'},
-        'variable': {'ansi': '\033[0m', 'css': '#FFFFFF', 'class': 'ident'},
-        'number': {'ansi': '\033[38;5;208m', 'css': '#FFA500', 'class': 'num'},
-        'string': {'ansi': '\033[32m', 'css': '#32CD32', 'class': 'str'},
-        'char': {'ansi': '\033[32m', 'css': '#32CD32', 'class': 'char'},
-        'operator': {'ansi': '\033[37m', 'css': '#D3D3D3', 'class': 'op'},
-        'comment': {'ansi': '\033[90m', 'css': '#808080', 'class': 'comment'},
-        'preprocessor': {'ansi': '\033[35m', 'css': '#FF00FF', 'class': 'preproc'},
-        'error': {'ansi': '\033[41;97m', 'css': '#FF0000', 'class': 'error'}
+        "keyword": {"ansi": "\033[34;1m", "css": "#0000FF", "class": "kw"},
+        "type_name": {"ansi": "\033[92m", "css": "#00FF00", "class": "type"},
+        "class_type": {"ansi": "\033[92;1m", "css": "#00FF00", "class": "class"},
+        "function": {"ansi": "\033[33;1m", "css": "#FFD700", "class": "func"},
+        "variable": {"ansi": "\033[0m", "css": "#FFFFFF", "class": "ident"},
+        "number": {"ansi": "\033[38;5;208m", "css": "#FFA500", "class": "num"},
+        "string": {"ansi": "\033[32m", "css": "#32CD32", "class": "str"},
+        "char": {"ansi": "\033[32m", "css": "#32CD32", "class": "char"},
+        "operator": {"ansi": "\033[37m", "css": "#D3D3D3", "class": "op"},
+        "comment": {"ansi": "\033[90m", "css": "#808080", "class": "comment"},
+        "preprocessor": {"ansi": "\033[35m", "css": "#FF00FF", "class": "preproc"},
+        "error": {"ansi": "\033[41;97m", "css": "#FF0000", "class": "error"},
     }
 
-    def __init__(self, source_code: str, ast_root: ASTNode = None,
-                 tokens: list = None, parser_errors: list = None):
+    def __init__(
+        self,
+        source_code: str,
+        ast_root: ASTNode = None,
+        tokens: list = None,
+        parser_errors: list = None,
+    ):
         self.source_code = source_code
         self.ast_root = ast_root
         self.tokens = tokens if tokens is not None else []
@@ -43,53 +45,47 @@ class SyntaxHighlighter:
 
         self.function_names = set()
         self.struct_names = set()
-        self.type_names = {'int', 'float', 'double', 'char', 'void'}
+        self.type_names = {"int", "float", "double", "char", "void"}
 
         if self.ast_root:
             self._collect_ast_info(self.ast_root)
 
     def _collect_ast_info(self, node: ASTNode):
-        """جمع‌آوری نام توابع و ساختارها از AST"""
         if not node:
             return
 
         if isinstance(node, (FunctionDef, FunctionDecl)):
-            if hasattr(node, 'func_name') and node.func_name:
-                if hasattr(node.func_name, 'id_name'):
+            if hasattr(node, "func_name") and node.func_name:
+                if hasattr(node.func_name, "id_name"):
                     self.function_names.add(node.func_name.id_name)
 
         if isinstance(node, StructDef):
-            if hasattr(node, 'struct_name') and node.struct_name:
-                if hasattr(node.struct_name, 'id_name'):
+            if hasattr(node, "struct_name") and node.struct_name:
+                if hasattr(node.struct_name, "id_name"):
                     self.struct_names.add(node.struct_name.id_name)
 
         for child in node.children:
             self._collect_ast_info(child)
 
     def extract_tokens(self) -> list:
-        """استخراج اطلاعات رنگی از توکن‌ها، AST و خطاها"""
         self.tokens_meta = []
 
-        # 1. پردازش توکن‌های Lexer
         for token in self.tokens:
             category = self._get_token_category(token)
             if category:
                 self._add_token(
-                    token.lexeme,
-                    token.location.line,
-                    token.location.column,
-                    category
+                    token.lexeme, token.location.line, token.location.column, category
                 )
 
         # 2. اضافه کردن خطاهای Parser (به عنوان error)
         for error in self.parser_errors:
-            line = error.get('line', 0)
-            col = error.get('col', 0)
-            length = error.get('length', 1)
+            line = error.get("line", 0)
+            col = error.get("col", 0)
+            length = error.get("length", 1)
 
             lexeme = self._get_lexeme_at_position(line, col, length)
             if lexeme:
-                self._add_token(lexeme, line, col, 'error')
+                self._add_token(lexeme, line, col, "error")
 
         # 3. تکمیل اطلاعات با AST
         if self.ast_root:
@@ -98,21 +94,23 @@ class SyntaxHighlighter:
         # 4. حذف تکراری‌ها (اولویت با error و اطلاعات AST)
         seen = {}
         for token in self.tokens_meta:
-            key = (token['line'], token['col'])
-            if key not in seen or self._is_more_important(token['category'], seen[key]['category']):
+            key = (token["line"], token["col"])
+            if key not in seen or self._is_more_important(
+                token["category"], seen[key]["category"]
+            ):
                 seen[key] = token
 
         self.tokens_meta = list(seen.values())
-        self.tokens_meta.sort(key=lambda x: (x['line'], x['col']))
+        self.tokens_meta.sort(key=lambda x: (x["line"], x["col"]))
         return self.tokens_meta
 
     def _get_lexeme_at_position(self, line: int, col: int, length: int) -> str:
         """دریافت متن در موقعیت مشخص از کد منبع"""
-        lines = self.source_code.split('\n')
+        lines = self.source_code.split("\n")
         if line - 1 < len(lines):
             line_text = lines[line - 1]
             if col - 1 < len(line_text):
-                return line_text[col - 1:col - 1 + length]
+                return line_text[col - 1 : col - 1 + length]
         return None
 
     def _get_token_category(self, token) -> str:
@@ -121,99 +119,131 @@ class SyntaxHighlighter:
         lexeme = token.lexeme
 
         if t_type == TokenType.INVALID:
-            return 'error'
+            return "error"
 
         if t_type == TokenType.DIRECTIVE:
-            return 'preprocessor'
+            return "preprocessor"
 
         if t_type == TokenType.KEYWORD:
             if lexeme in self.type_names:
-                return 'type_name'
-            return 'keyword'
+                return "type_name"
+            return "keyword"
 
         if t_type == TokenType.OPERATOR:
-            return 'operator'
+            return "operator"
 
         if t_type in (TokenType.INT_LIT, TokenType.FLOAT_LIT):
-            return 'number'
+            return "number"
 
         if t_type == TokenType.STRING_LIT:
-            return 'string'
+            return "string"
 
         if t_type == TokenType.CHAR_LIT:
-            return 'char'
+            return "char"
 
         if t_type == TokenType.IDENTIFIER:
             if lexeme in self.function_names:
-                return 'function'
+                return "function"
             if lexeme in self.struct_names:
-                return 'class_type'
+                return "class_type"
             if self._is_type_identifier(lexeme):
-                return 'type_name'
-            return 'variable'
+                return "type_name"
+            return "variable"
 
         return None
 
     def _enhance_with_ast(self, node: ASTNode):
-        """تکمیل اطلاعات با پیمایش AST"""
         if not node:
             return
 
         # توابع
         if isinstance(node, (FunctionDef, FunctionDecl)):
-            if hasattr(node, 'func_name') and node.func_name:
-                if hasattr(node.func_name, 'id_name'):
+            if hasattr(node, "func_name") and node.func_name:
+                if hasattr(node.func_name, "id_name"):
                     name = node.func_name.id_name
-                    if hasattr(node.func_name, 'line') and hasattr(node.func_name, 'col'):
-                        self._add_token(name, node.func_name.line, node.func_name.col, 'function')
+                    if hasattr(node.func_name, "line") and hasattr(
+                        node.func_name, "col"
+                    ):
+                        self._add_token(
+                            name, node.func_name.line, node.func_name.col, "function"
+                        )
 
-        # ساختارها
         if isinstance(node, StructDef):
-            if hasattr(node, 'struct_name') and node.struct_name:
-                if hasattr(node.struct_name, 'id_name'):
+            if hasattr(node, "struct_name") and node.struct_name:
+                if hasattr(node.struct_name, "id_name"):
                     name = node.struct_name.id_name
-                    if hasattr(node.struct_name, 'line') and hasattr(node.struct_name, 'col'):
-                        self._add_token(name, node.struct_name.line, node.struct_name.col, 'class_type')
+                    if hasattr(node.struct_name, "line") and hasattr(
+                        node.struct_name, "col"
+                    ):
+                        self._add_token(
+                            name,
+                            node.struct_name.line,
+                            node.struct_name.col,
+                            "class_type",
+                        )
 
-            if hasattr(node, 'fields') and node.fields:
+            if hasattr(node, "fields") and node.fields:
                 for field in node.fields:
                     if isinstance(field, VarDecl):
-                        if hasattr(field, 'var_name') and field.var_name:
-                            if hasattr(field.var_name, 'id_name'):
+                        if hasattr(field, "var_name") and field.var_name:
+                            if hasattr(field.var_name, "id_name"):
                                 name = field.var_name.id_name
-                                if hasattr(field.var_name, 'line') and hasattr(field.var_name, 'col'):
-                                    self._add_token(name, field.var_name.line, field.var_name.col, 'variable')
+                                if hasattr(field.var_name, "line") and hasattr(
+                                    field.var_name, "col"
+                                ):
+                                    self._add_token(
+                                        name,
+                                        field.var_name.line,
+                                        field.var_name.col,
+                                        "variable",
+                                    )
 
-        # متغیرها
         if isinstance(node, VarDecl):
-            if hasattr(node, 'var_name') and node.var_name:
-                if hasattr(node.var_name, 'id_name'):
+            if hasattr(node, "var_name") and node.var_name:
+                if hasattr(node.var_name, "id_name"):
                     name = node.var_name.id_name
-                    if hasattr(node.var_name, 'line') and hasattr(node.var_name, 'col'):
-                        self._add_token(name, node.var_name.line, node.var_name.col, 'variable')
+                    if hasattr(node.var_name, "line") and hasattr(node.var_name, "col"):
+                        self._add_token(
+                            name, node.var_name.line, node.var_name.col, "variable"
+                        )
 
-        # MemberAccess
         if isinstance(node, MemberAccess):
-            if hasattr(node, 'obj') and node.obj:
+            if hasattr(node, "obj") and node.obj:
                 if isinstance(node.obj, Identifier):
-                    if hasattr(node.obj, 'id_name'):
-                        if hasattr(node.obj, 'line') and hasattr(node.obj, 'col'):
-                            self._add_token(node.obj.id_name, node.obj.line, node.obj.col, 'variable')
+                    if hasattr(node.obj, "id_name"):
+                        if hasattr(node.obj, "line") and hasattr(node.obj, "col"):
+                            self._add_token(
+                                node.obj.id_name,
+                                node.obj.line,
+                                node.obj.col,
+                                "variable",
+                            )
 
-            if hasattr(node, 'member') and node.member:
+            if hasattr(node, "member") and node.member:
                 if isinstance(node.member, Identifier):
-                    if hasattr(node.member, 'id_name'):
-                        if hasattr(node.member, 'line') and hasattr(node.member, 'col'):
-                            self._add_token(node.member.id_name, node.member.line, node.member.col, 'variable')
+                    if hasattr(node.member, "id_name"):
+                        if hasattr(node.member, "line") and hasattr(node.member, "col"):
+                            self._add_token(
+                                node.member.id_name,
+                                node.member.line,
+                                node.member.col,
+                                "variable",
+                            )
 
-        # CallExpr
         if isinstance(node, CallExpr):
-            if hasattr(node, 'func_name') and node.func_name:
+            if hasattr(node, "func_name") and node.func_name:
                 if isinstance(node.func_name, Identifier):
-                    if hasattr(node.func_name, 'id_name'):
+                    if hasattr(node.func_name, "id_name"):
                         name = node.func_name.id_name
-                        if hasattr(node.func_name, 'line') and hasattr(node.func_name, 'col'):
-                            self._add_token(name, node.func_name.line, node.func_name.col, 'function')
+                        if hasattr(node.func_name, "line") and hasattr(
+                            node.func_name, "col"
+                        ):
+                            self._add_token(
+                                name,
+                                node.func_name.line,
+                                node.func_name.col,
+                                "function",
+                            )
 
         for child in node.children:
             self._enhance_with_ast(child)
@@ -223,31 +253,24 @@ class SyntaxHighlighter:
 
     def _is_more_important(self, cat1: str, cat2: str) -> bool:
         priority = {
-            'error': 100,
-            'function': 10,
-            'class_type': 9,
-            'type_name': 8,
-            'keyword': 7,
-            'number': 5,
-            'string': 4,
-            'char': 4,
-            'operator': 3,
-            'variable': 2,
-            'preprocessor': 1
+            "error": 100,
+            "function": 10,
+            "class_type": 9,
+            "type_name": 8,
+            "keyword": 7,
+            "number": 5,
+            "string": 4,
+            "char": 4,
+            "operator": 3,
+            "variable": 2,
+            "preprocessor": 1,
         }
         return priority.get(cat1, 0) > priority.get(cat2, 0)
 
     def _add_token(self, lexeme: str, line: int, col: int, category: str):
-        self.tokens_meta.append({
-            'lexeme': lexeme,
-            'line': line,
-            'col': col,
-            'category': category
-        })
-
-    # ============================================
-    # خروجی ANSI (بخش 4.5)
-    # ============================================
+        self.tokens_meta.append(
+            {"lexeme": lexeme, "line": line, "col": col, "category": category}
+        )
 
     def to_ansi(self) -> str:
         if not self.tokens_meta:
@@ -256,11 +279,11 @@ class SyntaxHighlighter:
         if not self.tokens_meta:
             return self.source_code
 
-        lines = self.source_code.split('\n')
+        lines = self.source_code.split("\n")
         tokens_by_line = {}
 
         for t in self.tokens_meta:
-            line = t['line']
+            line = t["line"]
             if line not in tokens_by_line:
                 tokens_by_line[line] = []
             tokens_by_line[line].append(t)
@@ -271,39 +294,41 @@ class SyntaxHighlighter:
                 result.append(line_text)
                 continue
 
-            line_tokens = sorted(tokens_by_line[line_idx], key=lambda x: x['col'], reverse=True)
+            line_tokens = sorted(
+                tokens_by_line[line_idx], key=lambda x: x["col"], reverse=True
+            )
             new_line = line_text
 
             for t in line_tokens:
-                col = t['col'] - 1
-                lexeme = t['lexeme']
-                cat = t['category']
+                col = t["col"] - 1
+                lexeme = t["lexeme"]
+                cat = t["category"]
 
                 color_info = self.CATEGORY_COLORS.get(cat, {})
-                ansi_code = color_info.get('ansi', '\033[0m')
-                reset = '\033[0m'
+                ansi_code = color_info.get("ansi", "\033[0m")
+                reset = "\033[0m"
 
                 if 0 <= col < len(new_line):
-                    if new_line[col:col + len(lexeme)] == lexeme:
-                        new_line = new_line[:col] + f"{ansi_code}{lexeme}{reset}" + new_line[col + len(lexeme):]
+                    if new_line[col : col + len(lexeme)] == lexeme:
+                        new_line = (
+                            new_line[:col]
+                            + f"{ansi_code}{lexeme}{reset}"
+                            + new_line[col + len(lexeme) :]
+                        )
 
             result.append(new_line)
 
-        return '\n'.join(result)
-
-    # ============================================
-    # خروجی HTML/CSS (بخش 4.5)
-    # ============================================
+        return "\n".join(result)
 
     def to_html(self) -> str:
         if not self.tokens_meta:
             self.extract_tokens()
 
-        lines = self.source_code.split('\n')
+        lines = self.source_code.split("\n")
         tokens_by_line = {}
 
         for t in self.tokens_meta:
-            line = t['line']
+            line = t["line"]
             if line not in tokens_by_line:
                 tokens_by_line[line] = []
             tokens_by_line[line].append(t)
@@ -314,27 +339,31 @@ class SyntaxHighlighter:
                 highlighted_lines.append(self._escape_html(line_text))
                 continue
 
-            line_tokens = sorted(tokens_by_line[line_idx], key=lambda x: x['col'], reverse=True)
+            line_tokens = sorted(
+                tokens_by_line[line_idx], key=lambda x: x["col"], reverse=True
+            )
             new_line = line_text
 
             for t in line_tokens:
-                col = t['col'] - 1
-                lexeme = t['lexeme']
-                cat = t['category']
+                col = t["col"] - 1
+                lexeme = t["lexeme"]
+                cat = t["category"]
 
-                css_class = self.CATEGORY_COLORS.get(cat, {}).get('class', 'ident')
+                css_class = self.CATEGORY_COLORS.get(cat, {}).get("class", "ident")
 
                 if 0 <= col < len(new_line):
-                    if new_line[col:col + len(lexeme)] == lexeme:
+                    if new_line[col : col + len(lexeme)] == lexeme:
                         wrapped = f'<span class="{css_class}">{self._escape_html(lexeme)}</span>'
-                        new_line = new_line[:col] + wrapped + new_line[col + len(lexeme):]
+                        new_line = (
+                            new_line[:col] + wrapped + new_line[col + len(lexeme) :]
+                        )
 
             highlighted_lines.append(new_line)
 
-        body = '\n'.join(highlighted_lines)
+        body = "\n".join(highlighted_lines)
         css = self._generate_css()
 
-        return f'''<!DOCTYPE html>
+        return f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -364,10 +393,10 @@ class SyntaxHighlighter:
 <body>
     <pre>{body}</pre>
 </body>
-</html>'''
+</html>"""
 
     def _generate_css(self) -> str:
-        return '''
+        return """
             .kw { color: #0000FF; font-weight: bold; }
             .type { color: #00FF00; }
             .class { color: #00FF00; font-weight: bold; }
@@ -380,12 +409,13 @@ class SyntaxHighlighter:
             .comment { color: #808080; font-style: italic; }
             .preproc { color: #FF00FF; }
             .error { color: #FF0000; text-decoration: underline; }
-        '''
+        """
 
     def _escape_html(self, text: str) -> str:
-        return (text
-            .replace('&', '&amp;')
-            .replace('<', '&lt;')
-            .replace('>', '&gt;')
-            .replace('"', '&quot;')
-            .replace("'", '&#39;'))
+        return (
+            text.replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace('"', "&quot;")
+            .replace("'", "&#39;")
+        )
