@@ -138,6 +138,7 @@ class Parser:
         return fields
 
     # // type_rest ::= ('*')* IDENT ( '(' param_list? ')' ( block | ';' ) | var_tail )
+# // type_rest ::= ('*')* IDENT ( '(' param_list? ')' ( block | ';' ) | var_tail )
     def parse_type_rest(self, base_type_spec):
         pointers = 0
         while self.match("*"):
@@ -161,22 +162,8 @@ class Parser:
                 return FunctionDecl(base_type_spec, ident, params)
         else:
             ident = Identifier(ident_tok.lexeme, SymbolCategory.VARIABLE, line, col)
-            
-            # --- بخش جدید: شناسایی آرایه در زمان تعریف و تبدیل آن به ArrayAccess ---
-            if self.match("["):
-                # بر اساس ارور قبلی که فرستادی، نام متد شما برای خواندن عبارات parse_expr است
-                array_size = self.parse_expr()
-                
-                self.consume("]", "Expected ']' after array size")
-                self.consume(";", "Expected ';' after array declaration")
-                
-                # برگرداندن نود ArrayAccess به جای ارجاع به parse_var_tail
-                # (اگر اسم آرگومان‌های کلاس ArrayAccess تو فرق دارد، اینجا تنظیمش کن)
-                return ArrayAccess(ident, array_size)
-            # -------------------------------------------------------------------------
-            
             return self.parse_var_tail(base_type_spec, ident)
-
+        
     # // non_struct_decl ::= basic_type_spec IDENT ( '(' param_list? ')' ( block | ';' ) | var_tail )
     def parse_non_struct_decl(self):
         type_spec = self.parse_basic_type_spec()
