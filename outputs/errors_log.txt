@@ -1,1 +1,1 @@
-No errors found.
+[Error] Parser at Line 9, Col 9: Unexpected token

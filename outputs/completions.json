@@ -1,73 +1,193 @@
 {
-  "5:15": [
+  "8:16": [
     {
-      "label": "NEWLINE",
-      "kind": "variable",
-      "type": "char",
-      "detail": "char NEWLINE",
-      "sortOrder": 2
-    },
-    {
-      "label": "PI",
-      "kind": "variable",
-      "type": "float",
-      "detail": "float PI",
-      "sortOrder": 2
-    },
-    {
-      "label": "global_count",
+      "label": "amir",
       "kind": "variable",
       "type": "int",
-      "detail": "int global_count",
+      "detail": "int amir",
       "sortOrder": 2
     },
     {
-      "label": "greeting",
+      "label": "bagher",
       "kind": "variable",
-      "type": "char*",
-      "detail": "char* greeting",
+      "type": "int",
+      "detail": "int bagher",
       "sortOrder": 2
     },
     {
-      "label": "create_point",
-      "kind": "function",
-      "type": "struct Point",
-      "detail": "(int, int, float) -> struct Point",
-      "sortOrder": 3
-    },
-    {
-      "label": "factorial",
-      "kind": "function",
+      "label": "c",
+      "kind": "variable",
       "type": "int",
-      "detail": "(int) -> int",
-      "sortOrder": 3
+      "detail": "int c",
+      "sortOrder": 2
     },
     {
-      "label": "main",
-      "kind": "function",
-      "type": "int",
-      "detail": "() -> int",
-      "sortOrder": 3
-    },
-    {
-      "label": "process_array",
-      "kind": "function",
-      "type": "void",
-      "detail": "(int[], int) -> void",
-      "sortOrder": 3
-    },
-    {
-      "label": "Node",
-      "kind": "struct",
-      "type": "struct Node",
-      "detail": "struct Node Node",
+      "label": "char",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
       "sortOrder": 4
     },
     {
-      "label": "Point",
-      "kind": "struct",
-      "type": "struct Point",
-      "detail": "struct Point Point",
+      "label": "double",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "float",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "int",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "struct",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "void",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    }
+  ],
+  "8:17": [
+    {
+      "label": "amir",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int amir",
+      "sortOrder": 2
+    }
+  ],
+  "1:9": [
+    {
+      "label": "char",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "double",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "float",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "int",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "struct",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "void",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    }
+  ],
+  "1:10": [
+    {
+      "label": "int",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    }
+  ],
+  "9:8": [
+    {
+      "label": "amir",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int amir",
+      "sortOrder": 2
+    },
+    {
+      "label": "bagher",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int bagher",
+      "sortOrder": 2
+    },
+    {
+      "label": "c",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int c",
+      "sortOrder": 2
+    },
+    {
+      "label": "char",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "double",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "float",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "int",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "struct",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "void",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
       "sortOrder": 4
     }
   ]

@@ -39,126 +39,15 @@
     </style>
 </head>
 <body>
-    <pre>// ========================================================
-// Comprehensive Valid Mini-C Test Code
-// Testing Lexer, Parser, Semantic Analysis, and Type Checker
-// ========================================================
-
-// 1. Struct Declarations (تست تعریف استراکت و نوع‌دهی)
-<span class="kw">struct</span> <span class="class">Point</span> {
-    <span class="type">int</span> <span class="ident">x</span>;
-    <span class="type">int</span> <span class="ident">y</span>;
-    <span class="type">float</span> <span class="ident">z</span>;
-};
-
-// تست استراکت تو در تو و پوینتر به استراکت
-<span class="kw">struct</span> <span class="class">Node</span> {
-    <span class="kw">struct</span> <span class="class">Point</span> <span class="ident">data</span>;
-    <span class="kw">struct</span> <span class="class">Node</span><span class="op">*</span> <span class="ident">next</span>;
-};
-
-// 2. Global Variables (تست متغیرهای سراسری و مقداردهی اولیه)
-<span class="type">int</span> <span class="ident">global_count</span> <span class="op">=</span> <span class="num">0</span>;
-<span class="type">float</span> <span class="ident">PI</span> <span class="op">=</span> <span class="num">3.14159f</span>;
-<span class="type">char</span> <span class="ident">NEWLINE</span> <span class="op">=</span> <span class="char">&#39;\n&#39;</span>;
-<span class="type">char</span><span class="op">*</span> <span class="ident">greeting</span> <span class="op">=</span> <span class="str">&quot;Hello, Mini-C Compiler!&quot;</span>;
-
-// 3. Function Prototypes (تست اعلام توابع - Prototype)
-<span class="type">int</span> <span class="func">factorial</span>(<span class="type">int</span> <span class="ident">n</span>);
-<span class="kw">struct</span> <span class="class">Point</span> <span class="func">create_point</span>(<span class="type">int</span> <span class="ident">x</span>, <span class="type">int</span> <span class="ident">y</span>, <span class="type">float</span> <span class="ident">z</span>);
-
-// 4. Recursive Function Definition (تست توابع بازگشتی و دستورات شرطی)
-<span class="type">int</span> <span class="func">factorial</span>(<span class="type">int</span> <span class="ident">n</span>) {
-    <span class="kw">if</span> (<span class="ident">n</span> <span class="op">&lt;=</span> <span class="num">1</span>) {
-        <span class="kw">return</span> <span class="num">1</span>;
-    } <span class="kw">else</span> {
-        <span class="kw">return</span> <span class="ident">n</span> <span class="op">*</span> <span class="func">factorial</span>(<span class="ident">n</span> <span class="op">-</span> <span class="num">1</span>);
-    }
+    <pre><span class="type">int</span> <span class="func">add</span> (<span class="type">int</span> <span class="ident">a</span>,<span class="type">int</span> <span class="ident">b</span>){
+    <span class="kw">return</span> <span class="ident">a</span> <span class="op">+</span> <span class="ident">b</span>;
 }
 
-// 5. Array Parameters &amp; Loops (تست پارامترهای آرایه، حلقه‌ها، Break و Continue)
-<span class="type">void</span> <span class="func">process_array</span>(<span class="type">int</span> <span class="ident">arr</span>[], <span class="type">int</span> <span class="ident">size</span>) {
-    <span class="type">int</span> <span class="ident">i</span>;
-    <span class="kw">for</span> (<span class="ident">i</span> <span class="op">=</span> <span class="num">0</span>; <span class="ident">i</span> <span class="op">&lt;</span> <span class="ident">size</span>; <span class="ident">i</span><span class="op">++</span>) {
-        <span class="kw">if</span> (<span class="ident">arr</span>[<span class="ident">i</span>] <span class="op">%</span> <span class="num">2</span> <span class="op">==</span> <span class="num">0</span>) {
-            <span class="ident">arr</span>[<span class="ident">i</span>] <span class="op">+=</span> <span class="num">10</span>;
-            <span class="kw">continue</span>;
-        }
-        
-        <span class="kw">if</span> (<span class="ident">arr</span>[<span class="ident">i</span>] <span class="op">&gt;</span> <span class="num">100</span>) {
-            <span class="kw">break</span>;
-        }
-        
-        <span class="ident">arr</span>[<span class="ident">i</span>] <span class="op">*=</span> <span class="num">2</span>;
-    }
-}
-
-// 6. Function returning a Struct (تست بازگرداندن استراکت از تابع)
-<span class="kw">struct</span> <span class="class">Point</span> <span class="func">create_point</span>(<span class="type">int</span> <span class="ident">x</span>, <span class="type">int</span> <span class="ident">y</span>, <span class="type">float</span> <span class="ident">z</span>) {
-    <span class="kw">struct</span> <span class="class">Point</span> <span class="ident">p</span>;
-    <span class="ident">p</span>.<span class="ident">x</span> <span class="op">=</span> <span class="ident">x</span>;
-    <span class="ident">p</span>.<span class="ident">y</span> <span class="op">=</span> <span class="ident">y</span>;
-    <span class="ident">p</span>.<span class="ident">z</span> <span class="op">=</span> <span class="ident">z</span>;
-    <span class="kw">return</span> <span class="ident">p</span>;
-}
-
-// 7. Main Function (تست تمامی ترکیب‌ها در کنار هم)
-<span class="type">int</span> <span class="func">main</span>() {
-    // الف) متغیرهای محلی و لیترال‌های مختلف
-    <span class="type">int</span> <span class="ident">a</span> <span class="op">=</span> <span class="num">5</span>,<span class="ident">b</span> <span class="op">=</span> <span class="num">10</span>;
-    <span class="type">float</span> <span class="ident">result</span> <span class="op">=</span> <span class="num">0.0f</span>;
-    <span class="type">double</span> <span class="ident">d_val</span> <span class="op">=</span> <span class="num">2.718</span>;
-    <span class="type">char</span> <span class="ident">c</span> <span class="op">=</span> <span class="char">&#39;A&#39;</span>;
-    
-    // ب) پوینترها و عملگرهای گرفتن آدرس
-    <span class="type">int</span><span class="op">*</span> <span class="ident">ptr_a</span> <span class="op">=</span> <span class="op">&amp;</span><span class="ident">a</span>;
-    <span class="type">int</span><span class="op">*</span><span class="op">*</span> <span class="ident">double_ptr</span> <span class="op">=</span> <span class="op">&amp;</span><span class="ident">ptr_a</span>;
-    
-    // ج) آرایه‌ها و لیست‌های مقداردهی (Initializer Lists)
-    <span class="type">int</span> <span class="ident">numbers</span>[<span class="num">5</span>] <span class="op">=</span> {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>};
-    <span class="type">char</span><span class="op">*</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">greeting</span>;
-    
-    // د) وهله‌سازی از استراکت‌ها
-    <span class="kw">struct</span> <span class="class">Point</span> <span class="ident">p1</span> <span class="op">=</span> {<span class="num">0</span>, <span class="num">0</span>, <span class="num">0.0f</span>};
-    <span class="kw">struct</span> <span class="class">Point</span> <span class="ident">p2</span>;
-    <span class="kw">struct</span> <span class="class">Node</span> <span class="ident">n1</span>;
-    <span class="kw">struct</span> <span class="class">Node</span> <span class="ident">n2</span>;
-    
-    // ه) عملگرهای یگانی (Unary) و Postfix
-    <span class="ident">global_count</span><span class="op">++</span>;
-    <span class="op">--</span><span class="ident">b</span>;
-    
-    // و) عبارات منطقی، رابطه‌ای و ریاضی
-    <span class="kw">if</span> (<span class="op">*</span><span class="ident">ptr_a</span> <span class="op">==</span> <span class="num">5</span> <span class="op">&amp;&amp;</span> <span class="ident">b</span> <span class="op">!=</span> <span class="num">0</span> <span class="op">||</span> <span class="op">!</span><span class="num">0</span>) {
-        // تبدیل نوع ضمنی (int به float) در اینجا ارزیابی می‌شود
-        <span class="ident">result</span> <span class="op">=</span> (<span class="ident">a</span> <span class="op">+</span> <span class="ident">b</span>) <span class="op">/</span> <span class="num">2.0f</span>; 
-    }
-    
-    // ز) فراخوانی تابع و دسترسی به فیلدهای استراکت
-    <span class="ident">p2</span> <span class="op">=</span> <span class="func">create_point</span>(<span class="num">10</span>, <span class="num">20</span>, <span class="ident">PI</span>);
-    <span class="ident">n1</span>.<span class="ident">data</span> <span class="op">=</span> <span class="ident">p2</span>;
-    
-    // ح) انتساب پوینترها (ایجاد لیست پیوندی حلقوی برای تست نوع پوینترها)
-    <span class="ident">n2</span>.<span class="ident">data</span> <span class="op">=</span> <span class="ident">p1</span>;
-    <span class="ident">n1</span>.<span class="ident">next</span> <span class="op">=</span> <span class="op">&amp;</span><span class="ident">n2</span>;
-    <span class="ident">n2</span>.<span class="ident">next</span> <span class="op">=</span> <span class="op">&amp;</span><span class="ident">n1</span>; 
-    
-    // ط) دی‌رفرنس کردن پوینتر چندگانه و ارسال آرایه به تابع
-    <span class="op">*</span><span class="op">*</span><span class="ident">double_ptr</span> <span class="op">=</span> <span class="func">factorial</span>(<span class="num">5</span>);
-    <span class="func">process_array</span>(<span class="ident">numbers</span>, <span class="num">5</span>);
-    
-    // ی) حلقه While و جلوگیری از Warning متغیرهای استفاده نشده
-    <span class="kw">while</span> (<span class="ident">global_count</span> <span class="op">&lt;</span> <span class="num">10</span>) {
-        <span class="ident">global_count</span> <span class="op">+=</span> <span class="num">2</span>;
-    }
-    
-    <span class="kw">if</span> (<span class="ident">NEWLINE</span> <span class="op">==</span> <span class="char">&#39;\n&#39;</span>) {
-        <span class="ident">c</span> <span class="op">=</span> <span class="char">&#39;B&#39;</span>;
-        <span class="ident">d_val</span> <span class="op">+=</span> <span class="num">1.0</span>;
-        <span class="ident">msg</span> <span class="op">=</span> <span class="str">&quot;Hi!&quot;</span>;
-    }
-    
-    <span class="kw">return</span> <span class="num">0</span>;
+<span class="type">float</span> <span class="func">main</span> () {
+    <span class="type">int</span> <span class="ident">amir</span> <span class="op">=</span> <span class="num">1</span>;
+    <span class="type">int</span> <span class="ident">bagher</span> <span class="op">=</span> <span class="num">2</span>;
+    <span class="type">int</span> <span class="ident">c</span> <span class="op">=</span> <span class="func">add</span>(<span class="ident">amir</span>, <span class="ident">bagher</span>);
+    <span class="kw">for</span>(<span class="error">)</span>;
 }</pre>
 </body>
 </html>

@@ -1,3 +1,10 @@
-{
-  "status": "No errors found."
-}
+[
+  {
+    "phase": "Parser",
+    "severity": "Error",
+    "message": "Unexpected token",
+    "line": 9,
+    "col": 9,
+    "length": 1
+  }
+]

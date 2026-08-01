@@ -233,7 +233,7 @@ def main():
         print(f"[INFO] Type report text saved to {type_report_path_txt}")
 
         completer = AutoCompleter(symbol_table, ast_root)
-        test_positions = [(3, 10), (5, 15), (7, 20)]
+        test_positions = [(8, 16), (8, 17), (1,9), (1, 10), (9, 8)]
         all_completions = {}
         for line, col in test_positions:
             completions = completer.get_completions(source_code, line, col)

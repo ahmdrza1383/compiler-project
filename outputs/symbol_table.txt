@@ -1,58 +1,15 @@
 SYMBOL TABLE
 ======================================================================
 Scope: global
-  [struct] 'Point' : struct Point  (def: 7:8, init=no, used=yes, refs=1)
-  [struct] 'Node' : struct Node  (def: 14:8, init=no, used=yes, refs=1)
-  [variable] 'global_count' : int  (def: 20:5, init=no, used=yes, refs=3)
-  [variable] 'PI' : float  (def: 21:7, init=no, used=yes, refs=1)
-  [variable] 'NEWLINE' : char  (def: 22:6, init=no, used=yes, refs=1)
-  [variable] 'greeting' : char*  (def: 23:7, init=no, used=yes, refs=1)
-  [function] 'factorial' : int  (def: 26:5, init=no, used=yes, refs=3)
-  [function] 'create_point' : struct Point  (def: 27:14, init=no, used=yes, refs=2)
-  [function] 'process_array' : void  (def: 39:6, init=no, used=yes, refs=1)
-  [function] 'main' : int  (def: 65:5, init=no, used=no, refs=0)
-  Scope: struct
-    [field] 'x' : int  (def: 8:9, init=no, used=no, refs=0)
-    [field] 'y' : int  (def: 9:9, init=no, used=no, refs=0)
-    [field] 'z' : float  (def: 10:11, init=no, used=no, refs=0)
-  Scope: struct
-    [field] 'data' : struct Point  (def: 15:18, init=no, used=no, refs=0)
-    [field] 'next' : struct Node*  (def: 16:18, init=no, used=no, refs=0)
+  [function] 'add' : int  (def: 1:5, init=no, used=yes, refs=1)
+  [function] 'main' : float  (def: 5:7, init=no, used=no, refs=0)
   Scope: function
-    [parameter] 'n' : int  (def: 30:19, init=yes, used=yes, refs=3)
+    [parameter] 'a' : int  (def: 1:14, init=yes, used=yes, refs=1)
+    [parameter] 'b' : int  (def: 1:20, init=yes, used=yes, refs=1)
     Scope: block
-      Scope: block
-      Scope: block
-  Scope: function
-    [parameter] 'arr' : int[]  (def: 39:24, init=yes, used=yes, refs=4)
-    [parameter] 'size' : int  (def: 39:35, init=yes, used=yes, refs=1)
-    Scope: block
-      [variable] 'i' : int  (def: 40:9, init=no, used=yes, refs=7)
-      Scope: block
-        Scope: block
-        Scope: block
-  Scope: function
-    [parameter] 'x' : int  (def: 56:31, init=yes, used=yes, refs=1)
-    [parameter] 'y' : int  (def: 56:38, init=yes, used=yes, refs=1)
-    [parameter] 'z' : float  (def: 56:47, init=yes, used=yes, refs=1)
-    Scope: block
-      [variable] 'p' : struct Point  (def: 57:18, init=no, used=yes, refs=4)
   Scope: function
     Scope: block
-      [variable] 'a' : int  (def: 67:9, init=yes, used=yes, refs=2)
-      [variable] 'b' : int  (def: 67:15, init=yes, used=yes, refs=3)
-      [variable] 'result' : float  (def: 68:11, init=yes, used=yes, refs=1)
-      [variable] 'd_val' : double  (def: 69:12, init=yes, used=yes, refs=1)
-      [variable] 'c' : char  (def: 70:10, init=yes, used=yes, refs=1)
-      [variable] 'ptr_a' : int*  (def: 73:10, init=yes, used=yes, refs=2)
-      [variable] 'double_ptr' : int**  (def: 74:11, init=yes, used=yes, refs=1)
-      [variable] 'numbers' : int[]  (def: 77:9, init=yes, used=yes, refs=1)
-      [variable] 'msg' : char*  (def: 78:11, init=yes, used=yes, refs=1)
-      [variable] 'p1' : struct Point  (def: 81:18, init=yes, used=yes, refs=1)
-      [variable] 'p2' : struct Point  (def: 82:18, init=no, used=yes, refs=2)
-      [variable] 'n1' : struct Node  (def: 83:17, init=no, used=yes, refs=3)
-      [variable] 'n2' : struct Node  (def: 84:17, init=no, used=yes, refs=3)
-      Scope: block
-      Scope: block
-      Scope: block
+      [variable] 'amir' : int  (def: 6:9, init=yes, used=yes, refs=1)
+      [variable] 'bagher' : int  (def: 7:9, init=yes, used=yes, refs=1)
+      [variable] 'c' : int  (def: 8:9, init=yes, used=no, refs=0)
 ======================================================================
