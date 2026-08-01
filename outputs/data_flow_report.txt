@@ -1,14 +1,42 @@
 DATA FLOW & DEAD CODE REPORT
 ======================================================================
-  1. Unreachable Code: Block 2 [UNREACHABLE] in function 'add' can never be executed.
-  2. Unreachable Code: Block 5 [UNREACHABLE] in function 'multiply' can never be executed.
-  3. Unreachable Code: Block 10 [UNREACHABLE] in function 'factorial' can never be executed.
-  4. Unreachable Code: Block 11 [UNREACHABLE] in function 'factorial' can never be executed.
-  5. Unreachable Code: Block 16 [UNREACHABLE] in function 'fibonacci' can never be executed.
-  6. Unreachable Code: Block 17 [UNREACHABLE] in function 'fibonacci' can never be executed.
-  7. Unreachable Code: Block 33 [UNREACHABLE] in function 'compute' can never be executed.
-  8. Dead Store: Value assigned to 'result' in function 'compute' is never used subsequently.
-  9. Unreachable Code: Block 38 [UNREACHABLE] in function 'nested_calls' can never be executed.
-  10. Unreachable Code: Block 39 [UNREACHABLE] in function 'nested_calls' can never be executed.
-  11. Unreachable Code: Block 47 [UNREACHABLE] in function 'main' can never be executed.
+  1. Dead Function: 'increment_point' is never called from main().
+  2. Dead Function: 'sum_array' is never called from main().
+  3. Dead Function: 'count_even' is never called from main().
+  4. Dead Function: 'is_in_range' is never called from main().
+  5. Dead Function: 'power' is never called from main().
+  6. Dead Function: 'expression_demo' is never called from main().
+  7. Dead Function: 'find_first' is never called from main().
+  8. Dead Function: 'print_point' is never called from main().
+  9. Unreachable Code: Block 4 [UNREACHABLE] in function 'factorial' can never be executed.
+  10. Unreachable Code: Block 5 [UNREACHABLE] in function 'factorial' can never be executed.
+  11. Unreachable Code: Block 14 [UNREACHABLE] in function 'sum_array' can never be executed.
+  12. Unreachable Code: Block 22 [UNREACHABLE] in function 'count_even' can never be executed.
+  13. Unreachable Code: Block 25 [UNREACHABLE] in function 'count_even' can never be executed.
+  14. Unreachable Code: Block 28 [UNREACHABLE] in function 'is_in_range' can never be executed.
+  15. Unreachable Code: Block 33 [UNREACHABLE] in function 'power' can never be executed.
+  16. Unreachable Code: Block 34 [UNREACHABLE] in function 'power' can never be executed.
+  17. Unreachable Code: Block 37 [UNREACHABLE] in function 'expression_demo' can never be executed.
+  18. Dead Store: Value assigned to 'first' in function 'expression_demo' is never used subsequently.
+  19. Dead Store: Value assigned to 'x1' in function 'expression_demo' is never used subsequently.
+  20. Dead Store: Value assigned to 'x3' in function 'expression_demo' is never used subsequently.
+  21. Dead Store: Value assigned to 'd' in function 'expression_demo' is never used subsequently.
+  22. Dead Store: Value assigned to 'x2' in function 'expression_demo' is never used subsequently.
+  23. Dead Store: Value assigned to 'f' in function 'expression_demo' is never used subsequently.
+  24. Dead Store: Value assigned to 'c' in function 'expression_demo' is never used subsequently.
+  25. Dead Store: Value assigned to 'e' in function 'expression_demo' is never used subsequently.
+  26. Dead Store: Value assigned to 'i' in function 'expression_demo' is never used subsequently.
+  27. Dead Store: Value assigned to 'g' in function 'expression_demo' is never used subsequently.
+  28. Dead Store: Value assigned to 'h' in function 'expression_demo' is never used subsequently.
+  29. Dead Store: Value assigned to 'last' in function 'expression_demo' is never used subsequently.
+  30. Unreachable Code: Block 46 [UNREACHABLE] in function 'find_first' can never be executed.
+  31. Unreachable Code: Block 47 [UNREACHABLE] in function 'find_first' can never be executed.
+  32. Unreachable Code: Block 60 [UNREACHABLE] in function 'main' can never be executed.
+  33. Unreachable Code: Block 67 [UNREACHABLE] in function 'main' can never be executed.
+  34. Unreachable Code: Block 68 [UNREACHABLE] in function 'main' can never be executed.
+  35. Dead Store: Value assigned to 'p' in function 'main' is never used subsequently.
+  36. Dead Store: Value assigned to 'z' in function 'main' is never used subsequently.
+  37. Dead Store: Value assigned to 'fact' in function 'main' is never used subsequently.
+  38. Unreachable Code: Block 71 [UNREACHABLE] in function 'add' can never be executed.
+  39. Dead Store: Value assigned to 'dummy' in function 'print_point' is never used subsequently.
 ======================================================================

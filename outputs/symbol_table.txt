@@ -1,80 +1,126 @@
 SYMBOL TABLE
 ======================================================================
 Scope: global
-  [function] 'printf' : int  (def: 0:0, init=no, used=yes, refs=7)
+  [function] 'printf' : int  (def: 0:0, init=no, used=no, refs=0)
   [function] 'scanf' : int  (def: 0:0, init=no, used=no, refs=0)
   [function] 'malloc' : void*  (def: 0:0, init=no, used=no, refs=0)
   [function] 'free' : void  (def: 0:0, init=no, used=no, refs=0)
-  [variable] 'global_counter' : int  (def: 3:5, init=no, used=yes, refs=3)
-  [struct] 'Point' : struct Point  (def: 5:8, init=no, used=yes, refs=3)
-  [function] 'add' : int  (def: 10:5, init=no, used=yes, refs=4)
-  [function] 'multiply' : int  (def: 14:5, init=no, used=yes, refs=4)
-  [function] 'factorial' : int  (def: 18:5, init=no, used=yes, refs=4)
-  [function] 'fibonacci' : int  (def: 25:5, init=no, used=yes, refs=5)
-  [function] 'compute' : int  (def: 32:5, init=no, used=yes, refs=3)
-  [function] 'nested_calls' : int  (def: 65:5, init=no, used=yes, refs=3)
-  [function] 'process_array' : void  (def: 75:6, init=no, used=yes, refs=2)
-  [function] 'main' : int  (def: 83:5, init=no, used=yes, refs=1)
+  [struct] 'Point' : struct Point  (def: 7:8, init=no, used=yes, refs=7)
+  [struct] 'Node' : struct Node  (def: 13:8, init=no, used=yes, refs=2)
+  [variable] 'global_counter' : int  (def: 19:5, init=no, used=no, refs=0)
+  [variable] 'pi' : float  (def: 20:7, init=no, used=no, refs=0)
+  [variable] 'message' : char*  (def: 21:7, init=no, used=no, refs=0)
+  [variable] 'precision' : double  (def: 22:8, init=no, used=no, refs=0)
+  [function] 'add' : int  (def: 25:5, init=no, used=yes, refs=4)
+  [function] 'print_point' : void  (def: 26:6, init=no, used=yes, refs=2)
+  [function] 'create_point' : struct Point  (def: 27:15, init=no, used=yes, refs=1)
+  [function] 'sum_array' : int  (def: 28:5, init=no, used=yes, refs=2)
+  [function] 'factorial' : int  (def: 31:5, init=no, used=yes, refs=4)
+  [function] 'increment_point' : void  (def: 39:6, init=no, used=yes, refs=1)
+  [function] 'count_even' : int  (def: 54:5, init=no, used=yes, refs=1)
+  [function] 'is_in_range' : int  (def: 71:5, init=no, used=yes, refs=1)
+  [function] 'power' : int  (def: 84:5, init=no, used=yes, refs=2)
+  [function] 'expression_demo' : int  (def: 92:5, init=no, used=yes, refs=1)
+  [function] 'find_first' : int  (def: 147:5, init=no, used=yes, refs=1)
+  [function] 'do_nothing' : void  (def: 157:6, init=no, used=yes, refs=5)
+  [function] 'main' : int  (def: 162:5, init=no, used=yes, refs=1)
   Scope: struct
-    [field] 'x' : int  (def: 6:9, init=no, used=no, refs=0)
-    [field] 'y' : int  (def: 7:9, init=no, used=no, refs=0)
+    [field] 'x' : int  (def: 8:9, init=no, used=no, refs=0)
+    [field] 'y' : int  (def: 9:9, init=no, used=no, refs=0)
+  Scope: struct
+    [field] 'value' : int  (def: 14:9, init=no, used=no, refs=0)
+    [field] 'next' : struct Node*  (def: 15:18, init=no, used=no, refs=0)
   Scope: function
-    [parameter] 'a' : int  (def: 10:13, init=yes, used=yes, refs=1)
-    [parameter] 'b' : int  (def: 10:20, init=yes, used=yes, refs=1)
-    Scope: block
-  Scope: function
-    [parameter] 'a' : int  (def: 14:18, init=yes, used=yes, refs=1)
-    [parameter] 'b' : int  (def: 14:25, init=yes, used=yes, refs=1)
-    Scope: block
-  Scope: function
-    [parameter] 'n' : int  (def: 18:19, init=yes, used=yes, refs=3)
+    [parameter] 'n' : int  (def: 31:19, init=yes, used=yes, refs=3)
     Scope: block
       Scope: block
   Scope: function
-    [parameter] 'n' : int  (def: 25:19, init=yes, used=yes, refs=4)
+    [parameter] 'p' : struct Point*  (def: 39:36, init=yes, used=yes, refs=2)
     Scope: block
-      Scope: block
   Scope: function
-    [parameter] 'x' : int  (def: 32:17, init=yes, used=yes, refs=3)
-    [parameter] 'y' : int  (def: 32:24, init=yes, used=yes, refs=3)
-    [parameter] 'flag' : int  (def: 32:31, init=yes, used=yes, refs=1)
+    [parameter] 'arr' : int[]  (def: 45:19, init=yes, used=yes, refs=1)
+    [parameter] 'size' : int  (def: 45:30, init=yes, used=yes, refs=1)
     Scope: block
-      [variable] 'result' : int  (def: 33:9, init=yes, used=yes, refs=10)
-      [variable] 'temp' : int  (def: 34:9, init=yes, used=yes, refs=4)
-      [variable] 'p' : struct Point  (def: 35:18, init=no, used=yes, refs=2)
-      [variable] 'j' : int  (def: 55:9, init=yes, used=yes, refs=4)
-      Scope: block
-      Scope: block
+      [variable] 'sum' : int  (def: 46:9, init=yes, used=yes, refs=3)
       Scope: for_loop
-        [variable] 'i' : int  (def: 47:14, init=yes, used=yes, refs=6)
+        [variable] 'i' : int  (def: 47:14, init=yes, used=yes, refs=4)
+        Scope: block
+  Scope: function
+    [parameter] 'arr' : int[]  (def: 54:20, init=yes, used=yes, refs=2)
+    [parameter] 'size' : int  (def: 54:31, init=yes, used=yes, refs=1)
+    Scope: block
+      [variable] 'count' : int  (def: 55:9, init=yes, used=yes, refs=3)
+      [variable] 'i' : int  (def: 56:9, init=yes, used=yes, refs=7)
+      Scope: block
+        Scope: block
+        Scope: block
+  Scope: function
+    [parameter] 'value' : int  (def: 71:21, init=yes, used=yes, refs=2)
+    [parameter] 'low' : int  (def: 71:32, init=yes, used=yes, refs=1)
+    [parameter] 'high' : int  (def: 71:41, init=yes, used=yes, refs=1)
+    Scope: block
+  Scope: function
+    [parameter] 'base' : int  (def: 84:15, init=yes, used=yes, refs=2)
+    [parameter] 'exp' : int  (def: 84:25, init=yes, used=yes, refs=2)
+    Scope: block
+      Scope: block
+  Scope: function
+    Scope: block
+      [variable] 'a' : int  (def: 93:9, init=yes, used=yes, refs=8)
+      [variable] 'b' : int  (def: 94:9, init=yes, used=yes, refs=7)
+      [variable] 'c' : int  (def: 95:9, init=no, used=yes, refs=3)
+      [variable] 'flag' : int  (def: 101:9, init=yes, used=yes, refs=1)
+      [variable] 'd' : int  (def: 110:9, init=yes, used=no, refs=0)
+      [variable] 'e' : int  (def: 111:9, init=yes, used=no, refs=0)
+      [variable] 'f' : int  (def: 112:9, init=yes, used=no, refs=0)
+      [variable] 'g' : int  (def: 113:9, init=yes, used=no, refs=0)
+      [variable] 'h' : int  (def: 114:9, init=yes, used=no, refs=0)
+      [variable] 'i' : int  (def: 115:9, init=yes, used=no, refs=0)
+      [variable] 'arr' : int[]  (def: 118:9, init=yes, used=yes, refs=2)
+      [variable] 'first' : int  (def: 119:9, init=yes, used=no, refs=0)
+      [variable] 'last' : int  (def: 120:9, init=yes, used=no, refs=0)
+      [variable] 'sum' : int  (def: 123:9, init=yes, used=yes, refs=1)
+      [variable] 'fact' : int  (def: 124:9, init=yes, used=yes, refs=1)
+      [variable] 'p1' : struct Point  (def: 127:18, init=yes, used=yes, refs=2)
+      [variable] 'px' : int  (def: 128:9, init=yes, used=yes, refs=1)
+      [variable] 'py' : int  (def: 129:9, init=yes, used=yes, refs=1)
+      [variable] 'x1' : int  (def: 137:9, init=yes, used=no, refs=0)
+      [variable] 'x2' : int  (def: 137:17, init=yes, used=no, refs=0)
+      [variable] 'x3' : int  (def: 137:25, init=yes, used=no, refs=0)
+  Scope: function
+    [parameter] 'arr' : int[]  (def: 147:20, init=yes, used=yes, refs=1)
+    [parameter] 'size' : int  (def: 147:31, init=yes, used=yes, refs=1)
+    [parameter] 'target' : int  (def: 147:41, init=yes, used=yes, refs=1)
+    Scope: block
+      Scope: for_loop
+        [variable] 'i' : int  (def: 148:14, init=yes, used=yes, refs=5)
         Scope: block
           Scope: block
+  Scope: function
+    Scope: block
+  Scope: function
+    Scope: block
+      [variable] 'x' : int  (def: 164:9, init=yes, used=yes, refs=1)
+      [variable] 'y' : int  (def: 165:9, init=yes, used=yes, refs=1)
+      [variable] 'z' : int  (def: 166:9, init=yes, used=no, refs=0)
+      [variable] 'p' : struct Point  (def: 169:18, init=yes, used=no, refs=0)
+      [variable] 'result' : int  (def: 173:9, init=yes, used=yes, refs=1)
+      [variable] 'fact' : int  (def: 174:9, init=yes, used=no, refs=0)
+      [variable] 'i' : int  (def: 186:9, init=yes, used=yes, refs=4)
+      Scope: block
+      Scope: block
+      Scope: block
+        Scope: block
+      Scope: for_loop
+        [variable] 'j' : int  (def: 196:14, init=yes, used=yes, refs=4)
+        Scope: block
           Scope: block
-      Scope: block
   Scope: function
-    [parameter] 'n' : int  (def: 65:22, init=yes, used=yes, refs=5)
+    [parameter] 'a' : int  (def: 208:13, init=yes, used=yes, refs=1)
+    [parameter] 'b' : int  (def: 208:20, init=yes, used=yes, refs=1)
     Scope: block
-      [variable] 'a' : int  (def: 69:9, init=yes, used=yes, refs=1)
-      [variable] 'b' : int  (def: 70:9, init=yes, used=yes, refs=1)
-      [variable] 'c' : int  (def: 71:9, init=yes, used=yes, refs=1)
-      Scope: block
   Scope: function
-    [parameter] 'arr' : int*  (def: 75:25, init=yes, used=yes, refs=2)
-    [parameter] 'size' : int  (def: 75:34, init=yes, used=yes, refs=1)
+    [parameter] 'p' : struct Point  (def: 213:31, init=yes, used=yes, refs=2)
     Scope: block
-      [variable] 'i' : int  (def: 76:9, init=yes, used=yes, refs=5)
-      Scope: block
-  Scope: function
-    Scope: block
-      [variable] 'a' : int  (def: 84:9, init=yes, used=yes, refs=2)
-      [variable] 'b' : int  (def: 85:9, init=yes, used=yes, refs=2)
-      [variable] 'flag' : int  (def: 86:9, init=yes, used=yes, refs=1)
-      [variable] 'arr' : int[]  (def: 87:9, init=yes, used=yes, refs=1)
-      [variable] 'p1' : struct Point  (def: 88:18, init=no, used=yes, refs=2)
-      [variable] 'sum' : int  (def: 92:9, init=yes, used=yes, refs=2)
-      [variable] 'prod' : int  (def: 93:9, init=yes, used=yes, refs=2)
-      [variable] 'fact' : int  (def: 94:9, init=yes, used=yes, refs=1)
-      [variable] 'fib' : int  (def: 95:9, init=yes, used=yes, refs=1)
-      [variable] 'comp' : int  (def: 97:9, init=yes, used=yes, refs=1)
-      [variable] 'nested' : int  (def: 98:9, init=yes, used=yes, refs=1)
+      [variable] 'dummy' : int  (def: 215:9, init=yes, used=no, refs=0)
 ======================================================================

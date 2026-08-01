@@ -1,31 +1,25 @@
 {
-  "add": [],
-  "multiply": [],
   "factorial": [
     "factorial"
   ],
-  "fibonacci": [
-    "fibonacci"
+  "increment_point": [],
+  "sum_array": [],
+  "count_even": [],
+  "is_in_range": [],
+  "power": [
+    "power"
   ],
-  "compute": [
-    "multiply",
+  "expression_demo": [
+    "factorial",
     "add"
   ],
-  "nested_calls": [
-    "nested_calls",
-    "fibonacci",
-    "compute",
-    "factorial"
-  ],
-  "process_array": [],
+  "find_first": [],
+  "do_nothing": [],
   "main": [
-    "printf",
-    "compute",
     "factorial",
-    "nested_calls",
-    "multiply",
-    "add",
-    "process_array",
-    "fibonacci"
-  ]
+    "do_nothing",
+    "add"
+  ],
+  "add": [],
+  "print_point": []
 }

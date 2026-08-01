@@ -8,18 +8,10 @@
         "type": "int",
         "scope": "global",
         "definition_loc": "<builtin>:0:0",
-        "references": [
-          "test_code.c:102:5",
-          "test_code.c:103:5",
-          "test_code.c:104:5",
-          "test_code.c:105:5",
-          "test_code.c:106:5",
-          "test_code.c:107:5",
-          "test_code.c:108:5"
-        ],
+        "references": [],
         "signature": "(...) -> int",
         "is_initialized": false,
-        "is_used": true
+        "is_used": false
       },
       "scanf": {
         "name": "scanf",
@@ -54,65 +46,137 @@
         "is_initialized": false,
         "is_used": false
       },
-      "global_counter": {
-        "name": "global_counter",
-        "kind": "variable",
-        "type": "int",
-        "scope": "global",
-        "definition_loc": "test_code.c:3:5",
-        "references": [
-          "test_code.c:61:5",
-          "test_code.c:61:22",
-          "test_code.c:108:36"
-        ],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": true
-      },
       "Point": {
         "name": "Point",
         "kind": "struct",
         "type": "struct Point",
         "scope": "global",
-        "definition_loc": "test_code.c:5:8",
+        "definition_loc": "test_code.c:7:8",
         "references": [
-          "test_code.c:5:8",
-          "test_code.c:35:18",
-          "test_code.c:88:18"
+          "test_code.c:7:8",
+          "test_code.c:26:31",
+          "test_code.c:27:15",
+          "test_code.c:39:36",
+          "test_code.c:127:18",
+          "test_code.c:169:18",
+          "test_code.c:213:31"
         ],
         "signature": null,
         "is_initialized": false,
         "is_used": true
+      },
+      "Node": {
+        "name": "Node",
+        "kind": "struct",
+        "type": "struct Node",
+        "scope": "global",
+        "definition_loc": "test_code.c:13:8",
+        "references": [
+          "test_code.c:15:18",
+          "test_code.c:13:8"
+        ],
+        "signature": null,
+        "is_initialized": false,
+        "is_used": true
+      },
+      "global_counter": {
+        "name": "global_counter",
+        "kind": "variable",
+        "type": "int",
+        "scope": "global",
+        "definition_loc": "test_code.c:19:5",
+        "references": [],
+        "signature": null,
+        "is_initialized": false,
+        "is_used": false
+      },
+      "pi": {
+        "name": "pi",
+        "kind": "variable",
+        "type": "float",
+        "scope": "global",
+        "definition_loc": "test_code.c:20:7",
+        "references": [],
+        "signature": null,
+        "is_initialized": false,
+        "is_used": false
+      },
+      "message": {
+        "name": "message",
+        "kind": "variable",
+        "type": "char*",
+        "scope": "global",
+        "definition_loc": "test_code.c:21:7",
+        "references": [],
+        "signature": null,
+        "is_initialized": false,
+        "is_used": false
+      },
+      "precision": {
+        "name": "precision",
+        "kind": "variable",
+        "type": "double",
+        "scope": "global",
+        "definition_loc": "test_code.c:22:8",
+        "references": [],
+        "signature": null,
+        "is_initialized": false,
+        "is_used": false
       },
       "add": {
         "name": "add",
         "kind": "function",
         "type": "int",
         "scope": "global",
-        "definition_loc": "test_code.c:10:5",
+        "definition_loc": "test_code.c:25:5",
         "references": [
-          "test_code.c:10:5",
-          "test_code.c:40:16",
-          "test_code.c:44:18",
-          "test_code.c:92:15"
+          "test_code.c:25:5",
+          "test_code.c:123:15",
+          "test_code.c:173:18",
+          "test_code.c:208:5"
         ],
         "signature": "(int, int) -> int",
         "is_initialized": false,
         "is_used": true
       },
-      "multiply": {
-        "name": "multiply",
+      "print_point": {
+        "name": "print_point",
+        "kind": "function",
+        "type": "void",
+        "scope": "global",
+        "definition_loc": "test_code.c:26:6",
+        "references": [
+          "test_code.c:26:6",
+          "test_code.c:213:6"
+        ],
+        "signature": "(struct Point) -> void",
+        "is_initialized": false,
+        "is_used": true
+      },
+      "create_point": {
+        "name": "create_point",
+        "kind": "function",
+        "type": "struct Point",
+        "scope": "global",
+        "definition_loc": "test_code.c:27:15",
+        "references": [
+          "test_code.c:27:15"
+        ],
+        "signature": "(int, int) -> struct Point",
+        "is_initialized": false,
+        "is_used": true
+      },
+      "sum_array": {
+        "name": "sum_array",
         "kind": "function",
         "type": "int",
         "scope": "global",
-        "definition_loc": "test_code.c:14:5",
+        "definition_loc": "test_code.c:28:5",
         "references": [
-          "test_code.c:14:5",
-          "test_code.c:41:18",
-          "test_code.c:43:16",
-          "test_code.c:93:16"
+          "test_code.c:28:5",
+          "test_code.c:45:5"
         ],
-        "signature": "(int, int) -> int",
+        "signature": "(int[], int) -> int",
         "is_initialized": false,
         "is_used": true
       },
@@ -121,75 +185,110 @@
         "kind": "function",
         "type": "int",
         "scope": "global",
-        "definition_loc": "test_code.c:18:5",
+        "definition_loc": "test_code.c:31:5",
         "references": [
-          "test_code.c:18:5",
-          "test_code.c:22:16",
-          "test_code.c:69:13",
-          "test_code.c:94:16"
+          "test_code.c:31:5",
+          "test_code.c:35:16",
+          "test_code.c:124:16",
+          "test_code.c:174:16"
         ],
         "signature": "(int) -> int",
         "is_initialized": false,
         "is_used": true
       },
-      "fibonacci": {
-        "name": "fibonacci",
+      "increment_point": {
+        "name": "increment_point",
         "kind": "function",
-        "type": "int",
+        "type": "void",
         "scope": "global",
-        "definition_loc": "test_code.c:25:5",
+        "definition_loc": "test_code.c:39:6",
         "references": [
-          "test_code.c:25:5",
-          "test_code.c:29:12",
-          "test_code.c:29:31",
-          "test_code.c:70:13",
-          "test_code.c:95:15"
+          "test_code.c:39:6"
         ],
-        "signature": "(int) -> int",
+        "signature": "(struct Point*) -> void",
         "is_initialized": false,
         "is_used": true
       },
-      "compute": {
-        "name": "compute",
+      "count_even": {
+        "name": "count_even",
         "kind": "function",
         "type": "int",
         "scope": "global",
-        "definition_loc": "test_code.c:32:5",
+        "definition_loc": "test_code.c:54:5",
         "references": [
-          "test_code.c:32:5",
-          "test_code.c:71:13",
-          "test_code.c:97:16"
+          "test_code.c:54:5"
+        ],
+        "signature": "(int[], int) -> int",
+        "is_initialized": false,
+        "is_used": true
+      },
+      "is_in_range": {
+        "name": "is_in_range",
+        "kind": "function",
+        "type": "int",
+        "scope": "global",
+        "definition_loc": "test_code.c:71:5",
+        "references": [
+          "test_code.c:71:5"
         ],
         "signature": "(int, int, int) -> int",
         "is_initialized": false,
         "is_used": true
       },
-      "nested_calls": {
-        "name": "nested_calls",
+      "power": {
+        "name": "power",
         "kind": "function",
         "type": "int",
         "scope": "global",
-        "definition_loc": "test_code.c:65:5",
+        "definition_loc": "test_code.c:84:5",
         "references": [
-          "test_code.c:65:5",
-          "test_code.c:72:16",
-          "test_code.c:98:18"
+          "test_code.c:84:5",
+          "test_code.c:88:19"
         ],
-        "signature": "(int) -> int",
+        "signature": "(int, int) -> int",
         "is_initialized": false,
         "is_used": true
       },
-      "process_array": {
-        "name": "process_array",
+      "expression_demo": {
+        "name": "expression_demo",
+        "kind": "function",
+        "type": "int",
+        "scope": "global",
+        "definition_loc": "test_code.c:92:5",
+        "references": [
+          "test_code.c:92:5"
+        ],
+        "signature": "() -> int",
+        "is_initialized": false,
+        "is_used": true
+      },
+      "find_first": {
+        "name": "find_first",
+        "kind": "function",
+        "type": "int",
+        "scope": "global",
+        "definition_loc": "test_code.c:147:5",
+        "references": [
+          "test_code.c:147:5"
+        ],
+        "signature": "(int[], int, int) -> int",
+        "is_initialized": false,
+        "is_used": true
+      },
+      "do_nothing": {
+        "name": "do_nothing",
         "kind": "function",
         "type": "void",
         "scope": "global",
-        "definition_loc": "test_code.c:75:6",
+        "definition_loc": "test_code.c:157:6",
         "references": [
-          "test_code.c:75:6",
-          "test_code.c:100:5"
+          "test_code.c:157:6",
+          "test_code.c:180:9",
+          "test_code.c:182:9",
+          "test_code.c:192:9",
+          "test_code.c:200:9"
         ],
-        "signature": "(int*, int) -> void",
+        "signature": "() -> void",
         "is_initialized": false,
         "is_used": true
       },
@@ -198,9 +297,9 @@
         "kind": "function",
         "type": "int",
         "scope": "global",
-        "definition_loc": "test_code.c:83:5",
+        "definition_loc": "test_code.c:162:5",
         "references": [
-          "test_code.c:83:5"
+          "test_code.c:162:5"
         ],
         "signature": "() -> int",
         "is_initialized": false,
@@ -216,7 +315,7 @@
             "kind": "field",
             "type": "int",
             "scope": "struct",
-            "definition_loc": "test_code.c:6:9",
+            "definition_loc": "test_code.c:8:9",
             "references": [],
             "signature": null,
             "is_initialized": false,
@@ -227,7 +326,35 @@
             "kind": "field",
             "type": "int",
             "scope": "struct",
-            "definition_loc": "test_code.c:7:9",
+            "definition_loc": "test_code.c:9:9",
+            "references": [],
+            "signature": null,
+            "is_initialized": false,
+            "is_used": false
+          }
+        },
+        "children": []
+      },
+      {
+        "type": "struct",
+        "symbols": {
+          "value": {
+            "name": "value",
+            "kind": "field",
+            "type": "int",
+            "scope": "struct",
+            "definition_loc": "test_code.c:14:9",
+            "references": [],
+            "signature": null,
+            "is_initialized": false,
+            "is_used": false
+          },
+          "next": {
+            "name": "next",
+            "kind": "field",
+            "type": "struct Node*",
+            "scope": "struct",
+            "definition_loc": "test_code.c:15:18",
             "references": [],
             "signature": null,
             "is_initialized": false,
@@ -239,92 +366,16 @@
       {
         "type": "function",
         "symbols": {
-          "a": {
-            "name": "a",
-            "kind": "parameter",
-            "type": "int",
-            "scope": "function",
-            "definition_loc": "test_code.c:10:13",
-            "references": [
-              "test_code.c:11:12"
-            ],
-            "signature": null,
-            "is_initialized": true,
-            "is_used": true
-          },
-          "b": {
-            "name": "b",
-            "kind": "parameter",
-            "type": "int",
-            "scope": "function",
-            "definition_loc": "test_code.c:10:20",
-            "references": [
-              "test_code.c:11:16"
-            ],
-            "signature": null,
-            "is_initialized": true,
-            "is_used": true
-          }
-        },
-        "children": [
-          {
-            "type": "block",
-            "symbols": {},
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "function",
-        "symbols": {
-          "a": {
-            "name": "a",
-            "kind": "parameter",
-            "type": "int",
-            "scope": "function",
-            "definition_loc": "test_code.c:14:18",
-            "references": [
-              "test_code.c:15:12"
-            ],
-            "signature": null,
-            "is_initialized": true,
-            "is_used": true
-          },
-          "b": {
-            "name": "b",
-            "kind": "parameter",
-            "type": "int",
-            "scope": "function",
-            "definition_loc": "test_code.c:14:25",
-            "references": [
-              "test_code.c:15:16"
-            ],
-            "signature": null,
-            "is_initialized": true,
-            "is_used": true
-          }
-        },
-        "children": [
-          {
-            "type": "block",
-            "symbols": {},
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "function",
-        "symbols": {
           "n": {
             "name": "n",
             "kind": "parameter",
             "type": "int",
             "scope": "function",
-            "definition_loc": "test_code.c:18:19",
+            "definition_loc": "test_code.c:31:19",
             "references": [
-              "test_code.c:19:9",
-              "test_code.c:22:12",
-              "test_code.c:22:26"
+              "test_code.c:32:9",
+              "test_code.c:35:12",
+              "test_code.c:35:26"
             ],
             "signature": null,
             "is_initialized": true,
@@ -348,17 +399,15 @@
       {
         "type": "function",
         "symbols": {
-          "n": {
-            "name": "n",
+          "p": {
+            "name": "p",
             "kind": "parameter",
-            "type": "int",
+            "type": "struct Point*",
             "scope": "function",
-            "definition_loc": "test_code.c:25:19",
+            "definition_loc": "test_code.c:39:36",
             "references": [
-              "test_code.c:26:9",
-              "test_code.c:27:16",
-              "test_code.c:29:22",
-              "test_code.c:29:41"
+              "test_code.c:40:5",
+              "test_code.c:41:7"
             ],
             "signature": null,
             "is_initialized": true,
@@ -369,57 +418,34 @@
           {
             "type": "block",
             "symbols": {},
-            "children": [
-              {
-                "type": "block",
-                "symbols": {},
-                "children": []
-              }
-            ]
+            "children": []
           }
         ]
       },
       {
         "type": "function",
         "symbols": {
-          "x": {
-            "name": "x",
+          "arr": {
+            "name": "arr",
             "kind": "parameter",
-            "type": "int",
+            "type": "int[]",
             "scope": "function",
-            "definition_loc": "test_code.c:32:17",
+            "definition_loc": "test_code.c:45:19",
             "references": [
-              "test_code.c:36:11",
-              "test_code.c:40:20",
-              "test_code.c:43:25"
+              "test_code.c:48:21"
             ],
             "signature": null,
             "is_initialized": true,
             "is_used": true
           },
-          "y": {
-            "name": "y",
+          "size": {
+            "name": "size",
             "kind": "parameter",
             "type": "int",
             "scope": "function",
-            "definition_loc": "test_code.c:32:24",
+            "definition_loc": "test_code.c:45:30",
             "references": [
-              "test_code.c:37:11",
-              "test_code.c:40:23",
-              "test_code.c:43:28"
-            ],
-            "signature": null,
-            "is_initialized": true,
-            "is_used": true
-          },
-          "flag": {
-            "name": "flag",
-            "kind": "parameter",
-            "type": "int",
-            "scope": "function",
-            "definition_loc": "test_code.c:32:31",
-            "references": [
-              "test_code.c:39:9"
+              "test_code.c:47:25"
             ],
             "signature": null,
             "is_initialized": true,
@@ -430,69 +456,16 @@
           {
             "type": "block",
             "symbols": {
-              "result": {
-                "name": "result",
+              "sum": {
+                "name": "sum",
                 "kind": "variable",
                 "type": "int",
                 "scope": "block",
-                "definition_loc": "test_code.c:33:9",
+                "definition_loc": "test_code.c:46:9",
                 "references": [
-                  "test_code.c:41:9",
-                  "test_code.c:44:9",
-                  "test_code.c:49:13",
-                  "test_code.c:49:22",
-                  "test_code.c:51:13",
-                  "test_code.c:51:22",
-                  "test_code.c:57:9",
-                  "test_code.c:57:18",
-                  "test_code.c:61:39",
-                  "test_code.c:62:12"
-                ],
-                "signature": null,
-                "is_initialized": true,
-                "is_used": true
-              },
-              "temp": {
-                "name": "temp",
-                "kind": "variable",
-                "type": "int",
-                "scope": "block",
-                "definition_loc": "test_code.c:34:9",
-                "references": [
-                  "test_code.c:40:9",
-                  "test_code.c:41:27",
-                  "test_code.c:43:9",
-                  "test_code.c:44:22"
-                ],
-                "signature": null,
-                "is_initialized": true,
-                "is_used": true
-              },
-              "p": {
-                "name": "p",
-                "kind": "variable",
-                "type": "struct Point",
-                "scope": "block",
-                "definition_loc": "test_code.c:35:18",
-                "references": [
-                  "test_code.c:36:5",
-                  "test_code.c:37:5"
-                ],
-                "signature": null,
-                "is_initialized": false,
-                "is_used": true
-              },
-              "j": {
-                "name": "j",
-                "kind": "variable",
-                "type": "int",
-                "scope": "block",
-                "definition_loc": "test_code.c:55:9",
-                "references": [
-                  "test_code.c:56:12",
-                  "test_code.c:57:27",
-                  "test_code.c:58:9",
-                  "test_code.c:58:13"
+                  "test_code.c:48:9",
+                  "test_code.c:48:15",
+                  "test_code.c:50:12"
                 ],
                 "signature": null,
                 "is_initialized": true,
@@ -500,16 +473,6 @@
               }
             },
             "children": [
-              {
-                "type": "block",
-                "symbols": {},
-                "children": []
-              },
-              {
-                "type": "block",
-                "symbols": {},
-                "children": []
-              },
               {
                 "type": "for_loop",
                 "symbols": {
@@ -521,11 +484,9 @@
                     "definition_loc": "test_code.c:47:14",
                     "references": [
                       "test_code.c:47:21",
-                      "test_code.c:47:28",
-                      "test_code.c:47:32",
-                      "test_code.c:48:13",
-                      "test_code.c:49:31",
-                      "test_code.c:51:31"
+                      "test_code.c:47:31",
+                      "test_code.c:47:35",
+                      "test_code.c:48:25"
                     ],
                     "signature": null,
                     "is_initialized": true,
@@ -536,100 +497,9 @@
                   {
                     "type": "block",
                     "symbols": {},
-                    "children": [
-                      {
-                        "type": "block",
-                        "symbols": {},
-                        "children": []
-                      },
-                      {
-                        "type": "block",
-                        "symbols": {},
-                        "children": []
-                      }
-                    ]
+                    "children": []
                   }
                 ]
-              },
-              {
-                "type": "block",
-                "symbols": {},
-                "children": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "type": "function",
-        "symbols": {
-          "n": {
-            "name": "n",
-            "kind": "parameter",
-            "type": "int",
-            "scope": "function",
-            "definition_loc": "test_code.c:65:22",
-            "references": [
-              "test_code.c:66:9",
-              "test_code.c:69:23",
-              "test_code.c:70:23",
-              "test_code.c:71:27",
-              "test_code.c:72:29"
-            ],
-            "signature": null,
-            "is_initialized": true,
-            "is_used": true
-          }
-        },
-        "children": [
-          {
-            "type": "block",
-            "symbols": {
-              "a": {
-                "name": "a",
-                "kind": "variable",
-                "type": "int",
-                "scope": "block",
-                "definition_loc": "test_code.c:69:9",
-                "references": [
-                  "test_code.c:71:21"
-                ],
-                "signature": null,
-                "is_initialized": true,
-                "is_used": true
-              },
-              "b": {
-                "name": "b",
-                "kind": "variable",
-                "type": "int",
-                "scope": "block",
-                "definition_loc": "test_code.c:70:9",
-                "references": [
-                  "test_code.c:71:24"
-                ],
-                "signature": null,
-                "is_initialized": true,
-                "is_used": true
-              },
-              "c": {
-                "name": "c",
-                "kind": "variable",
-                "type": "int",
-                "scope": "block",
-                "definition_loc": "test_code.c:71:9",
-                "references": [
-                  "test_code.c:72:12"
-                ],
-                "signature": null,
-                "is_initialized": true,
-                "is_used": true
-              }
-            },
-            "children": [
-              {
-                "type": "block",
-                "symbols": {},
-                "children": []
               }
             ]
           }
@@ -641,12 +511,12 @@
           "arr": {
             "name": "arr",
             "kind": "parameter",
-            "type": "int*",
+            "type": "int[]",
             "scope": "function",
-            "definition_loc": "test_code.c:75:25",
+            "definition_loc": "test_code.c:54:20",
             "references": [
-              "test_code.c:78:9",
-              "test_code.c:78:18"
+              "test_code.c:58:13",
+              "test_code.c:62:13"
             ],
             "signature": null,
             "is_initialized": true,
@@ -657,9 +527,9 @@
             "kind": "parameter",
             "type": "int",
             "scope": "function",
-            "definition_loc": "test_code.c:75:34",
+            "definition_loc": "test_code.c:54:31",
             "references": [
-              "test_code.c:77:16"
+              "test_code.c:57:16"
             ],
             "signature": null,
             "is_initialized": true,
@@ -670,24 +540,150 @@
           {
             "type": "block",
             "symbols": {
+              "count": {
+                "name": "count",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:55:9",
+                "references": [
+                  "test_code.c:63:13",
+                  "test_code.c:63:21",
+                  "test_code.c:67:12"
+                ],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": true
+              },
               "i": {
                 "name": "i",
                 "kind": "variable",
                 "type": "int",
                 "scope": "block",
-                "definition_loc": "test_code.c:76:9",
+                "definition_loc": "test_code.c:56:9",
                 "references": [
-                  "test_code.c:77:12",
-                  "test_code.c:78:13",
-                  "test_code.c:78:22",
-                  "test_code.c:79:9",
-                  "test_code.c:79:13"
+                  "test_code.c:57:12",
+                  "test_code.c:58:17",
+                  "test_code.c:59:13",
+                  "test_code.c:59:17",
+                  "test_code.c:62:17",
+                  "test_code.c:65:9",
+                  "test_code.c:65:13"
                 ],
                 "signature": null,
                 "is_initialized": true,
                 "is_used": true
               }
             },
+            "children": [
+              {
+                "type": "block",
+                "symbols": {},
+                "children": [
+                  {
+                    "type": "block",
+                    "symbols": {},
+                    "children": []
+                  },
+                  {
+                    "type": "block",
+                    "symbols": {},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "function",
+        "symbols": {
+          "value": {
+            "name": "value",
+            "kind": "parameter",
+            "type": "int",
+            "scope": "function",
+            "definition_loc": "test_code.c:71:21",
+            "references": [
+              "test_code.c:72:13",
+              "test_code.c:72:31"
+            ],
+            "signature": null,
+            "is_initialized": true,
+            "is_used": true
+          },
+          "low": {
+            "name": "low",
+            "kind": "parameter",
+            "type": "int",
+            "scope": "function",
+            "definition_loc": "test_code.c:71:32",
+            "references": [
+              "test_code.c:72:22"
+            ],
+            "signature": null,
+            "is_initialized": true,
+            "is_used": true
+          },
+          "high": {
+            "name": "high",
+            "kind": "parameter",
+            "type": "int",
+            "scope": "function",
+            "definition_loc": "test_code.c:71:41",
+            "references": [
+              "test_code.c:72:40"
+            ],
+            "signature": null,
+            "is_initialized": true,
+            "is_used": true
+          }
+        },
+        "children": [
+          {
+            "type": "block",
+            "symbols": {},
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "function",
+        "symbols": {
+          "base": {
+            "name": "base",
+            "kind": "parameter",
+            "type": "int",
+            "scope": "function",
+            "definition_loc": "test_code.c:84:15",
+            "references": [
+              "test_code.c:88:12",
+              "test_code.c:88:25"
+            ],
+            "signature": null,
+            "is_initialized": true,
+            "is_used": true
+          },
+          "exp": {
+            "name": "exp",
+            "kind": "parameter",
+            "type": "int",
+            "scope": "function",
+            "definition_loc": "test_code.c:84:25",
+            "references": [
+              "test_code.c:85:9",
+              "test_code.c:88:31"
+            ],
+            "signature": null,
+            "is_initialized": true,
+            "is_used": true
+          }
+        },
+        "children": [
+          {
+            "type": "block",
+            "symbols": {},
             "children": [
               {
                 "type": "block",
@@ -710,10 +706,16 @@
                 "kind": "variable",
                 "type": "int",
                 "scope": "block",
-                "definition_loc": "test_code.c:84:9",
+                "definition_loc": "test_code.c:93:9",
                 "references": [
-                  "test_code.c:92:19",
-                  "test_code.c:93:25"
+                  "test_code.c:98:9",
+                  "test_code.c:101:17",
+                  "test_code.c:101:40",
+                  "test_code.c:104:5",
+                  "test_code.c:110:14",
+                  "test_code.c:113:16",
+                  "test_code.c:114:15",
+                  "test_code.c:123:19"
                 ],
                 "signature": null,
                 "is_initialized": true,
@@ -724,13 +726,33 @@
                 "kind": "variable",
                 "type": "int",
                 "scope": "block",
-                "definition_loc": "test_code.c:85:9",
+                "definition_loc": "test_code.c:94:9",
                 "references": [
-                  "test_code.c:92:22",
-                  "test_code.c:93:28"
+                  "test_code.c:98:13",
+                  "test_code.c:101:21",
+                  "test_code.c:101:28",
+                  "test_code.c:105:5",
+                  "test_code.c:111:14",
+                  "test_code.c:115:13",
+                  "test_code.c:123:22"
                 ],
                 "signature": null,
                 "is_initialized": true,
+                "is_used": true
+              },
+              "c": {
+                "name": "c",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:95:9",
+                "references": [
+                  "test_code.c:98:5",
+                  "test_code.c:106:5",
+                  "test_code.c:107:5"
+                ],
+                "signature": null,
+                "is_initialized": false,
                 "is_used": true
               },
               "flag": {
@@ -738,64 +760,124 @@
                 "kind": "variable",
                 "type": "int",
                 "scope": "block",
-                "definition_loc": "test_code.c:86:9",
+                "definition_loc": "test_code.c:101:9",
                 "references": [
-                  "test_code.c:97:35"
+                  "test_code.c:112:14"
                 ],
                 "signature": null,
                 "is_initialized": true,
                 "is_used": true
+              },
+              "d": {
+                "name": "d",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:110:9",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
+              },
+              "e": {
+                "name": "e",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:111:9",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
+              },
+              "f": {
+                "name": "f",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:112:9",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
+              },
+              "g": {
+                "name": "g",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:113:9",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
+              },
+              "h": {
+                "name": "h",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:114:9",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
+              },
+              "i": {
+                "name": "i",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:115:9",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
               },
               "arr": {
                 "name": "arr",
                 "kind": "variable",
                 "type": "int[]",
                 "scope": "block",
-                "definition_loc": "test_code.c:87:9",
+                "definition_loc": "test_code.c:118:9",
                 "references": [
-                  "test_code.c:100:19"
+                  "test_code.c:119:17",
+                  "test_code.c:120:16"
                 ],
                 "signature": null,
                 "is_initialized": true,
                 "is_used": true
               },
-              "p1": {
-                "name": "p1",
+              "first": {
+                "name": "first",
                 "kind": "variable",
-                "type": "struct Point",
+                "type": "int",
                 "scope": "block",
-                "definition_loc": "test_code.c:88:18",
-                "references": [
-                  "test_code.c:89:5",
-                  "test_code.c:90:5"
-                ],
+                "definition_loc": "test_code.c:119:9",
+                "references": [],
                 "signature": null,
-                "is_initialized": false,
-                "is_used": true
+                "is_initialized": true,
+                "is_used": false
+              },
+              "last": {
+                "name": "last",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:120:9",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
               },
               "sum": {
                 "name": "sum",
                 "kind": "variable",
                 "type": "int",
                 "scope": "block",
-                "definition_loc": "test_code.c:92:9",
+                "definition_loc": "test_code.c:123:9",
                 "references": [
-                  "test_code.c:97:24",
-                  "test_code.c:102:25"
-                ],
-                "signature": null,
-                "is_initialized": true,
-                "is_used": true
-              },
-              "prod": {
-                "name": "prod",
-                "kind": "variable",
-                "type": "int",
-                "scope": "block",
-                "definition_loc": "test_code.c:93:9",
-                "references": [
-                  "test_code.c:97:29",
-                  "test_code.c:103:29"
+                  "test_code.c:143:23"
                 ],
                 "signature": null,
                 "is_initialized": true,
@@ -806,52 +888,416 @@
                 "kind": "variable",
                 "type": "int",
                 "scope": "block",
-                "definition_loc": "test_code.c:94:9",
+                "definition_loc": "test_code.c:124:9",
                 "references": [
-                  "test_code.c:104:34"
+                  "test_code.c:143:29"
                 ],
                 "signature": null,
                 "is_initialized": true,
                 "is_used": true
               },
-              "fib": {
-                "name": "fib",
+              "p1": {
+                "name": "p1",
                 "kind": "variable",
-                "type": "int",
+                "type": "struct Point",
                 "scope": "block",
-                "definition_loc": "test_code.c:95:9",
+                "definition_loc": "test_code.c:127:18",
                 "references": [
-                  "test_code.c:105:34"
+                  "test_code.c:128:14",
+                  "test_code.c:129:14"
                 ],
                 "signature": null,
                 "is_initialized": true,
                 "is_used": true
               },
-              "comp": {
-                "name": "comp",
+              "px": {
+                "name": "px",
                 "kind": "variable",
                 "type": "int",
                 "scope": "block",
-                "definition_loc": "test_code.c:97:9",
+                "definition_loc": "test_code.c:128:9",
                 "references": [
-                  "test_code.c:106:29"
+                  "test_code.c:143:12"
                 ],
                 "signature": null,
                 "is_initialized": true,
                 "is_used": true
               },
-              "nested": {
-                "name": "nested",
+              "py": {
+                "name": "py",
                 "kind": "variable",
                 "type": "int",
                 "scope": "block",
-                "definition_loc": "test_code.c:98:9",
+                "definition_loc": "test_code.c:129:9",
                 "references": [
-                  "test_code.c:107:28"
+                  "test_code.c:143:17"
                 ],
                 "signature": null,
                 "is_initialized": true,
                 "is_used": true
+              },
+              "x1": {
+                "name": "x1",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:137:9",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
+              },
+              "x2": {
+                "name": "x2",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:137:17",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
+              },
+              "x3": {
+                "name": "x3",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:137:25",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
+              }
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "function",
+        "symbols": {
+          "arr": {
+            "name": "arr",
+            "kind": "parameter",
+            "type": "int[]",
+            "scope": "function",
+            "definition_loc": "test_code.c:147:20",
+            "references": [
+              "test_code.c:149:13"
+            ],
+            "signature": null,
+            "is_initialized": true,
+            "is_used": true
+          },
+          "size": {
+            "name": "size",
+            "kind": "parameter",
+            "type": "int",
+            "scope": "function",
+            "definition_loc": "test_code.c:147:31",
+            "references": [
+              "test_code.c:148:25"
+            ],
+            "signature": null,
+            "is_initialized": true,
+            "is_used": true
+          },
+          "target": {
+            "name": "target",
+            "kind": "parameter",
+            "type": "int",
+            "scope": "function",
+            "definition_loc": "test_code.c:147:41",
+            "references": [
+              "test_code.c:149:23"
+            ],
+            "signature": null,
+            "is_initialized": true,
+            "is_used": true
+          }
+        },
+        "children": [
+          {
+            "type": "block",
+            "symbols": {},
+            "children": [
+              {
+                "type": "for_loop",
+                "symbols": {
+                  "i": {
+                    "name": "i",
+                    "kind": "variable",
+                    "type": "int",
+                    "scope": "for_loop",
+                    "definition_loc": "test_code.c:148:14",
+                    "references": [
+                      "test_code.c:148:21",
+                      "test_code.c:148:31",
+                      "test_code.c:148:35",
+                      "test_code.c:149:17",
+                      "test_code.c:150:20"
+                    ],
+                    "signature": null,
+                    "is_initialized": true,
+                    "is_used": true
+                  }
+                },
+                "children": [
+                  {
+                    "type": "block",
+                    "symbols": {},
+                    "children": [
+                      {
+                        "type": "block",
+                        "symbols": {},
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "function",
+        "symbols": {},
+        "children": [
+          {
+            "type": "block",
+            "symbols": {},
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "function",
+        "symbols": {},
+        "children": [
+          {
+            "type": "block",
+            "symbols": {
+              "x": {
+                "name": "x",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:164:9",
+                "references": [
+                  "test_code.c:173:22"
+                ],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": true
+              },
+              "y": {
+                "name": "y",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:165:9",
+                "references": [
+                  "test_code.c:173:25"
+                ],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": true
+              },
+              "z": {
+                "name": "z",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:166:9",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
+              },
+              "p": {
+                "name": "p",
+                "kind": "variable",
+                "type": "struct Point",
+                "scope": "block",
+                "definition_loc": "test_code.c:169:18",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
+              },
+              "result": {
+                "name": "result",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:173:9",
+                "references": [
+                  "test_code.c:179:9"
+                ],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": true
+              },
+              "fact": {
+                "name": "fact",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:174:9",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
+              },
+              "i": {
+                "name": "i",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:186:9",
+                "references": [
+                  "test_code.c:187:12",
+                  "test_code.c:188:9",
+                  "test_code.c:188:13",
+                  "test_code.c:189:13"
+                ],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": true
+              }
+            },
+            "children": [
+              {
+                "type": "block",
+                "symbols": {},
+                "children": []
+              },
+              {
+                "type": "block",
+                "symbols": {},
+                "children": []
+              },
+              {
+                "type": "block",
+                "symbols": {},
+                "children": [
+                  {
+                    "type": "block",
+                    "symbols": {},
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "type": "for_loop",
+                "symbols": {
+                  "j": {
+                    "name": "j",
+                    "kind": "variable",
+                    "type": "int",
+                    "scope": "for_loop",
+                    "definition_loc": "test_code.c:196:14",
+                    "references": [
+                      "test_code.c:196:21",
+                      "test_code.c:196:29",
+                      "test_code.c:196:33",
+                      "test_code.c:197:13"
+                    ],
+                    "signature": null,
+                    "is_initialized": true,
+                    "is_used": true
+                  }
+                },
+                "children": [
+                  {
+                    "type": "block",
+                    "symbols": {},
+                    "children": [
+                      {
+                        "type": "block",
+                        "symbols": {},
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "function",
+        "symbols": {
+          "a": {
+            "name": "a",
+            "kind": "parameter",
+            "type": "int",
+            "scope": "function",
+            "definition_loc": "test_code.c:208:13",
+            "references": [
+              "test_code.c:209:12"
+            ],
+            "signature": null,
+            "is_initialized": true,
+            "is_used": true
+          },
+          "b": {
+            "name": "b",
+            "kind": "parameter",
+            "type": "int",
+            "scope": "function",
+            "definition_loc": "test_code.c:208:20",
+            "references": [
+              "test_code.c:209:16"
+            ],
+            "signature": null,
+            "is_initialized": true,
+            "is_used": true
+          }
+        },
+        "children": [
+          {
+            "type": "block",
+            "symbols": {},
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "function",
+        "symbols": {
+          "p": {
+            "name": "p",
+            "kind": "parameter",
+            "type": "struct Point",
+            "scope": "function",
+            "definition_loc": "test_code.c:213:31",
+            "references": [
+              "test_code.c:215:17",
+              "test_code.c:215:23"
+            ],
+            "signature": null,
+            "is_initialized": true,
+            "is_used": true
+          }
+        },
+        "children": [
+          {
+            "type": "block",
+            "symbols": {
+              "dummy": {
+                "name": "dummy",
+                "kind": "variable",
+                "type": "int",
+                "scope": "block",
+                "definition_loc": "test_code.c:215:9",
+                "references": [],
+                "signature": null,
+                "is_initialized": true,
+                "is_used": false
               }
             },
             "children": []
@@ -867,18 +1313,10 @@
       "type": "int",
       "scope": "global",
       "definition_loc": "<builtin>:0:0",
-      "references": [
-        "test_code.c:102:5",
-        "test_code.c:103:5",
-        "test_code.c:104:5",
-        "test_code.c:105:5",
-        "test_code.c:106:5",
-        "test_code.c:107:5",
-        "test_code.c:108:5"
-      ],
+      "references": [],
       "signature": "(...) -> int",
       "is_initialized": false,
-      "is_used": true
+      "is_used": false
     },
     {
       "name": "scanf",
@@ -914,64 +1352,136 @@
       "is_used": false
     },
     {
-      "name": "global_counter",
-      "kind": "variable",
-      "type": "int",
+      "name": "Point",
+      "kind": "struct",
+      "type": "struct Point",
       "scope": "global",
-      "definition_loc": "test_code.c:3:5",
+      "definition_loc": "test_code.c:7:8",
       "references": [
-        "test_code.c:61:5",
-        "test_code.c:61:22",
-        "test_code.c:108:36"
+        "test_code.c:7:8",
+        "test_code.c:26:31",
+        "test_code.c:27:15",
+        "test_code.c:39:36",
+        "test_code.c:127:18",
+        "test_code.c:169:18",
+        "test_code.c:213:31"
       ],
       "signature": null,
       "is_initialized": false,
       "is_used": true
     },
     {
-      "name": "Point",
+      "name": "Node",
       "kind": "struct",
-      "type": "struct Point",
+      "type": "struct Node",
       "scope": "global",
-      "definition_loc": "test_code.c:5:8",
+      "definition_loc": "test_code.c:13:8",
       "references": [
-        "test_code.c:5:8",
-        "test_code.c:35:18",
-        "test_code.c:88:18"
+        "test_code.c:15:18",
+        "test_code.c:13:8"
       ],
       "signature": null,
       "is_initialized": false,
       "is_used": true
+    },
+    {
+      "name": "global_counter",
+      "kind": "variable",
+      "type": "int",
+      "scope": "global",
+      "definition_loc": "test_code.c:19:5",
+      "references": [],
+      "signature": null,
+      "is_initialized": false,
+      "is_used": false
+    },
+    {
+      "name": "pi",
+      "kind": "variable",
+      "type": "float",
+      "scope": "global",
+      "definition_loc": "test_code.c:20:7",
+      "references": [],
+      "signature": null,
+      "is_initialized": false,
+      "is_used": false
+    },
+    {
+      "name": "message",
+      "kind": "variable",
+      "type": "char*",
+      "scope": "global",
+      "definition_loc": "test_code.c:21:7",
+      "references": [],
+      "signature": null,
+      "is_initialized": false,
+      "is_used": false
+    },
+    {
+      "name": "precision",
+      "kind": "variable",
+      "type": "double",
+      "scope": "global",
+      "definition_loc": "test_code.c:22:8",
+      "references": [],
+      "signature": null,
+      "is_initialized": false,
+      "is_used": false
     },
     {
       "name": "add",
       "kind": "function",
       "type": "int",
       "scope": "global",
-      "definition_loc": "test_code.c:10:5",
+      "definition_loc": "test_code.c:25:5",
       "references": [
-        "test_code.c:10:5",
-        "test_code.c:40:16",
-        "test_code.c:44:18",
-        "test_code.c:92:15"
+        "test_code.c:25:5",
+        "test_code.c:123:15",
+        "test_code.c:173:18",
+        "test_code.c:208:5"
       ],
       "signature": "(int, int) -> int",
       "is_initialized": false,
       "is_used": true
     },
     {
-      "name": "multiply",
+      "name": "print_point",
+      "kind": "function",
+      "type": "void",
+      "scope": "global",
+      "definition_loc": "test_code.c:26:6",
+      "references": [
+        "test_code.c:26:6",
+        "test_code.c:213:6"
+      ],
+      "signature": "(struct Point) -> void",
+      "is_initialized": false,
+      "is_used": true
+    },
+    {
+      "name": "create_point",
+      "kind": "function",
+      "type": "struct Point",
+      "scope": "global",
+      "definition_loc": "test_code.c:27:15",
+      "references": [
+        "test_code.c:27:15"
+      ],
+      "signature": "(int, int) -> struct Point",
+      "is_initialized": false,
+      "is_used": true
+    },
+    {
+      "name": "sum_array",
       "kind": "function",
       "type": "int",
       "scope": "global",
-      "definition_loc": "test_code.c:14:5",
+      "definition_loc": "test_code.c:28:5",
       "references": [
-        "test_code.c:14:5",
-        "test_code.c:41:18",
-        "test_code.c:43:16",
-        "test_code.c:93:16"
+        "test_code.c:28:5",
+        "test_code.c:45:5"
       ],
-      "signature": "(int, int) -> int",
+      "signature": "(int[], int) -> int",
       "is_initialized": false,
       "is_used": true
     },
@@ -980,75 +1490,110 @@
       "kind": "function",
       "type": "int",
       "scope": "global",
-      "definition_loc": "test_code.c:18:5",
+      "definition_loc": "test_code.c:31:5",
       "references": [
-        "test_code.c:18:5",
-        "test_code.c:22:16",
-        "test_code.c:69:13",
-        "test_code.c:94:16"
+        "test_code.c:31:5",
+        "test_code.c:35:16",
+        "test_code.c:124:16",
+        "test_code.c:174:16"
       ],
       "signature": "(int) -> int",
       "is_initialized": false,
       "is_used": true
     },
     {
-      "name": "fibonacci",
+      "name": "increment_point",
       "kind": "function",
-      "type": "int",
+      "type": "void",
       "scope": "global",
-      "definition_loc": "test_code.c:25:5",
+      "definition_loc": "test_code.c:39:6",
       "references": [
-        "test_code.c:25:5",
-        "test_code.c:29:12",
-        "test_code.c:29:31",
-        "test_code.c:70:13",
-        "test_code.c:95:15"
+        "test_code.c:39:6"
       ],
-      "signature": "(int) -> int",
+      "signature": "(struct Point*) -> void",
       "is_initialized": false,
       "is_used": true
     },
     {
-      "name": "compute",
+      "name": "count_even",
       "kind": "function",
       "type": "int",
       "scope": "global",
-      "definition_loc": "test_code.c:32:5",
+      "definition_loc": "test_code.c:54:5",
       "references": [
-        "test_code.c:32:5",
-        "test_code.c:71:13",
-        "test_code.c:97:16"
+        "test_code.c:54:5"
+      ],
+      "signature": "(int[], int) -> int",
+      "is_initialized": false,
+      "is_used": true
+    },
+    {
+      "name": "is_in_range",
+      "kind": "function",
+      "type": "int",
+      "scope": "global",
+      "definition_loc": "test_code.c:71:5",
+      "references": [
+        "test_code.c:71:5"
       ],
       "signature": "(int, int, int) -> int",
       "is_initialized": false,
       "is_used": true
     },
     {
-      "name": "nested_calls",
+      "name": "power",
       "kind": "function",
       "type": "int",
       "scope": "global",
-      "definition_loc": "test_code.c:65:5",
+      "definition_loc": "test_code.c:84:5",
       "references": [
-        "test_code.c:65:5",
-        "test_code.c:72:16",
-        "test_code.c:98:18"
+        "test_code.c:84:5",
+        "test_code.c:88:19"
       ],
-      "signature": "(int) -> int",
+      "signature": "(int, int) -> int",
       "is_initialized": false,
       "is_used": true
     },
     {
-      "name": "process_array",
+      "name": "expression_demo",
+      "kind": "function",
+      "type": "int",
+      "scope": "global",
+      "definition_loc": "test_code.c:92:5",
+      "references": [
+        "test_code.c:92:5"
+      ],
+      "signature": "() -> int",
+      "is_initialized": false,
+      "is_used": true
+    },
+    {
+      "name": "find_first",
+      "kind": "function",
+      "type": "int",
+      "scope": "global",
+      "definition_loc": "test_code.c:147:5",
+      "references": [
+        "test_code.c:147:5"
+      ],
+      "signature": "(int[], int, int) -> int",
+      "is_initialized": false,
+      "is_used": true
+    },
+    {
+      "name": "do_nothing",
       "kind": "function",
       "type": "void",
       "scope": "global",
-      "definition_loc": "test_code.c:75:6",
+      "definition_loc": "test_code.c:157:6",
       "references": [
-        "test_code.c:75:6",
-        "test_code.c:100:5"
+        "test_code.c:157:6",
+        "test_code.c:180:9",
+        "test_code.c:182:9",
+        "test_code.c:192:9",
+        "test_code.c:200:9"
       ],
-      "signature": "(int*, int) -> void",
+      "signature": "() -> void",
       "is_initialized": false,
       "is_used": true
     },
@@ -1057,173 +1602,24 @@
       "kind": "function",
       "type": "int",
       "scope": "global",
-      "definition_loc": "test_code.c:83:5",
+      "definition_loc": "test_code.c:162:5",
       "references": [
-        "test_code.c:83:5"
+        "test_code.c:162:5"
       ],
       "signature": "() -> int",
       "is_initialized": false,
       "is_used": true
     },
     {
-      "name": "a",
-      "kind": "parameter",
-      "type": "int",
-      "scope": "function",
-      "definition_loc": "test_code.c:10:13",
-      "references": [
-        "test_code.c:11:12"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "b",
-      "kind": "parameter",
-      "type": "int",
-      "scope": "function",
-      "definition_loc": "test_code.c:10:20",
-      "references": [
-        "test_code.c:11:16"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "a",
-      "kind": "parameter",
-      "type": "int",
-      "scope": "function",
-      "definition_loc": "test_code.c:14:18",
-      "references": [
-        "test_code.c:15:12"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "b",
-      "kind": "parameter",
-      "type": "int",
-      "scope": "function",
-      "definition_loc": "test_code.c:14:25",
-      "references": [
-        "test_code.c:15:16"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
       "name": "n",
       "kind": "parameter",
       "type": "int",
       "scope": "function",
-      "definition_loc": "test_code.c:18:19",
+      "definition_loc": "test_code.c:31:19",
       "references": [
-        "test_code.c:19:9",
-        "test_code.c:22:12",
-        "test_code.c:22:26"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "n",
-      "kind": "parameter",
-      "type": "int",
-      "scope": "function",
-      "definition_loc": "test_code.c:25:19",
-      "references": [
-        "test_code.c:26:9",
-        "test_code.c:27:16",
-        "test_code.c:29:22",
-        "test_code.c:29:41"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "x",
-      "kind": "parameter",
-      "type": "int",
-      "scope": "function",
-      "definition_loc": "test_code.c:32:17",
-      "references": [
-        "test_code.c:36:11",
-        "test_code.c:40:20",
-        "test_code.c:43:25"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "y",
-      "kind": "parameter",
-      "type": "int",
-      "scope": "function",
-      "definition_loc": "test_code.c:32:24",
-      "references": [
-        "test_code.c:37:11",
-        "test_code.c:40:23",
-        "test_code.c:43:28"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "flag",
-      "kind": "parameter",
-      "type": "int",
-      "scope": "function",
-      "definition_loc": "test_code.c:32:31",
-      "references": [
-        "test_code.c:39:9"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "result",
-      "kind": "variable",
-      "type": "int",
-      "scope": "block",
-      "definition_loc": "test_code.c:33:9",
-      "references": [
-        "test_code.c:41:9",
-        "test_code.c:44:9",
-        "test_code.c:49:13",
-        "test_code.c:49:22",
-        "test_code.c:51:13",
-        "test_code.c:51:22",
-        "test_code.c:57:9",
-        "test_code.c:57:18",
-        "test_code.c:61:39",
-        "test_code.c:62:12"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "temp",
-      "kind": "variable",
-      "type": "int",
-      "scope": "block",
-      "definition_loc": "test_code.c:34:9",
-      "references": [
-        "test_code.c:40:9",
-        "test_code.c:41:27",
-        "test_code.c:43:9",
-        "test_code.c:44:22"
+        "test_code.c:32:9",
+        "test_code.c:35:12",
+        "test_code.c:35:26"
       ],
       "signature": null,
       "is_initialized": true,
@@ -1231,103 +1627,13 @@
     },
     {
       "name": "p",
-      "kind": "variable",
-      "type": "struct Point",
-      "scope": "block",
-      "definition_loc": "test_code.c:35:18",
-      "references": [
-        "test_code.c:36:5",
-        "test_code.c:37:5"
-      ],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": true
-    },
-    {
-      "name": "i",
-      "kind": "variable",
-      "type": "int",
-      "scope": "for_loop",
-      "definition_loc": "test_code.c:47:14",
-      "references": [
-        "test_code.c:47:21",
-        "test_code.c:47:28",
-        "test_code.c:47:32",
-        "test_code.c:48:13",
-        "test_code.c:49:31",
-        "test_code.c:51:31"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "j",
-      "kind": "variable",
-      "type": "int",
-      "scope": "block",
-      "definition_loc": "test_code.c:55:9",
-      "references": [
-        "test_code.c:56:12",
-        "test_code.c:57:27",
-        "test_code.c:58:9",
-        "test_code.c:58:13"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "n",
       "kind": "parameter",
-      "type": "int",
+      "type": "struct Point*",
       "scope": "function",
-      "definition_loc": "test_code.c:65:22",
+      "definition_loc": "test_code.c:39:36",
       "references": [
-        "test_code.c:66:9",
-        "test_code.c:69:23",
-        "test_code.c:70:23",
-        "test_code.c:71:27",
-        "test_code.c:72:29"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "a",
-      "kind": "variable",
-      "type": "int",
-      "scope": "block",
-      "definition_loc": "test_code.c:69:9",
-      "references": [
-        "test_code.c:71:21"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "b",
-      "kind": "variable",
-      "type": "int",
-      "scope": "block",
-      "definition_loc": "test_code.c:70:9",
-      "references": [
-        "test_code.c:71:24"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "c",
-      "kind": "variable",
-      "type": "int",
-      "scope": "block",
-      "definition_loc": "test_code.c:71:9",
-      "references": [
-        "test_code.c:72:12"
+        "test_code.c:40:5",
+        "test_code.c:41:7"
       ],
       "signature": null,
       "is_initialized": true,
@@ -1336,12 +1642,11 @@
     {
       "name": "arr",
       "kind": "parameter",
-      "type": "int*",
+      "type": "int[]",
       "scope": "function",
-      "definition_loc": "test_code.c:75:25",
+      "definition_loc": "test_code.c:45:19",
       "references": [
-        "test_code.c:78:9",
-        "test_code.c:78:18"
+        "test_code.c:48:21"
       ],
       "signature": null,
       "is_initialized": true,
@@ -1352,9 +1657,82 @@
       "kind": "parameter",
       "type": "int",
       "scope": "function",
-      "definition_loc": "test_code.c:75:34",
+      "definition_loc": "test_code.c:45:30",
       "references": [
-        "test_code.c:77:16"
+        "test_code.c:47:25"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "sum",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:46:9",
+      "references": [
+        "test_code.c:48:9",
+        "test_code.c:48:15",
+        "test_code.c:50:12"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "i",
+      "kind": "variable",
+      "type": "int",
+      "scope": "for_loop",
+      "definition_loc": "test_code.c:47:14",
+      "references": [
+        "test_code.c:47:21",
+        "test_code.c:47:31",
+        "test_code.c:47:35",
+        "test_code.c:48:25"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "arr",
+      "kind": "parameter",
+      "type": "int[]",
+      "scope": "function",
+      "definition_loc": "test_code.c:54:20",
+      "references": [
+        "test_code.c:58:13",
+        "test_code.c:62:13"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "size",
+      "kind": "parameter",
+      "type": "int",
+      "scope": "function",
+      "definition_loc": "test_code.c:54:31",
+      "references": [
+        "test_code.c:57:16"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "count",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:55:9",
+      "references": [
+        "test_code.c:63:13",
+        "test_code.c:63:21",
+        "test_code.c:67:12"
       ],
       "signature": null,
       "is_initialized": true,
@@ -1365,13 +1743,83 @@
       "kind": "variable",
       "type": "int",
       "scope": "block",
-      "definition_loc": "test_code.c:76:9",
+      "definition_loc": "test_code.c:56:9",
       "references": [
-        "test_code.c:77:12",
-        "test_code.c:78:13",
-        "test_code.c:78:22",
-        "test_code.c:79:9",
-        "test_code.c:79:13"
+        "test_code.c:57:12",
+        "test_code.c:58:17",
+        "test_code.c:59:13",
+        "test_code.c:59:17",
+        "test_code.c:62:17",
+        "test_code.c:65:9",
+        "test_code.c:65:13"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "value",
+      "kind": "parameter",
+      "type": "int",
+      "scope": "function",
+      "definition_loc": "test_code.c:71:21",
+      "references": [
+        "test_code.c:72:13",
+        "test_code.c:72:31"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "low",
+      "kind": "parameter",
+      "type": "int",
+      "scope": "function",
+      "definition_loc": "test_code.c:71:32",
+      "references": [
+        "test_code.c:72:22"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "high",
+      "kind": "parameter",
+      "type": "int",
+      "scope": "function",
+      "definition_loc": "test_code.c:71:41",
+      "references": [
+        "test_code.c:72:40"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "base",
+      "kind": "parameter",
+      "type": "int",
+      "scope": "function",
+      "definition_loc": "test_code.c:84:15",
+      "references": [
+        "test_code.c:88:12",
+        "test_code.c:88:25"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "exp",
+      "kind": "parameter",
+      "type": "int",
+      "scope": "function",
+      "definition_loc": "test_code.c:84:25",
+      "references": [
+        "test_code.c:85:9",
+        "test_code.c:88:31"
       ],
       "signature": null,
       "is_initialized": true,
@@ -1382,10 +1830,16 @@
       "kind": "variable",
       "type": "int",
       "scope": "block",
-      "definition_loc": "test_code.c:84:9",
+      "definition_loc": "test_code.c:93:9",
       "references": [
-        "test_code.c:92:19",
-        "test_code.c:93:25"
+        "test_code.c:98:9",
+        "test_code.c:101:17",
+        "test_code.c:101:40",
+        "test_code.c:104:5",
+        "test_code.c:110:14",
+        "test_code.c:113:16",
+        "test_code.c:114:15",
+        "test_code.c:123:19"
       ],
       "signature": null,
       "is_initialized": true,
@@ -1396,13 +1850,33 @@
       "kind": "variable",
       "type": "int",
       "scope": "block",
-      "definition_loc": "test_code.c:85:9",
+      "definition_loc": "test_code.c:94:9",
       "references": [
-        "test_code.c:92:22",
-        "test_code.c:93:28"
+        "test_code.c:98:13",
+        "test_code.c:101:21",
+        "test_code.c:101:28",
+        "test_code.c:105:5",
+        "test_code.c:111:14",
+        "test_code.c:115:13",
+        "test_code.c:123:22"
       ],
       "signature": null,
       "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "c",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:95:9",
+      "references": [
+        "test_code.c:98:5",
+        "test_code.c:106:5",
+        "test_code.c:107:5"
+      ],
+      "signature": null,
+      "is_initialized": false,
       "is_used": true
     },
     {
@@ -1410,64 +1884,124 @@
       "kind": "variable",
       "type": "int",
       "scope": "block",
-      "definition_loc": "test_code.c:86:9",
+      "definition_loc": "test_code.c:101:9",
       "references": [
-        "test_code.c:97:35"
+        "test_code.c:112:14"
       ],
       "signature": null,
       "is_initialized": true,
       "is_used": true
+    },
+    {
+      "name": "d",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:110:9",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "e",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:111:9",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "f",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:112:9",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "g",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:113:9",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "h",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:114:9",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "i",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:115:9",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
     },
     {
       "name": "arr",
       "kind": "variable",
       "type": "int[]",
       "scope": "block",
-      "definition_loc": "test_code.c:87:9",
+      "definition_loc": "test_code.c:118:9",
       "references": [
-        "test_code.c:100:19"
+        "test_code.c:119:17",
+        "test_code.c:120:16"
       ],
       "signature": null,
       "is_initialized": true,
       "is_used": true
     },
     {
-      "name": "p1",
+      "name": "first",
       "kind": "variable",
-      "type": "struct Point",
+      "type": "int",
       "scope": "block",
-      "definition_loc": "test_code.c:88:18",
-      "references": [
-        "test_code.c:89:5",
-        "test_code.c:90:5"
-      ],
+      "definition_loc": "test_code.c:119:9",
+      "references": [],
       "signature": null,
-      "is_initialized": false,
-      "is_used": true
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "last",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:120:9",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
     },
     {
       "name": "sum",
       "kind": "variable",
       "type": "int",
       "scope": "block",
-      "definition_loc": "test_code.c:92:9",
+      "definition_loc": "test_code.c:123:9",
       "references": [
-        "test_code.c:97:24",
-        "test_code.c:102:25"
-      ],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": true
-    },
-    {
-      "name": "prod",
-      "kind": "variable",
-      "type": "int",
-      "scope": "block",
-      "definition_loc": "test_code.c:93:9",
-      "references": [
-        "test_code.c:97:29",
-        "test_code.c:103:29"
+        "test_code.c:143:23"
       ],
       "signature": null,
       "is_initialized": true,
@@ -1478,52 +2012,297 @@
       "kind": "variable",
       "type": "int",
       "scope": "block",
-      "definition_loc": "test_code.c:94:9",
+      "definition_loc": "test_code.c:124:9",
       "references": [
-        "test_code.c:104:34"
+        "test_code.c:143:29"
       ],
       "signature": null,
       "is_initialized": true,
       "is_used": true
     },
     {
-      "name": "fib",
+      "name": "p1",
       "kind": "variable",
-      "type": "int",
+      "type": "struct Point",
       "scope": "block",
-      "definition_loc": "test_code.c:95:9",
+      "definition_loc": "test_code.c:127:18",
       "references": [
-        "test_code.c:105:34"
+        "test_code.c:128:14",
+        "test_code.c:129:14"
       ],
       "signature": null,
       "is_initialized": true,
       "is_used": true
     },
     {
-      "name": "comp",
+      "name": "px",
       "kind": "variable",
       "type": "int",
       "scope": "block",
-      "definition_loc": "test_code.c:97:9",
+      "definition_loc": "test_code.c:128:9",
       "references": [
-        "test_code.c:106:29"
+        "test_code.c:143:12"
       ],
       "signature": null,
       "is_initialized": true,
       "is_used": true
     },
     {
-      "name": "nested",
+      "name": "py",
       "kind": "variable",
       "type": "int",
       "scope": "block",
-      "definition_loc": "test_code.c:98:9",
+      "definition_loc": "test_code.c:129:9",
       "references": [
-        "test_code.c:107:28"
+        "test_code.c:143:17"
       ],
       "signature": null,
       "is_initialized": true,
       "is_used": true
+    },
+    {
+      "name": "x1",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:137:9",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "x2",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:137:17",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "x3",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:137:25",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "arr",
+      "kind": "parameter",
+      "type": "int[]",
+      "scope": "function",
+      "definition_loc": "test_code.c:147:20",
+      "references": [
+        "test_code.c:149:13"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "size",
+      "kind": "parameter",
+      "type": "int",
+      "scope": "function",
+      "definition_loc": "test_code.c:147:31",
+      "references": [
+        "test_code.c:148:25"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "target",
+      "kind": "parameter",
+      "type": "int",
+      "scope": "function",
+      "definition_loc": "test_code.c:147:41",
+      "references": [
+        "test_code.c:149:23"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "i",
+      "kind": "variable",
+      "type": "int",
+      "scope": "for_loop",
+      "definition_loc": "test_code.c:148:14",
+      "references": [
+        "test_code.c:148:21",
+        "test_code.c:148:31",
+        "test_code.c:148:35",
+        "test_code.c:149:17",
+        "test_code.c:150:20"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "x",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:164:9",
+      "references": [
+        "test_code.c:173:22"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "y",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:165:9",
+      "references": [
+        "test_code.c:173:25"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "z",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:166:9",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "p",
+      "kind": "variable",
+      "type": "struct Point",
+      "scope": "block",
+      "definition_loc": "test_code.c:169:18",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "result",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:173:9",
+      "references": [
+        "test_code.c:179:9"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "fact",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:174:9",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
+    },
+    {
+      "name": "i",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:186:9",
+      "references": [
+        "test_code.c:187:12",
+        "test_code.c:188:9",
+        "test_code.c:188:13",
+        "test_code.c:189:13"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "j",
+      "kind": "variable",
+      "type": "int",
+      "scope": "for_loop",
+      "definition_loc": "test_code.c:196:14",
+      "references": [
+        "test_code.c:196:21",
+        "test_code.c:196:29",
+        "test_code.c:196:33",
+        "test_code.c:197:13"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "a",
+      "kind": "parameter",
+      "type": "int",
+      "scope": "function",
+      "definition_loc": "test_code.c:208:13",
+      "references": [
+        "test_code.c:209:12"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "b",
+      "kind": "parameter",
+      "type": "int",
+      "scope": "function",
+      "definition_loc": "test_code.c:208:20",
+      "references": [
+        "test_code.c:209:16"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "p",
+      "kind": "parameter",
+      "type": "struct Point",
+      "scope": "function",
+      "definition_loc": "test_code.c:213:31",
+      "references": [
+        "test_code.c:215:17",
+        "test_code.c:215:23"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "dummy",
+      "kind": "variable",
+      "type": "int",
+      "scope": "block",
+      "definition_loc": "test_code.c:215:9",
+      "references": [],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": false
     }
   ]
 }

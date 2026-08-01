@@ -3,24 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mini‑C IDE · Intelligent Analysis</title>
-
+    <title>Mini C IDE - Intelligent Analysis</title>
     <!-- Tailwind CSS (CDN) -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Mermaid -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>
       mermaid.initialize({ startOnLoad: false, theme: "dark" });
     </script>
-
-    <!-- Prism.js for professional highlighting -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-c.min.js"></script>
 
     <style>
       /* ----- Base Reset & Fonts ----- */
@@ -72,6 +62,8 @@
         outline: none;
         border: none;
         width: 100%;
+        /* Fix: flex-1 forces it to fill the remaining height of the parent card */
+        flex: 1;
         min-height: 420px;
         padding: 1.25rem;
         tab-size: 4;
@@ -82,7 +74,7 @@
         background: #0a1225;
       }
 
-      /* ----- Highlighted Output (Prism wrapper) ----- */
+      /* ----- Highlighted Output Container ----- */
       .highlighted-output {
         background: #0f172a;
         border-radius: 12px;
@@ -90,26 +82,68 @@
         font-family: "JetBrains Mono", "Fira Code", monospace;
         font-size: 14px;
         line-height: 1.8;
+        /* Fix: flex-1 forces it to fill vertical space identically to textarea */
+        flex: 1;
         max-height: 500px;
         overflow: auto;
         white-space: pre-wrap;
         word-break: break-word;
-        color: #e2e8f0;
-      }
-      .highlighted-output .token {
-        cursor: pointer;
-        transition:
-          background 0.15s ease,
-          filter 0.15s ease;
-        border-radius: 3px;
-        padding: 0 2px;
-      }
-      .highlighted-output .token:hover {
-        background: rgba(255, 255, 255, 0.07);
-        filter: brightness(1.2);
       }
 
-      /* ----- Modern Tabs (LTR) ----- */
+      /* ----- Custom Syntax Highlighting (Backend Generated) ----- */
+      .kw {
+        color: #569cd6;
+        font-weight: bold;
+      } /* Keywords */
+      .type {
+        color: #4ec9b0;
+      } /* Types */
+      .class {
+        color: #4ec9b0;
+        font-weight: bold;
+      } /* Structs */
+      .func {
+        color: #dcdcaa;
+      } /* Functions */
+      .ident {
+        color: #9cdcfe;
+      } /* Variables/Identifiers */
+      .num {
+        color: #b5cea8;
+      } /* Numbers */
+      .str {
+        color: #ce9178;
+      } /* Strings */
+      .char {
+        color: #ce9178;
+      } /* Characters */
+      .op {
+        color: #d4d4d4;
+      } /* Operators */
+      .comment {
+        color: #6a9955;
+        font-style: italic;
+      } /* Comments */
+      .preproc {
+        color: #c586c0;
+      } /* Preprocessor */
+      .error {
+        color: #f44747;
+        text-decoration: underline wavy #f44747;
+      } /* Errors */
+
+      /* Hover effect for interactive tokens */
+      .highlighted-output span[data-line] {
+        cursor: pointer;
+        transition: background 0.15s ease;
+        border-radius: 3px;
+      }
+      .highlighted-output span[data-line]:hover {
+        background: rgba(255, 255, 255, 0.1);
+        outline: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      /* ----- Modern Tabs ----- */
       .tabs-wrapper {
         background: #1e293b;
         border-radius: 16px 16px 0 0;
@@ -130,9 +164,7 @@
         border-bottom: 3px solid transparent;
         cursor: pointer;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
         white-space: nowrap;
-        font-family: inherit;
       }
       .tab-btn:hover {
         color: #cbd5e1;
@@ -142,17 +174,6 @@
         color: #60a5fa;
         border-bottom-color: #3b82f6;
         background: rgba(59, 130, 246, 0.08);
-      }
-      .tab-btn.active::after {
-        content: "";
-        position: absolute;
-        bottom: -1px;
-        left: 30%;
-        width: 40%;
-        height: 3px;
-        background: #3b82f6;
-        border-radius: 4px 4px 0 0;
-        box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
       }
       .tab-content {
         display: none;
@@ -166,7 +187,7 @@
         display: block;
       }
 
-      /* ----- Floating Tooltip (LTR aligned) ----- */
+      /* ----- Floating Tooltip ----- */
       .tooltip-box {
         position: absolute;
         background: #1e293b;
@@ -180,7 +201,6 @@
         display: none;
         color: #e2e8f0;
         backdrop-filter: blur(8px);
-        pointer-events: auto;
         text-align: left;
       }
       .tooltip-box .symbol-name {
@@ -209,8 +229,6 @@
         font-size: 0.7rem;
         font-weight: 600;
         cursor: pointer;
-        transition: background 0.2s;
-        letter-spacing: 0.3px;
       }
       .tooltip-box .actions button:hover {
         background: #2563eb;
@@ -226,29 +244,8 @@
       .glass-card {
         background: rgba(30, 41, 59, 0.5);
         backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
         border: 1px solid rgba(71, 85, 105, 0.4);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      }
-
-      /* ----- Responsive tweaks ----- */
-      @media (max-width: 768px) {
-        .tabs-wrapper {
-          padding: 0 0.5rem;
-        }
-        .tab-btn {
-          padding: 0.6rem 1rem;
-          font-size: 0.75rem;
-          flex-shrink: 0;
-        }
-        #sourceCode {
-          min-height: 280px;
-          font-size: 13px;
-        }
-        .highlighted-output {
-          font-size: 13px;
-          max-height: 320px;
-        }
       }
     </style>
   </head>
@@ -260,12 +257,12 @@
       <div class="flex items-center gap-3">
         <span
           class="bg-blue-600 text-white p-2.5 rounded-xl font-bold text-lg shadow-lg shadow-blue-600/25"
-          >⚙️ IDE</span
+          >C IDE</span
         >
         <h1
           class="text-xl font-bold tracking-tight bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent"
         >
-          Mini‑C · Smart Analysis
+          Mini-C Smart Analysis
         </h1>
       </div>
       <div class="flex gap-2">
@@ -273,7 +270,7 @@
           onclick="compileCode()"
           class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-600/20 transition-all duration-200 flex items-center gap-2 cursor-pointer text-sm"
         >
-          ▶ Run Analysis
+          Run Analysis
         </button>
         <button
           onclick="clearAll()"
@@ -285,27 +282,24 @@
     </header>
 
     <!-- ===== Main Layout ===== -->
-    <main class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-5 p-5 max-w-full">
+    <!-- Fix: items-stretch ensures both left and right cards have the same height -->
+    <main
+      class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-5 p-5 max-w-full items-stretch"
+    >
       <!-- Left: Editor -->
       <div
-        class="glass-card rounded-2xl overflow-hidden flex flex-col transition-all hover:border-slate-600/60"
+        class="glass-card rounded-2xl overflow-hidden flex flex-col transition-all hover:border-slate-600/60 h-full"
       >
         <div
           class="bg-slate-800/40 px-5 py-3 border-b border-slate-700/60 flex justify-between items-center"
         >
-          <span
-            class="font-semibold text-sm text-slate-300 flex items-center gap-2"
-            >📄 Source Code
-            <span class="text-xs text-slate-500 font-normal">(C)</span></span
-          >
-          <span
-            class="text-[10px] font-mono text-slate-500 bg-slate-800 px-3 py-1 rounded-full border border-slate-700/60 uppercase tracking-wider"
-            >LTR</span
+          <span class="font-semibold text-sm text-slate-300"
+            >Source Code (C)</span
           >
         </div>
+        <!-- Fix: Removed wrapper div, made textarea fill flex space -->
         <textarea
           id="sourceCode"
-          dir="ltr"
           spellcheck="false"
           placeholder="// Write your C code here..."
         >
@@ -324,29 +318,27 @@ int main() {
 
       <!-- Right: Highlighted Output -->
       <div
-        class="glass-card rounded-2xl overflow-hidden flex flex-col transition-all hover:border-slate-600/60"
+        class="glass-card rounded-2xl overflow-hidden flex flex-col transition-all hover:border-slate-600/60 h-full relative"
       >
         <div
           class="bg-slate-800/40 px-5 py-3 border-b border-slate-700/60 flex justify-between items-center"
         >
-          <span
-            class="font-semibold text-sm text-slate-300 flex items-center gap-2"
-            >✨ Highlighted Output
-            <span class="text-xs text-slate-500 font-normal"
-              >(clickable)</span
-            ></span
+          <span class="font-semibold text-sm text-slate-300"
+            >Highlighted Output (clickable)</span
           >
           <span
             class="text-[10px] font-mono text-slate-500 bg-slate-800 px-3 py-1 rounded-full border border-slate-700/60"
             >interactive</span
           >
         </div>
+        <!-- Output container -->
         <div id="highlightedContainer" class="highlighted-output">
           <span class="text-slate-500"
             >Run analysis to see highlighted code...</span
           >
         </div>
-        <!-- Tooltip -->
+
+        <!-- Hover Tooltip -->
         <div id="tooltip" class="tooltip-box"></div>
       </div>
     </main>
@@ -354,24 +346,22 @@ int main() {
     <!-- ===== Tabs Section ===== -->
     <div class="px-5 pb-5">
       <div class="glass-card rounded-2xl overflow-hidden shadow-xl">
-        <!-- Tab Headers -->
         <div class="tabs-wrapper">
-          <button class="tab-btn active" data-tab="reports">⚠️ Errors</button>
-          <button class="tab-btn" data-tab="symbols">📋 Symbols</button>
-          <button class="tab-btn" data-tab="cfg">🔀 CFG</button>
-          <button class="tab-btn" data-tab="callgraph">📞 Call Graph</button>
-          <button class="tab-btn" data-tab="info">🧭 Navigation</button>
+          <button class="tab-btn active" data-tab="reports">
+            Errors & Warnings
+          </button>
+          <button class="tab-btn" data-tab="symbols">Symbol Table</button>
+          <button class="tab-btn" data-tab="cfg">Control Flow (CFG)</button>
+          <button class="tab-btn" data-tab="callgraph">Call Graph</button>
+          <button class="tab-btn" data-tab="info">Intelligent Actions</button>
         </div>
 
-        <!-- Tab Contents -->
-
-        <!-- Errors -->
         <div id="tab-reports" class="tab-content active">
           <div
             id="compileStatus"
             class="text-slate-400 mb-3 text-sm flex items-center gap-2"
           >
-            ⏳ Status: Waiting for analysis...
+            Status: Waiting for analysis...
           </div>
           <ul
             id="errorList"
@@ -379,7 +369,6 @@ int main() {
           ></ul>
         </div>
 
-        <!-- Symbol Table -->
         <div id="tab-symbols" class="tab-content">
           <pre
             id="symbolTableOutput"
@@ -387,74 +376,74 @@ int main() {
           ></pre>
         </div>
 
-        <!-- CFG -->
         <div id="tab-cfg" class="tab-content">
-          <div id="cfgContainer" class="mermaid w-full overflow-auto"></div>
+          <div id="cfgContainer" class="mermaid w-full overflow-auto">
+            graph TD;
+          </div>
         </div>
 
-        <!-- Call Graph -->
         <div id="tab-callgraph" class="tab-content">
-          <div
-            id="callGraphContainer"
-            class="mermaid w-full overflow-auto"
-          ></div>
+          <div id="callGraphContainer" class="mermaid w-full overflow-auto">
+            graph TD;
+          </div>
         </div>
 
-        <!-- Navigation -->
         <div id="tab-info" class="tab-content">
           <div class="text-sm text-slate-300">
-            <p class="mb-2">
-              Click on any identifier in the highlighted output to see its
-              details.
+            <p class="mb-3 text-slate-400">
+              Click on any identifier in the highlighted output to select it,
+              then use the actions below:
             </p>
             <div class="flex flex-wrap gap-2">
               <button
                 onclick="getHover()"
                 class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow transition"
               >
-                🔍 Hover Info
+                Hover Info
               </button>
               <button
                 onclick="goToDefinition()"
                 class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow transition"
               >
-                🎯 Go to Def
+                Go to Def
               </button>
               <button
                 onclick="findReferences()"
                 class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow transition"
               >
-                🔗 References
+                References
               </button>
               <button
                 onclick="renameSymbol()"
                 class="bg-rose-600 hover:bg-rose-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow transition"
               >
-                ✏️ Rename
+                Rename
               </button>
               <button
                 onclick="showCompletion()"
                 class="bg-teal-600 hover:bg-teal-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow transition"
               >
-                💡 Auto‑Complete
+                Auto Complete
               </button>
             </div>
             <div
               id="navResult"
-              class="mt-4 p-4 bg-slate-900/80 rounded-xl border border-slate-700/60 text-xs font-mono whitespace-pre-wrap text-slate-300 leading-relaxed"
+              class="mt-4 p-4 bg-slate-900/80 rounded-xl border border-slate-700/60 text-xs font-mono whitespace-pre-wrap text-slate-300 leading-relaxed min-h-[60px]"
             ></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ============================================================ -->
     <!-- ===== JAVASCRIPT ===== -->
     <script>
-      // ===== Global State =====
       let currentHighlightedHTML = "";
       let selectedLine = null;
       let selectedCol = null;
+
+      // Store graph definitions to render them when tabs become visible
+      let pendingCfgData = "";
+      let pendingCallGraphData = "";
 
       // ===== Compile / Analyze =====
       async function compileCode() {
@@ -465,12 +454,9 @@ int main() {
         const highlightedContainer = document.getElementById(
           "highlightedContainer",
         );
-        const cfgContainer = document.getElementById("cfgContainer");
-        const callGraphContainer =
-          document.getElementById("callGraphContainer");
 
         statusDiv.innerHTML =
-          '<span class="text-yellow-400 animate-pulse flex items-center gap-2">⏳ Processing...</span>';
+          '<span class="text-yellow-400 animate-pulse">Processing...</span>';
 
         try {
           const response = await fetch("/api/compile", {
@@ -482,10 +468,10 @@ int main() {
 
           if (data.success) {
             statusDiv.innerHTML =
-              '<span class="text-emerald-400 font-bold flex items-center gap-2">✅ Compilation successful</span>';
+              '<span class="text-emerald-400 font-bold">Compilation successful</span>';
           } else {
             statusDiv.innerHTML =
-              '<span class="text-red-400 font-bold flex items-center gap-2">❌ Compilation failed</span>';
+              '<span class="text-red-400 font-bold">Compilation failed</span>';
           }
 
           // Errors & Warnings
@@ -510,27 +496,35 @@ int main() {
               (w) =>
                 (errHtml += `<li class="text-yellow-400">[Warning] ${w}</li>`),
             );
+
           errorList.innerHTML =
             errHtml ||
-            '<li class="text-emerald-500">✓ No errors or warnings.</li>';
+            '<li class="text-emerald-500">No errors or warnings.</li>';
 
           // Symbol Table
           symbolOutput.textContent = JSON.stringify(data.symbol_table, null, 2);
 
-          // Highlighted Output with Prism
+          // Highlighted Output (Stripping out the extra <pre> and HTML skeleton from backend)
           if (data.highlighted_html) {
-            currentHighlightedHTML = data.highlighted_html;
-            highlightedContainer.innerHTML = currentHighlightedHTML;
-            Prism.highlightAllUnder(highlightedContainer);
+            // Regex to extract content strictly inside the <pre> tag from the backend HTML response
+            const match = data.highlighted_html.match(
+              /<pre>([\s\S]*?)<\/pre>/i,
+            );
+            if (match && match[1]) {
+              highlightedContainer.innerHTML = match[1];
+            } else {
+              highlightedContainer.innerHTML = data.highlighted_html;
+            }
+            // Attach click listeners to the generated span tags!
             attachClickEvents();
           } else {
             highlightedContainer.innerHTML =
               '<span class="text-slate-500">No highlighted output available.</span>';
           }
 
-          // CFG (Mermaid)
+          // Build Mermaid Graph Strings
           let mermaidCfg = "graph TD;\n";
-          if (data.cfg) {
+          if (data.cfg && Object.keys(data.cfg).length > 0) {
             for (let func in data.cfg) {
               let cfg = data.cfg[func];
               if (cfg.blocks) {
@@ -543,14 +537,13 @@ int main() {
                 });
               }
             }
+          } else {
+            mermaidCfg = "graph TD; A[No CFG Generated];";
           }
-          cfgContainer.textContent = mermaidCfg;
-          cfgContainer.removeAttribute("data-processed");
-          await mermaid.run({ nodes: [cfgContainer] });
+          pendingCfgData = mermaidCfg;
 
-          // Call Graph
           let mermaidCg = "graph TD;\n";
-          if (data.call_graph) {
+          if (data.call_graph && Object.keys(data.call_graph).length > 0) {
             for (let caller in data.call_graph) {
               let callees = data.call_graph[caller];
               if (callees.length) {
@@ -558,37 +551,57 @@ int main() {
                   mermaidCg += `    ${caller} --> ${callee}\n`;
                 });
               } else {
-                mermaidCg += `    ${caller}["${caller} (no calls)"]\n`;
+                mermaidCg += `    ${caller}["${caller} (no external calls)"]\n`;
               }
             }
+          } else {
+            mermaidCg = "graph TD; A[No Call Graph Generated];";
           }
-          callGraphContainer.textContent = mermaidCg || "graph TD; NoCallGraph";
-          callGraphContainer.removeAttribute("data-processed");
-          await mermaid.run({ nodes: [callGraphContainer] });
+          pendingCallGraphData = mermaidCg;
+
+          // Render graphs if their tabs are currently visible
+          renderVisibleGraphs();
         } catch (err) {
           console.error(err);
           statusDiv.innerHTML =
-            '<span class="text-red-500">⚠️ Server communication error.</span>';
+            '<span class="text-red-500">Server communication error.</span>';
         }
       }
 
-      // ===== Attach Click Events to Highlighted Spans =====
+      // ===== Custom Click Event Attacher =====
       function attachClickEvents() {
         const container = document.getElementById("highlightedContainer");
         const spans = container.querySelectorAll("span[data-line][data-col]");
+
         spans.forEach((span) => {
           span.addEventListener("click", function (e) {
             e.stopPropagation();
+
+            // Remove highlight from previously selected
+            container
+              .querySelectorAll(".bg-blue-500\\/30")
+              .forEach((el) =>
+                el.classList.remove(
+                  "bg-blue-500/30",
+                  "border",
+                  "border-blue-400",
+                ),
+              );
+
+            // Highlight the clicked token
+            this.classList.add("bg-blue-500/30", "border", "border-blue-400");
+
             const line = parseInt(this.dataset.line);
             const col = parseInt(this.dataset.col);
             selectedLine = line;
             selectedCol = col;
+
             showTooltip(e, line, col);
           });
         });
       }
 
-      // ===== Show Tooltip =====
+      // ===== Tooltip Logic =====
       async function showTooltip(event, line, col) {
         const tooltip = document.getElementById("tooltip");
         try {
@@ -598,51 +611,65 @@ int main() {
             body: JSON.stringify({ line, col }),
           });
           const data = await resp.json();
+
           if (data.status === "success") {
             const h = data.hover;
             tooltip.innerHTML = `
-                        <div class="symbol-name">${h.symbol}</div>
-                        <div class="detail">Type: ${h.type} · Kind: ${h.kind}</div>
-                        <div class="detail">Scope: ${h.scope} · Init: ${h.initialized ? "✅" : "❌"} · Used: ${h.used ? "✅" : "❌"}</div>
-                        <div class="actions">
-                            <button onclick="goToDefinition()">Definition</button>
-                            <button onclick="findReferences()">References</button>
-                            <button class="danger" onclick="renameSymbol()">Rename</button>
-                        </div>
-                    `;
+                <div class="symbol-name">${h.symbol}</div>
+                <div class="detail">Type: ${h.type} | Kind: ${h.kind}</div>
+                <div class="detail">Scope: ${h.scope} | Init: ${h.initialized ? "Yes" : "No"} | Used: ${h.used ? "Yes" : "No"}</div>
+                <div class="actions">
+                    <button onclick="goToDefinition()">Def</button>
+                    <button onclick="findReferences()">Refs</button>
+                    <button class="danger" onclick="renameSymbol()">Rename</button>
+                </div>
+            `;
+
             tooltip.style.display = "block";
-            const rect = event.target.getBoundingClientRect();
-            tooltip.style.left =
-              Math.min(rect.left, window.innerWidth - 400) + "px";
-            tooltip.style.top = rect.bottom + 10 + "px";
+            // Get position relative to the highlighted container
+            const containerRect = document
+              .getElementById("highlightedContainer")
+              .getBoundingClientRect();
+
+            // Ensure tooltip stays within screen bounds
+            let posX = event.clientX;
+            let posY = event.clientY + 15;
+
+            if (posX + 300 > window.innerWidth) posX = window.innerWidth - 320;
+
+            tooltip.style.left = posX + "px";
+            tooltip.style.top = posY + "px";
+            tooltip.style.position = "fixed"; // Use fixed positioning for reliable placement
           } else {
-            tooltip.innerHTML = `<div class="detail">${data.message || "No information available."}</div>`;
-            tooltip.style.display = "block";
-            tooltip.style.left =
-              Math.min(event.clientX, window.innerWidth - 300) + "px";
-            tooltip.style.top = event.clientY + 12 + "px";
+            tooltip.style.display = "none";
           }
         } catch (err) {
-          tooltip.innerHTML = `<div class="detail">Error fetching data.</div>`;
-          tooltip.style.display = "block";
+          tooltip.style.display = "none";
         }
       }
 
-      // ===== Hide Tooltip on outside click =====
+      // Close tooltip when clicking elsewhere
       document.addEventListener("click", function (e) {
         const tooltip = document.getElementById("tooltip");
-        if (!tooltip.contains(e.target)) {
+        if (!tooltip.contains(e.target) && e.target.tagName !== "SPAN") {
           tooltip.style.display = "none";
+          // clear selection highlight
+          document
+            .querySelectorAll(".bg-blue-500\\/30")
+            .forEach((el) =>
+              el.classList.remove(
+                "bg-blue-500/30",
+                "border",
+                "border-blue-400",
+              ),
+            );
         }
       });
 
-      // ===== Navigation Functions =====
-
+      // ===== Navigation & IDE Actions =====
       async function goToDefinition() {
-        if (!selectedLine || !selectedCol) {
-          showNavResult("Please click on an identifier first.");
-          return;
-        }
+        if (!selectedLine || !selectedCol)
+          return showNavResult("Please click on an identifier first.");
         try {
           const resp = await fetch("/api/goto", {
             method: "POST",
@@ -652,21 +679,17 @@ int main() {
           const data = await resp.json();
           if (data.status === "success") {
             showNavResult(
-              `Definition at file ${data.defined_at.file}, line ${data.defined_at.line}, col ${data.defined_at.col}`,
+              `[Definition Found] File: ${data.defined_at.file} | Line: ${data.defined_at.line} | Col: ${data.defined_at.col}`,
             );
-          } else {
-            showNavResult(`Error: ${data.message}`);
-          }
+          } else showNavResult(`Error: ${data.message}`);
         } catch (err) {
-          showNavResult("Server communication error.");
+          showNavResult("Server error.");
         }
       }
 
       async function findReferences() {
-        if (!selectedLine || !selectedCol) {
-          showNavResult("Please click on an identifier first.");
-          return;
-        }
+        if (!selectedLine || !selectedCol)
+          return showNavResult("Please click on an identifier first.");
         try {
           const resp = await fetch("/api/refs", {
             method: "POST",
@@ -675,24 +698,20 @@ int main() {
           });
           const data = await resp.json();
           if (data.status === "success") {
-            let refsText = `Total references: ${data.total_references}\n`;
+            let res = `Total references: ${data.total_references}\n\n`;
             data.references.forEach((r) => {
-              refsText += `  ${r.is_definition ? "[Definition]" : "[Reference]"} file ${r.file}, line ${r.line}, col ${r.col}\n`;
+              res += `${r.is_definition ? "➡️ [Def]" : "🔹 [Ref]"} Line ${r.line}, Col ${r.col}\n`;
             });
-            showNavResult(refsText);
-          } else {
-            showNavResult(`Error: ${data.message}`);
-          }
+            showNavResult(res);
+          } else showNavResult(`Error: ${data.message}`);
         } catch (err) {
-          showNavResult("Server communication error.");
+          showNavResult("Server error.");
         }
       }
 
       async function renameSymbol() {
-        if (!selectedLine || !selectedCol) {
-          showNavResult("Please click on an identifier first.");
-          return;
-        }
+        if (!selectedLine || !selectedCol)
+          return showNavResult("Please click on an identifier first.");
         const newName = prompt("Enter the new name:");
         if (!newName) return;
         try {
@@ -708,15 +727,14 @@ int main() {
           const data = await resp.json();
           if (data.status === "success") {
             showNavResult(
-              `Rename successful: ${data.old_name} → ${data.new_name} (${data.total_replaced} occurrences)`,
+              `✅ Rename successful: '${data.old_name}' → '${data.new_name}' (${data.total_replaced} replacements)`,
             );
             document.getElementById("sourceCode").value = data.modified_source;
-            await compileCode();
-          } else {
-            showNavResult(`Error: ${data.message}`);
-          }
+            document.getElementById("tooltip").style.display = "none";
+            await compileCode(); // Re-run analysis automatically
+          } else showNavResult(`❌ Error: ${data.message}`);
         } catch (err) {
-          showNavResult("Server communication error.");
+          showNavResult("Server error.");
         }
       }
 
@@ -727,7 +745,6 @@ int main() {
         const lines = before.split("\n");
         const line = lines.length;
         const col = lines[lines.length - 1].length + 1;
-
         try {
           const resp = await fetch("/api/completion", {
             method: "POST",
@@ -735,48 +752,61 @@ int main() {
             body: JSON.stringify({ line, col }),
           });
           const data = await resp.json();
-          if (data.status === "success") {
-            let result = "Completion suggestions:\n";
+          if (data.status === "success" && data.completions.length > 0) {
+            let res = "💡 Completion Suggestions:\n------------------------\n";
             data.completions.forEach((item) => {
-              result += `  ${item.label} (${item.kind}) - ${item.detail}\n`;
+              res += `[${item.kind.padEnd(8)}] ${item.label.padEnd(15)} → ${item.detail}\n`;
             });
-            showNavResult(result || "No suggestions found.");
+            showNavResult(res);
           } else {
-            showNavResult(`Error: ${data.message}`);
+            showNavResult("No completions found for this context.");
           }
         } catch (err) {
-          showNavResult("Server communication error.");
+          showNavResult("Server error.");
         }
       }
 
-      async function getHover() {
-        if (!selectedLine || !selectedCol) {
-          showNavResult("Please click on an identifier first.");
-          return;
-        }
-        const container = document.getElementById("highlightedContainer");
-        const fakeEvent = { target: container, clientX: 100, clientY: 100 };
-        await showTooltip(fakeEvent, selectedLine, selectedCol);
+      function getHover() {
+        if (!selectedLine || !selectedCol)
+          return showNavResult("Please click on an identifier first.");
+        const fakeEvent = {
+          clientX: window.innerWidth / 2,
+          clientY: window.innerHeight / 2,
+        };
+        showTooltip(fakeEvent, selectedLine, selectedCol);
       }
 
       function showNavResult(text) {
         document.getElementById("navResult").textContent = text;
       }
 
-      // ===== Clear All =====
-      function clearAll() {
-        document.getElementById("sourceCode").value = "";
-        document.getElementById("highlightedContainer").innerHTML =
-          '<span class="text-slate-500">Run analysis to see highlighted code...</span>';
-        document.getElementById("errorList").innerHTML = "";
-        document.getElementById("symbolTableOutput").textContent = "";
-        document.getElementById("cfgContainer").textContent = "graph TD;";
-        document.getElementById("callGraphContainer").textContent = "graph TD;";
-        document.getElementById("compileStatus").innerHTML =
-          "⏳ Status: Cleared";
-        document.getElementById("navResult").textContent = "";
-        selectedLine = null;
-        selectedCol = null;
+      // ===== Graph Rendering Logic =====
+      async function renderVisibleGraphs() {
+        // Only render mermaid if the tab is visible to avoid 0x0 size SVGs
+        if (
+          document.getElementById("tab-cfg").classList.contains("active") &&
+          pendingCfgData
+        ) {
+          const container = document.getElementById("cfgContainer");
+          container.removeAttribute("data-processed");
+          container.textContent = pendingCfgData;
+          await mermaid
+            .run({ nodes: [container] })
+            .catch((e) => console.log(e));
+        }
+        if (
+          document
+            .getElementById("tab-callgraph")
+            .classList.contains("active") &&
+          pendingCallGraphData
+        ) {
+          const container = document.getElementById("callGraphContainer");
+          container.removeAttribute("data-processed");
+          container.textContent = pendingCallGraphData;
+          await mermaid
+            .run({ nodes: [container] })
+            .catch((e) => console.log(e));
+        }
       }
 
       // ===== Tabs Switching =====
@@ -791,10 +821,31 @@ int main() {
             .querySelectorAll(".tab-content")
             .forEach((t) => t.classList.remove("active"));
           document.getElementById("tab-" + tabId).classList.add("active");
+
+          // Re-render graphs if switching to their tabs
+          renderVisibleGraphs();
         });
       });
 
-      // ===== Auto-run on load =====
+      // ===== Clear All =====
+      function clearAll() {
+        document.getElementById("sourceCode").value = "";
+        document.getElementById("highlightedContainer").innerHTML =
+          '<span class="text-slate-500">Run analysis to see highlighted code...</span>';
+        document.getElementById("errorList").innerHTML = "";
+        document.getElementById("symbolTableOutput").textContent = "";
+        document.getElementById("cfgContainer").textContent = "graph TD;";
+        document.getElementById("callGraphContainer").textContent = "graph TD;";
+        document.getElementById("compileStatus").innerHTML = "Status: Cleared";
+        document.getElementById("navResult").textContent = "";
+        document.getElementById("tooltip").style.display = "none";
+        pendingCfgData = "";
+        pendingCallGraphData = "";
+        selectedLine = null;
+        selectedCol = null;
+      }
+
+      // Run on startup
       window.onload = function () {
         compileCode();
       };

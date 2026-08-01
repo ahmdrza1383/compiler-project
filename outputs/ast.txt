@@ -1,8 +1,4 @@
 Program
-├── VarDecl
-│   ├── Type: int
-│   ├── ID: global_counter (Variable)
-│   └── Literal: 0
 ├── StructDef
 │   ├── ID: Point (Struct)
 │   ├── VarDecl
@@ -11,34 +7,63 @@ Program
 │   └── VarDecl
 │       ├── Type: int
 │       └── ID: y (Variable)
-├── FunctionDef
+├── StructDef
+│   ├── ID: Node (Struct)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: value (Variable)
+│   └── VarDecl
+│       ├── Type: struct Node*
+│       └── ID: next (Variable)
+├── VarDecl
+│   ├── Type: int
+│   ├── ID: global_counter (Variable)
+│   └── Literal: 0
+├── VarDecl
+│   ├── Type: float
+│   ├── ID: pi (Variable)
+│   └── Literal: 3.14159f
+├── VarDecl
+│   ├── Type: char*
+│   ├── ID: message (Variable)
+│   └── Literal: "Hello"
+├── VarDecl
+│   ├── Type: double
+│   ├── ID: precision (Variable)
+│   └── Literal: 1e-10
+├── FunctionDecl
 │   ├── Type: int
 │   ├── ID: add (Function)
 │   ├── VarDecl
 │   │   ├── Type: int
 │   │   └── ID: a (Variable)
+│   └── VarDecl
+│       ├── Type: int
+│       └── ID: b (Variable)
+├── FunctionDecl
+│   ├── Type: void
+│   ├── ID: print_point (Function)
+│   └── VarDecl
+│       ├── Type: struct Point
+│       └── ID: p (Variable)
+├── FunctionDecl
+│   ├── Type: struct Point*
+│   ├── ID: create_point (Function)
 │   ├── VarDecl
 │   │   ├── Type: int
-│   │   └── ID: b (Variable)
-│   └── Block
-│       └── ReturnStmt
-│           └── BinaryExpr (+)
-│               ├── ID: a (Variable)
-│               └── ID: b (Variable)
-├── FunctionDef
+│   │   └── ID: x (Variable)
+│   └── VarDecl
+│       ├── Type: int
+│       └── ID: y (Variable)
+├── FunctionDecl
 │   ├── Type: int
-│   ├── ID: multiply (Function)
+│   ├── ID: sum_array (Function)
 │   ├── VarDecl
 │   │   ├── Type: int
-│   │   └── ID: a (Variable)
-│   ├── VarDecl
-│   │   ├── Type: int
-│   │   └── ID: b (Variable)
-│   └── Block
-│       └── ReturnStmt
-│           └── BinaryExpr (*)
-│               ├── ID: a (Variable)
-│               └── ID: b (Variable)
+│   │   └── ID: arr (Variable)
+│   └── VarDecl
+│       ├── Type: int
+│       └── ID: size (Variable)
 ├── FunctionDef
 │   ├── Type: int
 │   ├── ID: factorial (Function)
@@ -62,95 +87,37 @@ Program
 │                       ├── ID: n (Variable)
 │                       └── Literal: 1
 ├── FunctionDef
-│   ├── Type: int
-│   ├── ID: fibonacci (Function)
+│   ├── Type: void
+│   ├── ID: increment_point (Function)
 │   ├── VarDecl
-│   │   ├── Type: int
-│   │   └── ID: n (Variable)
+│   │   ├── Type: struct Point*
+│   │   └── ID: p (Variable)
 │   └── Block
-│       ├── IfStmt
-│       │   ├── BinaryExpr (<=)
-│       │   │   ├── ID: n (Variable)
-│       │   │   └── Literal: 1
-│       │   └── Block
-│       │       └── ReturnStmt
-│       │           └── ID: n (Variable)
-│       └── ReturnStmt
-│           └── BinaryExpr (+)
-│               ├── CallExpr
-│               │   ├── ID: fibonacci (Function)
-│               │   └── BinaryExpr (-)
-│               │       ├── ID: n (Variable)
-│               │       └── Literal: 1
-│               └── CallExpr
-│                   ├── ID: fibonacci (Function)
-│                   └── BinaryExpr (-)
-│                       ├── ID: n (Variable)
-│                       └── Literal: 2
-├── FunctionDef
-│   ├── Type: int
-│   ├── ID: compute (Function)
-│   ├── VarDecl
-│   │   ├── Type: int
-│   │   └── ID: x (Variable)
-│   ├── VarDecl
-│   │   ├── Type: int
-│   │   └── ID: y (Variable)
-│   ├── VarDecl
-│   │   ├── Type: int
-│   │   └── ID: flag (Variable)
-│   └── Block
-│       ├── VarDecl
-│       │   ├── Type: int
-│       │   ├── ID: result (Variable)
-│       │   └── Literal: 0
-│       ├── VarDecl
-│       │   ├── Type: int
-│       │   ├── ID: temp (Variable)
-│       │   └── Literal: 0
-│       ├── VarDecl
-│       │   ├── Type: struct Point
-│       │   └── ID: p (Variable)
-│       ├── BinaryExpr (=)
+│       ├── BinaryExpr (+=)
 │       │   ├── MemberAccess
 │       │   │   ├── ID: p (Variable)
 │       │   │   └── ID: x (Variable)
-│       │   └── ID: x (Variable)
-│       ├── BinaryExpr (=)
-│       │   ├── MemberAccess
-│       │   │   ├── ID: p (Variable)
-│       │   │   └── ID: y (Variable)
-│       │   └── ID: y (Variable)
-│       ├── IfStmt
-│       │   ├── BinaryExpr (>)
-│       │   │   ├── ID: flag (Variable)
-│       │   │   └── Literal: 0
-│       │   ├── Block
-│       │   │   ├── BinaryExpr (=)
-│       │   │   │   ├── ID: temp (Variable)
-│       │   │   │   └── CallExpr
-│       │   │   │       ├── ID: add (Function)
-│       │   │   │       ├── ID: x (Variable)
-│       │   │   │       └── ID: y (Variable)
-│       │   │   └── BinaryExpr (=)
-│       │   │       ├── ID: result (Variable)
-│       │   │       └── CallExpr
-│       │   │           ├── ID: multiply (Function)
-│       │   │           ├── ID: temp (Variable)
-│       │   │           └── Literal: 2
-│       │   └── Block
-│       │       ├── BinaryExpr (=)
-│       │       │   ├── ID: temp (Variable)
-│       │       │   └── CallExpr
-│       │       │       ├── ID: multiply (Function)
-│       │       │       ├── ID: x (Variable)
-│       │       │       └── ID: y (Variable)
-│       │       └── BinaryExpr (=)
-│       │           ├── ID: result (Variable)
-│       │           └── CallExpr
-│       │               ├── ID: add (Function)
-│       │               ├── ID: temp (Variable)
-│       │               └── Literal: 10
+│       │   └── Literal: 1
+│       └── BinaryExpr (+=)
+│           ├── MemberAccess
+│           │   ├── UnaryExpr (*)
+│           │   │   └── ID: p (Variable)
+│           │   └── ID: y (Variable)
+│           └── Literal: 1
+├── FunctionDef
+│   ├── Type: int
+│   ├── ID: sum_array (Function)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: arr (Variable)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: size (Variable)
+│   └── Block
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: sum (Variable)
+│       │   └── Literal: 0
 │       ├── ForStmt
 │       │   ├── VarDecl
 │       │   │   ├── Type: int
@@ -158,7 +125,303 @@ Program
 │       │   │   └── Literal: 0
 │       │   ├── BinaryExpr (<)
 │       │   │   ├── ID: i (Variable)
-│       │   │   └── Literal: 5
+│       │   │   └── ID: size (Variable)
+│       │   ├── BinaryExpr (=)
+│       │   │   ├── ID: i (Variable)
+│       │   │   └── BinaryExpr (+)
+│       │   │       ├── ID: i (Variable)
+│       │   │       └── Literal: 1
+│       │   └── Block
+│       │       └── BinaryExpr (=)
+│       │           ├── ID: sum (Variable)
+│       │           └── BinaryExpr (+)
+│       │               ├── ID: sum (Variable)
+│       │               └── ArrayAccess
+│       │                   ├── ID: arr (Variable)
+│       │                   └── ID: i (Variable)
+│       └── ReturnStmt
+│           └── ID: sum (Variable)
+├── FunctionDef
+│   ├── Type: int
+│   ├── ID: count_even (Function)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: arr (Variable)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: size (Variable)
+│   └── Block
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: count (Variable)
+│       │   └── Literal: 0
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: i (Variable)
+│       │   └── Literal: 0
+│       ├── WhileStmt
+│       │   ├── BinaryExpr (<)
+│       │   │   ├── ID: i (Variable)
+│       │   │   └── ID: size (Variable)
+│       │   └── Block
+│       │       ├── IfStmt
+│       │       │   ├── BinaryExpr (==)
+│       │       │   │   ├── ArrayAccess
+│       │       │   │   │   ├── ID: arr (Variable)
+│       │       │   │   │   └── ID: i (Variable)
+│       │       │   │   └── Literal: 0
+│       │       │   └── Block
+│       │       │       ├── BinaryExpr (=)
+│       │       │       │   ├── ID: i (Variable)
+│       │       │       │   └── BinaryExpr (+)
+│       │       │       │       ├── ID: i (Variable)
+│       │       │       │       └── Literal: 1
+│       │       │       └── ContinueStmt
+│       │       ├── IfStmt
+│       │       │   ├── BinaryExpr (==)
+│       │       │   │   ├── BinaryExpr (%)
+│       │       │   │   │   ├── ArrayAccess
+│       │       │   │   │   │   ├── ID: arr (Variable)
+│       │       │   │   │   │   └── ID: i (Variable)
+│       │       │   │   │   └── Literal: 2
+│       │       │   │   └── Literal: 0
+│       │       │   └── Block
+│       │       │       └── BinaryExpr (=)
+│       │       │           ├── ID: count (Variable)
+│       │       │           └── BinaryExpr (+)
+│       │       │               ├── ID: count (Variable)
+│       │       │               └── Literal: 1
+│       │       └── BinaryExpr (=)
+│       │           ├── ID: i (Variable)
+│       │           └── BinaryExpr (+)
+│       │               ├── ID: i (Variable)
+│       │               └── Literal: 1
+│       └── ReturnStmt
+│           └── ID: count (Variable)
+├── FunctionDef
+│   ├── Type: int
+│   ├── ID: is_in_range (Function)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: value (Variable)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: low (Variable)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: high (Variable)
+│   └── Block
+│       └── ReturnStmt
+│           └── BinaryExpr (&&)
+│               ├── BinaryExpr (>=)
+│               │   ├── ID: value (Variable)
+│               │   └── ID: low (Variable)
+│               └── BinaryExpr (<=)
+│                   ├── ID: value (Variable)
+│                   └── ID: high (Variable)
+├── FunctionDef
+│   ├── Type: int
+│   ├── ID: power (Function)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: base (Variable)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: exp (Variable)
+│   └── Block
+│       ├── IfStmt
+│       │   ├── BinaryExpr (==)
+│       │   │   ├── ID: exp (Variable)
+│       │   │   └── Literal: 0
+│       │   └── Block
+│       │       └── ReturnStmt
+│       │           └── Literal: 1
+│       └── ReturnStmt
+│           └── BinaryExpr (*)
+│               ├── ID: base (Variable)
+│               └── CallExpr
+│                   ├── ID: power (Function)
+│                   ├── ID: base (Variable)
+│                   └── BinaryExpr (-)
+│                       ├── ID: exp (Variable)
+│                       └── Literal: 1
+├── FunctionDef
+│   ├── Type: int
+│   ├── ID: expression_demo (Function)
+│   └── Block
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: a (Variable)
+│       │   └── Literal: 10
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: b (Variable)
+│       │   └── Literal: 20
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   └── ID: c (Variable)
+│       ├── BinaryExpr (=)
+│       │   ├── ID: c (Variable)
+│       │   └── BinaryExpr (-)
+│       │       ├── BinaryExpr (+)
+│       │       │   ├── ID: a (Variable)
+│       │       │   └── ID: b (Variable)
+│       │       └── BinaryExpr (/)
+│       │           ├── BinaryExpr (*)
+│       │           │   ├── Literal: 3
+│       │           │   └── Literal: 4
+│       │           └── Literal: 2
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: flag (Variable)
+│       │   └── BinaryExpr (||)
+│       │       ├── BinaryExpr (&&)
+│       │       │   ├── BinaryExpr (<)
+│       │       │   │   ├── ID: a (Variable)
+│       │       │   │   └── ID: b (Variable)
+│       │       │   └── BinaryExpr (>)
+│       │       │       ├── ID: b (Variable)
+│       │       │       └── Literal: 15
+│       │       └── BinaryExpr (==)
+│       │           ├── ID: a (Variable)
+│       │           └── Literal: 10
+│       ├── BinaryExpr (+=)
+│       │   ├── ID: a (Variable)
+│       │   └── Literal: 5
+│       ├── BinaryExpr (-=)
+│       │   ├── ID: b (Variable)
+│       │   └── Literal: 2
+│       ├── BinaryExpr (*=)
+│       │   ├── ID: c (Variable)
+│       │   └── Literal: 2
+│       ├── BinaryExpr (/=)
+│       │   ├── ID: c (Variable)
+│       │   └── Literal: 3
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: d (Variable)
+│       │   └── UnaryExpr (-)
+│       │       └── ID: a (Variable)
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: e (Variable)
+│       │   └── UnaryExpr (+)
+│       │       └── ID: b (Variable)
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: f (Variable)
+│       │   └── UnaryExpr (!)
+│       │       └── ID: flag (Variable)
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: g (Variable)
+│       │   └── UnaryExpr (*)
+│       │       └── UnaryExpr (&)
+│       │           └── ID: a (Variable)
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: h (Variable)
+│       │   └── UnaryExpr (++)
+│       │       └── ID: a (Variable)
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: i (Variable)
+│       │   └── UnaryExpr (--)
+│       │       └── ID: b (Variable)
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: arr (Variable)
+│       │   ├── Literal: 5
+│       │   └── InitializerList
+│       │       ├── Literal: 1
+│       │       ├── Literal: 2
+│       │       ├── Literal: 3
+│       │       ├── Literal: 4
+│       │       └── Literal: 5
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: first (Variable)
+│       │   └── ArrayAccess
+│       │       ├── ID: arr (Variable)
+│       │       └── Literal: 0
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: last (Variable)
+│       │   └── ArrayAccess
+│       │       ├── ID: arr (Variable)
+│       │       └── Literal: 4
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: sum (Variable)
+│       │   └── CallExpr
+│       │       ├── ID: add (Function)
+│       │       ├── ID: a (Variable)
+│       │       └── ID: b (Variable)
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: fact (Variable)
+│       │   └── CallExpr
+│       │       ├── ID: factorial (Function)
+│       │       └── Literal: 5
+│       ├── VarDecl
+│       │   ├── Type: struct Point
+│       │   ├── ID: p1 (Variable)
+│       │   └── InitializerList
+│       │       ├── Literal: 1
+│       │       └── Literal: 2
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: px (Variable)
+│       │   └── MemberAccess
+│       │       ├── ID: p1 (Variable)
+│       │       └── ID: x (Variable)
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: py (Variable)
+│       │   └── MemberAccess
+│       │       ├── ID: p1 (Variable)
+│       │       └── ID: y (Variable)
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: x1 (Variable)
+│       │   └── Literal: 0
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: x2 (Variable)
+│       │   └── Literal: 1
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: x3 (Variable)
+│       │   └── Literal: 2
+│       └── ReturnStmt
+│           └── BinaryExpr (+)
+│               ├── BinaryExpr (+)
+│               │   ├── BinaryExpr (+)
+│               │   │   ├── ID: px (Variable)
+│               │   │   └── ID: py (Variable)
+│               │   └── ID: sum (Variable)
+│               └── ID: fact (Variable)
+├── FunctionDef
+│   ├── Type: int
+│   ├── ID: find_first (Function)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: arr (Variable)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: size (Variable)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: target (Variable)
+│   └── Block
+│       ├── ForStmt
+│       │   ├── VarDecl
+│       │   │   ├── Type: int
+│       │   │   ├── ID: i (Variable)
+│       │   │   └── Literal: 0
+│       │   ├── BinaryExpr (<)
+│       │   │   ├── ID: i (Variable)
+│       │   │   └── ID: size (Variable)
 │       │   ├── BinaryExpr (=)
 │       │   │   ├── ID: i (Variable)
 │       │   │   └── BinaryExpr (+)
@@ -167,235 +430,139 @@ Program
 │       │   └── Block
 │       │       └── IfStmt
 │       │           ├── BinaryExpr (==)
-│       │           │   ├── BinaryExpr (%)
-│       │           │   │   ├── ID: i (Variable)
-│       │           │   │   └── Literal: 2
-│       │           │   └── Literal: 0
-│       │           ├── Block
-│       │           │   └── BinaryExpr (=)
-│       │           │       ├── ID: result (Variable)
-│       │           │       └── BinaryExpr (+)
-│       │           │           ├── ID: result (Variable)
-│       │           │           └── ID: i (Variable)
+│       │           │   ├── ArrayAccess
+│       │           │   │   ├── ID: arr (Variable)
+│       │           │   │   └── ID: i (Variable)
+│       │           │   └── ID: target (Variable)
 │       │           └── Block
-│       │               └── BinaryExpr (=)
-│       │                   ├── ID: result (Variable)
-│       │                   └── BinaryExpr (-)
-│       │                       ├── ID: result (Variable)
-│       │                       └── ID: i (Variable)
-│       ├── VarDecl
-│       │   ├── Type: int
-│       │   ├── ID: j (Variable)
-│       │   └── Literal: 0
-│       ├── WhileStmt
-│       │   ├── BinaryExpr (<)
-│       │   │   ├── ID: j (Variable)
-│       │   │   └── Literal: 3
-│       │   └── Block
-│       │       ├── BinaryExpr (=)
-│       │       │   ├── ID: result (Variable)
-│       │       │   └── BinaryExpr (+)
-│       │       │       ├── ID: result (Variable)
-│       │       │       └── ID: j (Variable)
-│       │       └── BinaryExpr (=)
-│       │           ├── ID: j (Variable)
-│       │           └── BinaryExpr (+)
-│       │               ├── ID: j (Variable)
-│       │               └── Literal: 1
-│       ├── BinaryExpr (=)
-│       │   ├── ID: global_counter (Variable)
-│       │   └── BinaryExpr (+)
-│       │       ├── ID: global_counter (Variable)
-│       │       └── ID: result (Variable)
+│       │               └── ReturnStmt
+│       │                   └── ID: i (Variable)
 │       └── ReturnStmt
-│           └── ID: result (Variable)
-├── FunctionDef
-│   ├── Type: int
-│   ├── ID: nested_calls (Function)
-│   ├── VarDecl
-│   │   ├── Type: int
-│   │   └── ID: n (Variable)
-│   └── Block
-│       ├── IfStmt
-│       │   ├── BinaryExpr (<=)
-│       │   │   ├── ID: n (Variable)
-│       │   │   └── Literal: 0
-│       │   └── Block
-│       │       └── ReturnStmt
-│       │           └── Literal: 0
-│       ├── VarDecl
-│       │   ├── Type: int
-│       │   ├── ID: a (Variable)
-│       │   └── CallExpr
-│       │       ├── ID: factorial (Function)
-│       │       └── ID: n (Variable)
-│       ├── VarDecl
-│       │   ├── Type: int
-│       │   ├── ID: b (Variable)
-│       │   └── CallExpr
-│       │       ├── ID: fibonacci (Function)
-│       │       └── ID: n (Variable)
-│       ├── VarDecl
-│       │   ├── Type: int
-│       │   ├── ID: c (Variable)
-│       │   └── CallExpr
-│       │       ├── ID: compute (Function)
-│       │       ├── ID: a (Variable)
-│       │       ├── ID: b (Variable)
-│       │       └── BinaryExpr (%)
-│       │           ├── ID: n (Variable)
-│       │           └── Literal: 2
-│       └── ReturnStmt
-│           └── BinaryExpr (+)
-│               ├── ID: c (Variable)
-│               └── CallExpr
-│                   ├── ID: nested_calls (Function)
-│                   └── BinaryExpr (-)
-│                       ├── ID: n (Variable)
-│                       └── Literal: 1
+│           └── UnaryExpr (-)
+│               └── Literal: 1
 ├── FunctionDef
 │   ├── Type: void
-│   ├── ID: process_array (Function)
-│   ├── VarDecl
-│   │   ├── Type: int*
-│   │   └── ID: arr (Variable)
-│   ├── VarDecl
-│   │   ├── Type: int
-│   │   └── ID: size (Variable)
+│   ├── ID: do_nothing (Function)
 │   └── Block
+├── FunctionDef
+│   ├── Type: int
+│   ├── ID: main (Function)
+│   └── Block
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: x (Variable)
+│       │   └── Literal: 10
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: y (Variable)
+│       │   └── Literal: 20
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: z (Variable)
+│       │   └── Literal: 30
+│       ├── VarDecl
+│       │   ├── Type: struct Point
+│       │   ├── ID: p (Variable)
+│       │   └── InitializerList
+│       │       ├── Literal: 5
+│       │       └── Literal: 7
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: result (Variable)
+│       │   └── CallExpr
+│       │       ├── ID: add (Function)
+│       │       ├── ID: x (Variable)
+│       │       └── ID: y (Variable)
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: fact (Variable)
+│       │   └── CallExpr
+│       │       ├── ID: factorial (Function)
+│       │       └── Literal: 5
+│       ├── IfStmt
+│       │   ├── BinaryExpr (>)
+│       │   │   ├── ID: result (Variable)
+│       │   │   └── Literal: 0
+│       │   ├── Block
+│       │   │   └── CallExpr
+│       │   │       └── ID: do_nothing (Function)
+│       │   └── Block
+│       │       └── CallExpr
+│       │           └── ID: do_nothing (Function)
 │       ├── VarDecl
 │       │   ├── Type: int
 │       │   ├── ID: i (Variable)
 │       │   └── Literal: 0
-│       └── WhileStmt
-│           ├── BinaryExpr (<)
-│           │   ├── ID: i (Variable)
-│           │   └── ID: size (Variable)
-│           └── Block
-│               ├── BinaryExpr (=)
-│               │   ├── ArrayAccess
-│               │   │   ├── ID: arr (Variable)
-│               │   │   └── ID: i (Variable)
-│               │   └── BinaryExpr (*)
-│               │       ├── ArrayAccess
-│               │       │   ├── ID: arr (Variable)
-│               │       │   └── ID: i (Variable)
-│               │       └── Literal: 2
-│               └── BinaryExpr (=)
-│                   ├── ID: i (Variable)
-│                   └── BinaryExpr (+)
-│                       ├── ID: i (Variable)
-│                       └── Literal: 1
+│       ├── WhileStmt
+│       │   ├── BinaryExpr (<)
+│       │   │   ├── ID: i (Variable)
+│       │   │   └── Literal: 10
+│       │   └── Block
+│       │       ├── BinaryExpr (=)
+│       │       │   ├── ID: i (Variable)
+│       │       │   └── BinaryExpr (+)
+│       │       │       ├── ID: i (Variable)
+│       │       │       └── Literal: 1
+│       │       ├── IfStmt
+│       │       │   ├── BinaryExpr (==)
+│       │       │   │   ├── ID: i (Variable)
+│       │       │   │   └── Literal: 5
+│       │       │   └── Block
+│       │       │       └── ContinueStmt
+│       │       └── CallExpr
+│       │           └── ID: do_nothing (Function)
+│       ├── ForStmt
+│       │   ├── VarDecl
+│       │   │   ├── Type: int
+│       │   │   ├── ID: j (Variable)
+│       │   │   └── Literal: 0
+│       │   ├── BinaryExpr (<)
+│       │   │   ├── ID: j (Variable)
+│       │   │   └── Literal: 10
+│       │   ├── BinaryExpr (=)
+│       │   │   ├── ID: j (Variable)
+│       │   │   └── BinaryExpr (+)
+│       │   │       ├── ID: j (Variable)
+│       │   │       └── Literal: 1
+│       │   └── Block
+│       │       ├── IfStmt
+│       │       │   ├── BinaryExpr (==)
+│       │       │   │   ├── ID: j (Variable)
+│       │       │   │   └── Literal: 7
+│       │       │   └── Block
+│       │       │       └── BreakStmt
+│       │       └── CallExpr
+│       │           └── ID: do_nothing (Function)
+│       └── ReturnStmt
+│           └── Literal: 0
+├── FunctionDef
+│   ├── Type: int
+│   ├── ID: add (Function)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: a (Variable)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: b (Variable)
+│   └── Block
+│       └── ReturnStmt
+│           └── BinaryExpr (+)
+│               ├── ID: a (Variable)
+│               └── ID: b (Variable)
 └── FunctionDef
-    ├── Type: int
-    ├── ID: main (Function)
+    ├── Type: void
+    ├── ID: print_point (Function)
+    ├── VarDecl
+    │   ├── Type: struct Point
+    │   └── ID: p (Variable)
     └── Block
-        ├── VarDecl
-        │   ├── Type: int
-        │   ├── ID: a (Variable)
-        │   └── Literal: 5
-        ├── VarDecl
-        │   ├── Type: int
-        │   ├── ID: b (Variable)
-        │   └── Literal: 7
-        ├── VarDecl
-        │   ├── Type: int
-        │   ├── ID: flag (Variable)
-        │   └── Literal: 1
-        ├── VarDecl
-        │   ├── Type: int
-        │   ├── ID: arr (Variable)
-        │   ├── Literal: 5
-        │   └── InitializerList
-        │       ├── Literal: 1
-        │       ├── Literal: 2
-        │       ├── Literal: 3
-        │       ├── Literal: 4
-        │       └── Literal: 5
-        ├── VarDecl
-        │   ├── Type: struct Point
-        │   └── ID: p1 (Variable)
-        ├── BinaryExpr (=)
-        │   ├── MemberAccess
-        │   │   ├── ID: p1 (Variable)
-        │   │   └── ID: x (Variable)
-        │   └── Literal: 10
-        ├── BinaryExpr (=)
-        │   ├── MemberAccess
-        │   │   ├── ID: p1 (Variable)
-        │   │   └── ID: y (Variable)
-        │   └── Literal: 20
-        ├── VarDecl
-        │   ├── Type: int
-        │   ├── ID: sum (Variable)
-        │   └── CallExpr
-        │       ├── ID: add (Function)
-        │       ├── ID: a (Variable)
-        │       └── ID: b (Variable)
-        ├── VarDecl
-        │   ├── Type: int
-        │   ├── ID: prod (Variable)
-        │   └── CallExpr
-        │       ├── ID: multiply (Function)
-        │       ├── ID: a (Variable)
-        │       └── ID: b (Variable)
-        ├── VarDecl
-        │   ├── Type: int
-        │   ├── ID: fact (Variable)
-        │   └── CallExpr
-        │       ├── ID: factorial (Function)
-        │       └── Literal: 6
-        ├── VarDecl
-        │   ├── Type: int
-        │   ├── ID: fib (Variable)
-        │   └── CallExpr
-        │       ├── ID: fibonacci (Function)
-        │       └── Literal: 8
-        ├── VarDecl
-        │   ├── Type: int
-        │   ├── ID: comp (Variable)
-        │   └── CallExpr
-        │       ├── ID: compute (Function)
-        │       ├── ID: sum (Variable)
-        │       ├── ID: prod (Variable)
-        │       └── ID: flag (Variable)
-        ├── VarDecl
-        │   ├── Type: int
-        │   ├── ID: nested (Variable)
-        │   └── CallExpr
-        │       ├── ID: nested_calls (Function)
-        │       └── Literal: 3
-        ├── CallExpr
-        │   ├── ID: process_array (Function)
-        │   ├── ID: arr (Variable)
-        │   └── Literal: 5
-        ├── CallExpr
-        │   ├── ID: printf (Function)
-        │   ├── Literal: "Sum: %d\n"
-        │   └── ID: sum (Variable)
-        ├── CallExpr
-        │   ├── ID: printf (Function)
-        │   ├── Literal: "Product: %d\n"
-        │   └── ID: prod (Variable)
-        ├── CallExpr
-        │   ├── ID: printf (Function)
-        │   ├── Literal: "Factorial(6): %d\n"
-        │   └── ID: fact (Variable)
-        ├── CallExpr
-        │   ├── ID: printf (Function)
-        │   ├── Literal: "Fibonacci(8): %d\n"
-        │   └── ID: fib (Variable)
-        ├── CallExpr
-        │   ├── ID: printf (Function)
-        │   ├── Literal: "Compute: %d\n"
-        │   └── ID: comp (Variable)
-        ├── CallExpr
-        │   ├── ID: printf (Function)
-        │   ├── Literal: "Nested: %d\n"
-        │   └── ID: nested (Variable)
-        ├── CallExpr
-        │   ├── ID: printf (Function)
-        │   ├── Literal: "Global counter: %d\n"
-        │   └── ID: global_counter (Variable)
-        └── ReturnStmt
-            └── Literal: 0
+        └── VarDecl
+            ├── Type: int
+            ├── ID: dummy (Variable)
+            └── BinaryExpr (+)
+                ├── MemberAccess
+                │   ├── ID: p (Variable)
+                │   └── ID: x (Variable)
+                └── MemberAccess
+                    ├── ID: p (Variable)
+                    └── ID: y (Variable)

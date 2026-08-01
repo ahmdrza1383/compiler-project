@@ -15,15 +15,20 @@
 ------------------------------------------------------------
 
 📌 Query at Line 97, Col 10 (Function create_point call):
-  - Hover Info: {'symbol': 'comp', 'kind': 'variable', 'type': 'int', 'scope': 'block', 'initialized': True, 'used': True}
-  - Go-to-Definition: {'file': 'test_code.c', 'line': 97, 'col': 9}
-  - Total References Found: 2
-    [Def] File: test_code.c, Line: 97, Col: 9
-    [Ref] File: test_code.c, Line: 106, Col: 29
-------------------------------------------------------------
-
-📌 Query at Line 7, Col 8 (Struct Point Definition):
   - Hover Info: {}
   - Go-to-Definition: Not found
   - Total References Found: 0
+------------------------------------------------------------
+
+📌 Query at Line 7, Col 8 (Struct Point Definition):
+  - Hover Info: {'symbol': 'Point', 'kind': 'struct', 'type': 'struct Point', 'scope': 'global', 'initialized': False, 'used': True}
+  - Go-to-Definition: {'file': 'test_code.c', 'line': 7, 'col': 8}
+  - Total References Found: 7
+    [Def] File: test_code.c, Line: 7, Col: 8
+    [Ref] File: test_code.c, Line: 26, Col: 31
+    [Ref] File: test_code.c, Line: 27, Col: 15
+    [Ref] File: test_code.c, Line: 39, Col: 36
+    [Ref] File: test_code.c, Line: 127, Col: 18
+    [Ref] File: test_code.c, Line: 169, Col: 18
+    [Ref] File: test_code.c, Line: 213, Col: 31
 ------------------------------------------------------------
