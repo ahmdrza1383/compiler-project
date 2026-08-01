@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>محیط توسعه و کامپایلر هوشمند Mini-C</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: false, theme: "dark" });
+    </script>
+  </head>
+  <body
+    class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col"
+  >
+    <header
+      class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex justify-between items-center shadow-md"
+    >
+      <div class="flex items-center space-x-3 space-x-reverse">
+        <span class="bg-blue-600 text-white p-2 rounded-lg font-bold text-lg"
+          >⚙️ IDE</span
+        >
+        <h1 class="text-xl font-bold tracking-wide">
+          کامپایلر و تحلیلگر هوشمند Mini-C
+        </h1>
+      </div>
+      <button
+        onclick="compileCode()"
+        class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-2 rounded-lg shadow transition duration-200 flex items-center gap-2 cursor-pointer"
+      >
+        <span>▶ اجرای تحلیل و کامپایل</span>
+      </button>
+    </header>
+
+    <main class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+      <div
+        class="flex flex-col bg-slate-800 border border-slate-700 rounded-xl shadow-lg overflow-hidden"
+      >
+        <div
+          class="bg-slate-700/50 px-4 py-3 border-b border-slate-700 font-semibold text-sm text-slate-300 flex justify-between items-center"
+        >
+          <span>کد منبع (C Source Code)</span>
+          <span class="text-xs text-slate-400">زبان هدف: Mini-C</span>
+        </div>
+        <textarea
+          id="sourceCode"
+          class="flex-1 p-4 bg-slate-900 font-mono text-sm text-emerald-400 resize-none focus:outline-none leading-relaxed"
+          placeholder="کد C خود را اینجا بنویسید..."
+          dir="ltr"
+        >
+struct Point {
+    int x;
+    int y;
+};
+
+int main() {
+    struct Point p = {10, 20};
+    int sum = p.x + p.y;
+    return sum;
+}</textarea
+        >
+      </div>
+
+      <div
+        class="flex flex-col bg-slate-800 border border-slate-700 rounded-xl shadow-lg overflow-hidden"
+      >
+        <div class="flex border-b border-slate-700 bg-slate-700/30">
+          <button
+            onclick="switchTab('reports')"
+            id="btn-reports"
+            class="flex-1 py-3 text-sm font-medium text-center border-b-2 border-blue-500 text-blue-400 cursor-pointer transition"
+          >
+            گزارش خطاها و تحلیل
+          </button>
+          <button
+            onclick="switchTab('cfg')"
+            id="btn-cfg"
+            class="flex-1 py-3 text-sm font-medium text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 cursor-pointer transition"
+          >
+            گراف جریان (CFG)
+          </button>
+          <button
+            onclick="switchTab('symbols')"
+            id="btn-symbols"
+            class="flex-1 py-3 text-sm font-medium text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 cursor-pointer transition"
+          >
+            جدول نمادها
+          </button>
+        </div>
+
+        <div class="flex-1 p-4 overflow-y-auto max-h-[600px] font-mono text-xs">
+          <div id="tab-reports" class="space-y-4">
+            <div class="bg-slate-900/60 p-4 rounded-lg border border-slate-700">
+              <h3
+                class="font-bold text-slate-300 mb-2 border-b border-slate-700 pb-1"
+              >
+                وضعیت کامپایل:
+              </h3>
+              <div id="compileStatus" class="text-slate-400">
+                آماده برای اجرا...
+              </div>
+            </div>
+            <div class="bg-slate-900/60 p-4 rounded-lg border border-slate-700">
+              <h3
+                class="font-bold text-red-400 mb-2 border-b border-slate-700 pb-1"
+              >
+                خطاها و هشدارها (Errors & Warnings):
+              </h3>
+              <ul id="errorList" class="space-y-1 text-red-300">
+                <li class="text-slate-500">هیچ خطایی گزارش نشده است.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div id="tab-cfg" class="hidden flex justify-center items-center">
+            <pre
+              id="cfgContainer"
+              class="mermaid w-full text-center overflow-auto p-4"
+            >
+        graph TD;
+        ENTRY --> EXIT
+    </pre
+            >
+          </div>
+
+          <div id="tab-symbols" class="hidden">
+            <pre
+              id="symbolTableOutput"
+              class="text-emerald-300 whitespace-pre-wrap"
+            >
+اطلاعات جدول نمادها پس از اجرا اینجا نمایش داده می‌شود...</pre
+            >
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function switchTab(tabName) {
+        document.getElementById("tab-reports").classList.add("hidden");
+        document.getElementById("tab-cfg").classList.add("hidden");
+        document.getElementById("tab-symbols").classList.add("hidden");
+
+        document.getElementById("btn-reports").className =
+          "flex-1 py-3 text-sm font-medium text-center border-b-2 border-transparent text-slate-400 cursor-pointer transition";
+        document.getElementById("btn-cfg").className =
+          "flex-1 py-3 text-sm font-medium text-center border-b-2 border-transparent text-slate-400 cursor-pointer transition";
+        document.getElementById("btn-symbols").className =
+          "flex-1 py-3 text-sm font-medium text-center border-b-2 border-transparent text-slate-400 cursor-pointer transition";
+
+        document.getElementById("tab-" + tabName).classList.remove("hidden");
+        document.getElementById("btn-" + tabName).className =
+          "flex-1 py-3 text-sm font-medium text-center border-b-2 border-blue-500 text-blue-400 cursor-pointer transition";
+      }
+
+      // حتماً باید کلمه async اینجا باشد
+      async function compileCode() {
+        const code = document.getElementById("sourceCode").value;
+        const statusDiv = document.getElementById("compileStatus");
+        const errorList = document.getElementById("errorList");
+        const symbolTableOutput = document.getElementById("symbolTableOutput");
+
+        statusDiv.innerHTML =
+          '<span class="text-yellow-400 animate-pulse">در حال پردازش و تحلیل کد...</span>';
+
+        try {
+          const response = await fetch("/api/compile", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code: code }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            statusDiv.innerHTML =
+              '<span class="text-emerald-400 font-bold">✓ کامپایل و تحلیل با موفقیت انجام شد.</span>';
+          } else {
+            statusDiv.innerHTML =
+              '<span class="text-red-400 font-bold">✗ خطارهایی در کد شناسایی شد.</span>';
+          }
+
+          // نمایش خطاها و هشدارها
+          let errHtml = "";
+          if (data.syntax_errors)
+            data.syntax_errors.forEach(
+              (e) =>
+                (errHtml += `<li class="text-red-400">[Syntax Error] خط ${e.line}: ${e.message}</li>`),
+            );
+          if (data.semantic_errors)
+            data.semantic_errors.forEach(
+              (e) =>
+                (errHtml += `<li class="text-red-400">[Semantic Error] ${e}</li>`),
+            );
+          if (data.type_errors)
+            data.type_errors.forEach(
+              (e) =>
+                (errHtml += `<li class="text-orange-400">[Type Error] ${e}</li>`),
+            );
+          if (data.warnings)
+            data.warnings.forEach(
+              (w) =>
+                (errHtml += `<li class="text-yellow-400">[Warning] ${w}</li>`),
+            );
+
+          errorList.innerHTML =
+            errHtml ||
+            '<li class="text-emerald-500">هیچ خطا یا هشداری یافت نشد.</li>';
+
+          // نمایش جدول نمادها
+          symbolTableOutput.textContent = JSON.stringify(
+            data.symbol_table,
+            null,
+            2,
+          );
+
+          let mermaidGraph = "graph TD;\n";
+          if (data.cfg) {
+            for (let func in data.cfg) {
+              let cfg = data.cfg[func];
+              if (cfg.blocks) {
+                cfg.blocks.forEach((b) => {
+                  let label = `Block ${b.id} (${b.label})`;
+                  mermaidGraph += `    F_${func}_${b.id}["${label}"]\n`;
+                  b.successors.forEach((succId) => {
+                    mermaidGraph += `    F_${func}_${b.id} --> F_${func}_${succId}\n`;
+                  });
+                });
+              }
+            }
+          }
+
+          const cfgContainer = document.getElementById("cfgContainer");
+          cfgContainer.textContent = mermaidGraph;
+          cfgContainer.removeAttribute("data-processed");
+          await mermaid.run({ nodes: [cfgContainer] });
+        } catch (err) {
+          console.error("JS Error Details:", err);
+          statusDiv.innerHTML =
+            '<span class="text-red-500 font-bold">خطا در پردازش پاسخ سرور.</span>';
+        }
+      }
+    </script>
+  </body>
+</html>
