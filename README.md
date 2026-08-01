@@ -1,309 +1,488 @@
-# کامپایلر Mini-C 🚀
+# 📋 مستند جامع و متن ارائه پروژه نهایی درس طراحی کامپایلرها
 
-یک کامپایلر کامل برای زبان شبه C (Mini-C) پیاده‌سازی شده با پایتون که شامل تمام مراحل تحلیل لغوی، تجزیه، تحلیل معنایی، بررسی نوع، مدیریت جدول نمادها، هایلایت کردن کد و تکمیل خودکار است. این پروژه به عنوان **پروژه پایانی درس طراحی و پیاده‌سازی کامپایلرها** توسعه یافته است.
-
-## فهرست مطالب
-
-- [معرفی و اهداف](#معرفی-و-اهداف)
-- [ویژگی‌های کلیدی](#ویژگی‌های-کلیدی)
-- [ساختار پروژه و فایل‌ها](#ساختار-پروژه-و-فایل‌ها)
-- [نصب و راه‌اندازی](#نصب-و-راهاندازی)
-- [راهنمای استفاده](#راهنمای-استفاده)
-- [گزارش فنی مراحل کامپایلر](#گزارش-فنی-مراحل-کامپایلر)
-  - [۱. تحلیل لغوی (Lexer)](#۱-تحلیل-لغوی-lexer)
-  - [۲. تحلیل نحو (Parser)](#۲-تحلیل-نحو-parser)
-  - [۳. ساخت درخت نحو (AST)](#۳-ساخت-درخت-نحو-ast)
-  - [۴. جدول نمادها (Symbol Table)](#۴-جدول-نمادها-symbol-table)
-  - [۵. تحلیل معنایی و بررسی نوع](#۵-تحلیل-معنایی-و-بررسی-نوع)
-  - [۶. هایلایت کردن کد](#۶-هایلایت-کردن-کد)
-  - [۷. تکمیل خودکار کد](#۷-تکمیل-خودکار-کد)
-- [فرمت خروجی‌ها](#فرمت-خروجی‌ها)
-- [مثال جامع کد](#مثال-جامع-کد)
-- [داکر و کانتینری‌سازی](#داکر-و-کانتینری‌سازی)
-- [نمونه گزارش‌های خطا](#نمونه-گزارش‌های-خطا)
-- [مجوز و سوابق](#مجوز-و-سوابق)
+## دانشگاه صنعتی شریف - دانشکده مهندسی کامپیوتر
+### ترم بهار ۱۴۰۴-۱۴۰۵ | استاد: دکتر علاییان | مسئول درس: علیرضا قربانی
 
 ---
 
-## معرفی و اهداف
+## 🎯 مقدمه و اهداف پروژه
 
-این پروژه با هدف پیاده‌سازی عملی مفاهیم تئوری کامپایلر شامل **Lexical Analysis**، **Syntax Analysis**، **Semantic Analysis** و **Code Generation** (در قالب آنالیز نهایی) طراحی شده است. زبان هدف، زیرمجموعه‌ای از زبان C به نام **Mini-C** است که از ساختارهای داده‌ای پیچیده مانند `struct`، اشاره‌گرها (`pointers`)، آرایه‌ها و توابع بازگشتی پشتیبانی می‌کند.
+این پروژه یک **سیستم کامل تحلیل کد با قابلیت‌های IDE** برای زبان Mini-C است که دقیقاً مطابق با مشخصات پروژه پایانی درس طراحی کامپایلرها پیاده‌سازی شده است. سیستم ما سه فاز اصلی را پوشش می‌دهد:
 
-### مستندات مرجع پروژه
-پیاده‌سازی این کامپایلر دقیقاً بر اساس مستندات زیر انجام شده است:
-- **مشخصات لکسر**: [`lexer-guideline.md`](lexer-guideline.md)
-- **گرامر رسمی زبان**: [`grammer.txt`](grammer.txt)
-- **شرح پروژه پایانی**: [`پروژه پایانی درس.pdf`](پروژه%20پایانی%20درس.pdf)
+1. **فاز بصری (Visual):** هایلایتینگ سینتکس با رنگ‌بندی معنایی
+2. **فاز معنایی (Semantic):** درک اسکوپ، انواع داده‌ها، و جدول نمادها
+3. **فاز ساختاری (Structural):** تحلیل‌های برنامه‌ای، CFG، Call Graph، و قابلیت‌های Refactoring
 
----
+### 🔗 اتصال به مفاهیم درس
 
-## ویژگی‌های کلیدی
+این پروژه در تقاطع سه حوزه دانش اصلی این درس قرار دارد:
 
-✅ **تحلیل لغوی پیشرفته**:
-- پشتیبانی از تمام لیترال‌های C (دهدهی، هگزادسیمال `0x`، باینری `0b`، اعشاری، رشته‌ای، کاراکتری).
-- تشخیص هوشمند عملگرهای مرکب (`++`, `--`, `->`, `&&`, `||`).
-- مدیریت صحیح کامنت‌های تک‌خطی و چندخطی.
-- مکانیزم **Maximal Munch** برای تشخیص توکن‌ها.
-
-✅ **تحلیل نحو قدرتمند**:
-- پیاده‌سازی الگوریتم **Recursive Descent Parser**.
-- گرامر LL(1) برای تضمین عدم ابهام.
-- سیستم بازیابی خطای **Panic-Mode Recovery** برای ادامه پارس پس از خطا.
-
-✅ **مدیریت حافظه و نمادها**:
-- جدول نمادها با ساختار درختی و Scopeهای تو در تو.
-- تفکیک فضای نام توابع، متغیرهای سراسری، محلی و فیلدهای struct.
-- ردیابی دقیق محل تعریف و تمام مراجعات (References).
-
-✅ **بررسی نوع ایستا (Static Type Checking)**:
-- تشخیص ناسازگاری انواع در انتساب‌ها و عملیات ریاضی.
-- بررسی صحت فراخوانی توابع (تعداد و نوع آرگومان‌ها).
-- پشتیبانی از حسابگر اشاره‌گرها (Pointer Arithmetic).
-- تبدیل‌های ضمنی نوع (Implicit Casting) طبق استاندارد C.
-
-✅ **ابزارهای کمکی توسعه**:
-- تولید کد هایلایت شده HTML با تم تاریک.
-- موتور تکمیل خودکار (Auto-completion) مبتنی بر Context.
+| حوزه دانش | مفاهیم پیاده‌سازی شده |
+|-----------|----------------------|
+| **نظریه زبان‌های صوری** | زبان‌های منظم، گرامرهای مستقل از متن، اتوماتای پشته‌ای |
+| **طراحی Front-End کامپایلر** | Lexing, Parsing, AST, Symbol Tables, Type Systems |
+| **تحلیل برنامه** | Control Flow Graphs, Call Graphs, Data-flow Analysis, تشخیص خطاهای ایستا |
 
 ---
 
-## ساختار پروژه و فایل‌ها
+## 🔄 روند کلی کار (System Pipeline)
 
-```text
-/workspace
-├── main.py                     # نقطه ورود اصلی و هماهنگ‌کننده مراحل
-├── requirements.txt            # لیست وابستگی‌های پایتون
-├── Dockerfile                  # تنظیمات ساخت ایمیج داکر
-├── docker-compose.yml          # تنظیمات اجرای سرویس داکر
-├── test_code.c                 # فایل تست جامع (شامل تمام ویژگی‌ها)
-├── grammer.txt                 # تعریف رسمی گرامر زبان Mini-C
-├── lexer-guideline.md          # راهنمای پیاده‌سازی لکسر
-├── پروژه پایانی درس.pdf        # فایل صورت مسئله و الزامات پروژه
-├── src/                        # سورس کدهای اصلی کامپایلر
-│   ├── token.py                # کلاس‌های Token و TokenType (Enum)
-│   ├── lexer.py                # پیاده‌سازی ماشین حالت لکسر
-│   ├── parser.py               # پیاده‌سازی توابع بازگشتی پارسر
-│   ├── ast_node.py             # تعریف گره‌های درخت نحوی (AST Nodes)
-│   ├── error_reporter.py       # کلاس مدیریت و فرمت‌دهی خطاها
-│   ├── symbol_table.py         # ساختار داده‌ای جدول نمادها و Scope
-│   ├── symbol_table_builder.py # الگوریتم پیمایش AST برای پر کردن جدول
-│   ├── type_checker.py         # منطق بررسی سازگاری انواع
-│   ├── highlighter.py          # مبدل کد به HTML رنگی
-│   └── auto_completer.py       # الگوریتم پیشنهاد کد
-└── outputs/                    # پوشه تولید خودکار خروجی‌ها
-    ├── tokens.json             # خروجی مرحله لکس
-    ├── ast.json                # ساختار درختی پارس
-    ├── symbol_table.json       # دیتابیس نمادها
-    ├── errors_log.json         # لاگ خطاهای_syntax_ و _lexical_
-    ├── semantic_report.json    # گزارشwarnings_ و _semantic_errors
-    ├── type_report.txt         # گزارش خطاهای نوع
-    └── highlighted_code.html   # نسخه رنگی کد منبع
+```
+┌─────────────┐     ┌──────────┐     ┌─────────┐     ┌──────────────────┐
+│ Source Code │ ──→ │  Lexer   │ ──→ │ Parser  │ ──→ │ Semantic Analyzer│
+│   (test.c)  │     │ (DFA-based)│   |Recursive│     │  (Symbol Table + |
+└─────────────┘     └──────────┘     │ Descent │     │  Type Checker)   │
+                                     └─────────┘     └──────────────────┘
+                                             ↓                    ↓
+                                    ┌─────────────────────────────────┐
+                                    │      AST + Annotated AST        │
+                                    └─────────────────────────────────┘
+                                              ↓
+                    ┌─────────────────────────┼─────────────────────────┐
+                    ↓                         ↓                         ↓
+           ┌────────────────┐      ┌──────────────────┐      ┌─────────────────┐
+           │ Syntax         │      │ Program Analysis │      │ Intellisense    │
+           │ Highlighter    │      │ (CFG + Call Graph│      │ Engine          │
+           │ (Phase 1)      │      │  + Data Flow)    │      │ (Phase 2)       │
+           └────────────────┘      │  (Phase 3)       │      └─────────────────┘
+                                   └──────────────────┘
 ```
 
+### 📊 گردش داده‌ها
+
+1. **Lexer:** تبدیل جریان کاراکتر به توکن‌های تایپ‌دار (بر پایه DFA)
+2. **Parser:** ساخت CST/AST طبق گرامر EBNF
+3. **Semantic Analyzer:**
+   - ساخت Symbol Table با دو پاس (Declaration Scan + Resolution)
+   - حل نام‌ها (Name Binding)
+   - بررسی نوع (Type Checking)
+4. **Syntax Highlighter:** پیمایش AST annotate شده و نگاشت به رنگ‌ها
+5. **Intellisense Engine:** کوئری از Symbol Table و AST برای تکمیل کد
+6. **Program Analyzer:** ساخت CFG، Call Graph، و پیاده‌سازی ناوبری و Refactoring
+
 ---
 
-## نصب و راه‌اندازی
+## 📁 ساختار پروژه و توضیح فایل‌به‌فایل
 
-### پیش‌نیازها
-- Python 3.11+
-- Git
+### بخش ۱: هسته کامپایلر (Compiler Core)
 
-### نصب وابستگی‌ها
-برای نصب کتابخانه‌های مورد نیاز، دستور زیر را اجرا کنید:
+#### 🔹 `src/token.py` (۴۸ خط)
+**وظیفه:** تعریف ساختارهای پایه برای توکن‌ها طبق Section 4.2 داکیومنت
 
-```bash
-pip install -r requirements.txt
+**کلاس‌های اصلی:**
+- `TokenType`: Enum شامل انواع توکن (KEYWORD, IDENTIFIER, INT_LIT, FLOAT_LIT, STRING_LIT, CHAR_LIT, OPERATOR, DELIMITER, COMMENT, WHITESPACE, DIRECTIVE, INVALID)
+- `SourceLocation`: ذخیره موقعیت مکانی (file_name, line_number, column_number) - ضروری برای گزارش خطا
+- `Token`: نگهداری type, lexeme, location
+
+**ارتباط با داکیومنت:** پیاده‌سازی الزامات Section 4.2.1 برای دسته‌بندی توکن‌ها
+
+---
+
+#### 🔹 `src/lexer.py` (۳۷۰ خط)
+**وظیفه:** تجزیه کد منبع به توکن‌ها (Lexical Analysis) - Section 4.2
+
+**پشتیبانی از تمام دسته‌های توکن مورد نیاز:**
+| دسته | مثال‌ها | توصیف صوری |
+|------|---------|------------|
+| Keywords | if, while, return, int, float, struct | مجموعه متناهی، چک قبل از identifier |
+| Identifiers | myVar, _count, x1 | `[a-zA-Z_][a-zA-Z0-9_]*` |
+| Integer literals | 42, 0xFF, 0b1010 | دهدهی / هگز / باینری |
+| Float literals | 3.14, 1.0e-5, .5f | با exponent و suffix اختیاری |
+| String literals | "hello\n" | Quoted با پشتیبانی از escape |
+| Character literals | 'a', '\t' | تک کاراکتر یا escape |
+| Operators | +, ->, <=, :: | مجموعه خاص زبان |
+| Delimiters | {, (, ;, , | علائم ساختاری |
+| Comments | // text, /* text */ | Single-line و Block |
+| Preprocessor | #include, #define | برای C/C++ |
+
+**قوانین Longest-Match و Priority (Section 4.2.2):**
+1. **Longest match (maximal munch):** همیشه بلندترین توکن ممکن مصرف شود (مثال: `<=` یک توکن است نه `<` و `=`)
+2. **Priority:** کلیدواژه‌ها بر identifier اولویت دارند (`while` → KEYWORD نه IDENT)
+
+**مدیریت خطا (Section 4.2.3):**
+- تولید `INVALID` token برای کاراکترهای ناشناخته
+- بازیابی با پیشروی past offending character
+- تشخیص رشته‌ها و کامنت‌های ناتمام
+
+**متدهای کلیدی:**
+- `next_token()`: تولید توکن بعدی با شبیه‌سازی DFA
+- `_read_identifier()`, `_read_number()`, `_read_string()`: توابع کمکی
+- `peek_token()`: lookahead بدون مصرف توکن
+
+---
+
+#### 🔹 `grammer.txt` (گرامر EBNF)
+**وظیفه:** مشخصات کامل گرامر زبان Mini-C طبق Section 4.3.1
+
+**بخش‌های اصلی گرامر:**
+```ebnf
+program ::= declaration* EOF
+declaration ::= function_decl | var_decl | struct_decl
+function_decl ::= type_spec IDENT '(' param_list? ')' block
+param_list ::= param (',' param)*
+param ::= type_spec IDENT
+type_spec ::= ('int'|'float'|'char'|'void'|'double') '*'*
+block ::= '{' statement* '}'
+statement ::= if_stmt | while_stmt | for_stmt | return_stmt
+            | expr_stmt | block | var_decl | break_stmt | continue_stmt
+if_stmt ::= 'if' '(' expr ')' statement ('else' statement)?
+while_stmt ::= 'while' '(' expr ')' statement
+for_stmt ::= 'for' '(' expr_stmt expr_stmt expr? ')' statement
+return_stmt ::= 'return' expr? ';'
+expr ::= assignment
+assignment ::= IDENT ('='|'+='|'-='|'*=') assignment | logical_or
+logical_or ::= logical_and ('||' logical_and)*
+logical_and ::= equality ('&&' equality)*
+equality ::= relational (('=='|'!=') relational)*
+relational ::= additive (('<'|'>'|'<='|'>=') additive)*
+additive ::= multiplicative (('+'|'-') multiplicative)*
+multiplicative ::= unary (('*'|'/'|'%') unary)*
+unary ::= ('-'|'!'|'&'|'*') unary | postfix
+postfix ::= primary ('[' expr ']' | '(' arg_list? ')' | '.' IDENT | '->' IDENT)*
+primary ::= INT | FLOAT | STRING | CHAR | IDENT | '(' expr ')'
 ```
 
-> **نکته:** وابستگی اصلی مورد نیاز `anytree` است که برای نمایش گرافیکی درخت AST استفاده می‌شود.
+**حذف Left Recursion:** گرامر برای Recursive Descent مناسب است (بدون left recursion)
 
 ---
 
-## راهنمای استفاده
+#### 🔹 `src/parser.py` (۵۴۷ خط)
+**وظیفه:** ساخت AST از جریان توکن‌ها طبق گرامر EBNF - Section 4.3
 
-### اجرای استاندارد
-برای پردازش فایل پیش‌فرض `test_code.c` کافیست دستور زیر را اجرا کنید:
+**استراتژی Parsing:** Recursive Descent Parser (LL) با Panic-Mode Error Recovery
 
-```bash
-python main.py
-```
+**پیاده‌سازی گرامر:**
+- هر non-terminal به یک متد تبدیل شده است
+- `parse_program()`, `parse_declaration()`, `parse_statement()`, `parse_expression()`
+- مدیریت operator precedence با سلسله مراتب متدها
 
-### اجرای روی فایل دلخواه
-می‌توانید مسیر فایل منبع خود را به عنوان آرگومان وارد کنید:
+**مدیریت خطا (Section 9):**
+- `error()`: ثبت خطا در ErrorReporter بدون crash کردن
+- `synchronize()`: پرش تا نقطه امن (sync tokens: `;`, `}`, `if`, `while`) برای ادامه parsing
+- سیستم باید روی کدهای erroneous هم خروجی تولید کند
 
-```bash
-python main.py path/to/source.c
-```
-
-پس از اجرا، پوشه `outputs/` به‌روز شده و شامل تمام گزارش‌ها و خروجی‌های تحلیلی خواهد بود.
-
----
-
-## گزارش فنی مراحل کامپایلر
-
-در این بخش، جزئیات فنی پیاده‌سازی هر مرحله بر اساس کدهای موجود در مخزن تشریح شده است.
-
-### ۱. تحلیل لغوی (Lexer)
-**فایل:** `src/lexer.py`
-
-لکسر به صورت یک **ماشین حالت متناهی (DFA)** پیاده‌سازی شده است که کاراکتر به کاراکتر کد منبع را می‌خواند.
-
-- **استراتژی شناسایی**: از روش **Longest Match** استفاده می‌کند. مثلاً برای ورودی `>=`، ابتدا `>` را تشخیص می‌دهد اما چون کاراکتر بعدی `=` است، توکن `GE` را تولید می‌کند.
-- **مدیریت خطا**: اگر کاراکتری ناشناخته باشد (مثلاً `$` در C)، یک توکن خطا تولید کرده و پردازش را بدون توقف ادامه می‌دهد.
-- **کامنت‌ها**: اسکنر وارد حالت کامنت می‌شود و تا پایان کامنت (`*/` یا `\n`) هیچ توکنی تولید نمی‌کند.
-- **اعداد**: تشخیص هوشمند مبنای اعداد بر اساس پیشوند (`0x` برای هگز، `0b` برای باینری) و پسوند (`f` برای فلوت).
-
-### ۲. تحلیل نحو (Parser)
-**فایل:** `src/parser.py`
-
-پارسر از الگوی **Recursive Descent** استفاده می‌کند؛ یعنی برای هر قانون در گرامر (`grammer.txt`)، یک تابع متناظر وجود دارد.
-
-- **ساختار توابع**: توابعی مانند `parse_program`، `parse_declaration`، `parse_statement` و `parse_expression` به صورت بازگشتی یکدیگر را صدا می‌زنند.
-- **مدیریت خطا (Panic Mode)**: در صورت مواجهه با توکن غیرمنتظره، پارسر توکن‌ها را دور می‌ریزد تا به یک **Token همگام‌ساز** (مانند `;` یا `}`) برسد و سپس تلاش می‌کند Parsing را از سر بگیرد. این کار باعث می‌شود حتی در کدهای بسیار خراب، حداکثر تعداد خطاها گزارش شود.
-- **اولویت عملگرها**: در تابع `parse_expression`، اولویت عملگرها (ضرب قبل از جمع) با ساختار درختی توابع بازگشتی رعایت شده است.
-
-### ۳. ساخت درخت نحو (AST)
-**فایل:** `src/ast_node.py`
-
-خروجی پارسر، یک درخت دودویی یا چندشاخه از اشیاء کلاس‌های مشتق شده از `ASTNode` است.
-- **گره‌ها**: شامل `BinaryOpNode` (برای عملیات دوتایی)، `UnaryOpNode` (برای منفی کردن یا Not)، `IfNode`، `WhileNode`، `FuncDeclNode` و ... هستند.
-- **کاربرد**: این درخت ساختار منطقی کد را بدون جزئیات نگارشی (مثل پرانتزها یا نقطه‌ویرگول‌ها) نگهداری می‌کند و ورودی اصلی مراحل بعدی است.
-
-### ۴. جدول نمادها (Symbol Table)
-**فایل‌ها:** `src/symbol_table.py`, `src/symbol_table_builder.py`
-
-این ماژول مسئول نگهداری اطلاعات متغیرها، توابع و ساختارهاست.
-
-- **ساختار Scope**: از یک پشته (Stack) از دیکشنری‌ها استفاده می‌شود. هنگام ورود به یک بلوک `{`، یک Scope جدید باز می‌شود و هنگام خروج `}`، بسته می‌شود.
-- **الگوریتم دو پاس (Two-Pass)**:
-    1. **Pass 1 (Declaration)**: فقط تعاریف (Functions, Structs, Global Vars) را اسکن کرده و در جدول ثبت می‌کند تا در دسترس توابع دیگر قرار گیرند (حل مشکل Forward Declaration).
-    2. **Pass 2 (Resolution)**: بدنه توابع را پیمایش کرده و استفاده از متغیرها را به تعاریف متصل می‌کند (Binding).
-- **اطلاعات ذخیره شده**: نام، نوع داده، کلاس حافظه، شماره خط تعریف، لیست خطوط استفاده، و امضای تابع.
-
-### ۵. تحلیل معنایی و بررسی نوع
-**فایل:** `src/type_checker.py`
-
-این مرحله با پیمایش درخت AST و مشورت با جدول نمادها، قوانین معنایی را چک می‌کند.
-
-- **بررسی تطابق نوع**: در انتساب `a = b`، نوع `a` و `b` باید سازگار باشند.
-- **تبدیل ضمنی**: اگر انواع ناسازگار اما قابل تبدیل باشند (مثلاً `int` به `float`)، هشدار داده شده و تبدیل انجام می‌شود.
-- **بررسی توابع**: تعداد و نوع آرگومان‌های ارسالی در فراخوانی تابع با تعریف آن مقایسه می‌شود.
-- **Struct & Pointer**: دسترسی به فیلدهای struct (`.` و `->`) چک می‌شود تا مطمئن شویم فیلد مورد نظر واقعاً در آن struct تعریف شده است. همچنین عملیات ریاضی روی pointerها اعتبارسنجی می‌شود.
-
-### ۶. هایلایت کردن کد
-**فایل:** `src/highlighter.py`
-
-با استفاده از لیست توکن‌های تولید شده در مرحله لکس، کد منبع را خط به خط خوانده و تگ‌های HTML با کلاس‌های CSS مناسب دور هر توکن می‌گذارد.
-- **خروجی**: یک فایل HTML مستقل که نیاز به هیچ کتابخانه جانبی ندارد و با تم تاریک (Dark Mode) طراحی شده است.
-
-### ۷. تکمیل خودکار کد
-**فایل:** `src/auto_completer.py`
-
-این ماژول شبیه‌سازی رفتار IDEها را انجام می‌دهد.
-- **منطق**: با دریافت موقعیت مکان‌نما (Line, Column)، Scope فعال را پیدا کرده و نمادهای قابل دسترس را پیشنهاد می‌دهد.
-- **Member Access**: اگر قبل از مکان‌نما عملگر `.` یا `->` باشد، فقط فیلدهای struct مربوطه را پیشنهاد می‌دهد.
+**خروجی:** یک `Program` node که ریشه AST است
 
 ---
 
-## فرمت خروجی‌ها
+#### 🔹 `src/ast_node.py` (۱۶۸ خط)
+**وظیفه:** تعریف کلاس‌های گره‌های AST - Section 4.3.2
 
-تمام خروجی‌ها در پوشه `outputs/` ذخیره می‌شوند:
+**انواع گره‌ها:**
+| نوع | کلاس‌ها |
+|-----|---------|
+| **برگی** | `Identifier`, `Literal`, `TypeSpecifier` |
+| **ساختاری** | `Program`, `Block`, `FunctionDef`, `FunctionDecl`, `StructDef`, `VarDecl` |
+| **کنترلی** | `IfStmt`, `WhileStmt`, `ForStmt`, `ReturnStmt`, `BreakStmt`, `ContinueStmt` |
+| **عبارتی** | `CallExpr`, `BinaryExpr`, `UnaryExpr`, `ArrayAccess`, `MemberAccess` |
 
-| نام فایل | فرمت | توضیحات فنی |
-| :--- | :--- | :--- |
-| `tokens.json` | JSON | آرایه‌ای از آبجکت‌ها شامل `type`, `lexeme`, `line`, `col`. |
-| `ast.json` | JSON | نمایش سلسله‌مراتبی گره‌های درخت با تورفتگی مشخص. |
-| `symbol_table.json` | JSON | ساختار تو در تو Scopes و لیست نمادهای هر Scope. |
-| `errors_log.json` | JSON | لیست خطاهای Lexical و Syntax با کد خطا و موقعیت دقیق. |
-| `semantic_report.txt` | متن | گزارش خوانا شامل تعداد خطاها و اخطارهای معنایی. |
-| `highlighted_code.html` | HTML | کد منبع با رنگ‌آمیزی Syntax برای مرورگر. |
+**ویژگی فنی:** ارث‌بری از `NodeMixin` کتابخانه anytree برای مدیریت خودکار ساختار درختی
 
 ---
 
-## مثال جامع کد
+#### 🔹 `src/error_reporter.py` (۷۵ خط)
+**وظیفه:** مدیریت متمرکز خطاها طبق Section 4.2.3 و Section 9
 
-فایل `test_code.c` شامل موارد زیر است که تمام قابلیت‌های کامپایلر را به چالش می‌کشد:
-- تعریف `struct` تو در تو.
-- توابع بازگشتی (فاکتوریل).
-- کار با اشاره‌گرها و آرایه‌ها.
-- شرایط ترکیبی منطقی.
-- تبدیل‌های ضمنی نوع.
+**کلاس‌ها:**
+- `Severity`: Enum (ERROR, WARNING, INFO)
+- `Diagnostic`: اطلاعات کامل خطا (phase, message, location, length)
+- `ErrorReporter`: جمع‌آوری و خروجی JSON/TXT
 
-```c
-// نمونه‌ای از کد تست
-struct Point { int x; int y; };
+**الزام داکیومنت:** سیستم نباید crash کند، باید خطاها را گزارش دهد و به پردازش ادامه دهد
 
-int distance(struct Point *p1, struct Point *p2) {
-    int dx = p1->x - p2->x;
-    int dy = p1->y - p2->y;
-    return dx*dx + dy*dy;
+---
+
+### بخش ۲: تحلیل معنایی (Semantic Analysis)
+
+#### 🔹 `src/symbol_table.py` (۲۰۵ خط)
+**وظیفه:** پیاده‌سازی ساختار داده Symbol Table طبق Section 5.1
+
+**کلاس‌های اصلی:**
+- `Symbol`: name, type, scope_level, definition_location, references[], signature
+- `Scope`: ساختار درختی parent-child برای سلسله مراتب اسکوپ
+- `SymbolTable`: مدیریت global scope و current scope
+
+**عملیات کلیدی:**
+- `define()`: تعریف نماد جدید در scope جاری
+- `resolve()`: جستجو از inner به outer (section 5.1.1)
+- `enter_scope()`, `exit_scope()`: مدیریت سلسله مراتب
+
+---
+
+#### 🔹 `src/symbol_table_builder.py` (۴۵۱ خط)
+**وظیفه:** ساخت Symbol Table از AST در دو پاس - Section 5.1.2
+
+**Pass 1: Declaration Scan**
+- اسکن تمام declarationهای سراسری (functions, structs, global vars)
+- ثبت signature توابع و fieldهای struct
+- تشخیص redefinition conflicts
+
+**Pass 2: Resolution**
+- ورود به scope توابع و بلوک‌ها
+- ثبت پارامترها و متغیرهای محلی
+- حل ارجاعات Identifierها
+- تشخیص Shadowing و undefined variables
+
+**Built-in Functions:** پشتیبانی از printf, scanf, malloc, free
+
+---
+
+#### 🔹 `src/type_checker.py` (۶۲۳ خط)
+**وظیفه:** بررسی سازگاری انواع داده‌ها - Section 5.2
+
+**سیستم انواع (Type System):**
+- `PrimitiveType`: int, float, double, char, void
+- `PointerType`: pointer به هر نوع
+- `ArrayType`: آرایه با اندازه مشخص/نامشخص
+- `StructType`: انواع ساختاری
+
+**قوانین Type Checking:**
+| عملیات | قانون بررسی |
+|--------|-------------|
+| Assignment | سازگاری LHS و RHS |
+| Binary Operators | فقط روی numeric types |
+| Logical Operators | روی boolean/numeric |
+| Function Call | تطابق تعداد و نوع آرگومان‌ها |
+| Member Access | وجود field در struct |
+| Return | تطابق با return type تابع |
+
+**خروجی:** لیست type errors و warnings
+
+---
+
+### بخش ۳: تحلیل برنامه (Program Analysis) - Phase 3
+
+#### 🔹 `src/graphs.py` (۲۳۷ خط)
+**وظیفه:** ساخت CFG و Call Graph - Section 6.1 و 6.2
+
+**Control Flow Graph (CFG):**
+- `BasicBlock`: maximal sequence بدون branch، یک entry، حداکثر دو successor
+- `CFGBuilder`: الگوریتم DFS برای ساخت CFG از AST
+- یال‌ها: مسیرهای اجرای ممکن (true/false branches, loop back-edges, exits)
+
+**قوانین ساخت CFG:**
+| Statement | ساختار CFG |
+|-----------|------------|
+| IfStmt | ۳ بلوک (condition, then, merge/else) |
+| WhileStmt | condition, body, exit با back-edge |
+| ForStmt | ۴ بلوک (init, condition, body, step) |
+| Return/Break/Continue | اتصال به exit یا loop boundaries |
+
+**Call Graph:**
+- Nodes: تمام توابع برنامه
+- Edges: f→g اگر f تابع g را صدا بزند
+- Resolution با استفاده از Symbol Table
+
+---
+
+#### 🔹 `src/data_flow.py` (۱۴۵ خط)
+**وظیفه:** تحلیل جریان داده - Section 6.1.1 و 6.5
+
+**تحلیل‌های پیاده‌سازی شده:**
+
+1. **Definite Assignment Analysis (Forward May-Analysis)**
+   - لاتییس: ⟨2^Vars, ⊇⟩
+   - بررسی مقداردهی قطعی قبل از استفاده
+
+2. **Live Variable Analysis (Backward May-Analysis)**
+   - لاتییس: ⟨2^Vars, ⊆⟩
+   - متغیر live اگر مقدارش در آینده استفاده شود
+
+3. **Unreachable Code Detection**
+   - بلوک بدون incoming edge (غیر از ENTRY)
+   - کد پس از return/break/continue غیرشرطی
+
+4. **Dead Code Categories (Section 6.5):**
+   - Unreachable functions (از main قابل دستیابی نیستند)
+   - Unreachable basic blocks
+   - Post-jump statements
+   - Unused variables
+   - Dead assignments (مقدار overwrite قبل از read)
+
+---
+
+### بخش ۴: قابلیت‌های IDE
+
+#### 🔹 `src/highlighter.py` (۴۱۹ خط)
+**وظیفه:** Syntax Highlighting معنایی - Section 4
+
+**رنگ‌بندی:**
+| Category | Color |
+|----------|-------|
+| Keywords | Blue |
+| Types | Green |
+| Functions | Gold |
+| Variables | White |
+| Numbers | Orange |
+| Strings | Light Green |
+| Operators | Gray |
+| Comments | Dark Gray |
+| Errors | Red |
+
+**روش کار:**
+1. استخراج توکن‌ها از Lexer
+2. غنی‌سازی با اطلاعات AST (تشخیص function names, struct names)
+3. اولویت‌بندی (errors > AST info > tokens)
+4. خروجی ANSI (terminal) و HTML/CSS (browser)
+
+---
+
+#### 🔹 `src/navigation.py` (۱۴۰ خط)
+**وظیفه:** Go-to-Definition و Find-All-References - Section 6.3
+
+**قابلیت‌ها:**
+1. **Go-to-Definition:** بازگشت exact location تعریف نماد
+2. **Find All References:** لیست تمام read/writeهای نماد
+3. **Hover Information:** نمایش type signature, enclosing scope, documentation
+
+**فرمت خروجی (JSON):**
+```json
+{
+  "symbol": "factorial",
+  "kind": "function",
+  "type": "(int) -> int",
+  "defined_at": {"file": "main.c", "line": 1, "col": 5},
+  "references": [
+    {"file": "main.c", "line": 15, "col": 12}
+  ]
 }
-
-int main() {
-    struct Point a = {10, 20};
-    struct Point b = {5, 5};
-    int d = distance(&a, &b);
-    return 0;
-}
 ```
 
 ---
 
-## داکر و کانتینری‌سازی
+#### 🔹 `src/refactoring.py` (۷۵ خط)
+**وظیفه:** Safe Rename Refactoring - Section 6.4
 
-برای اطمینان از اجرای یکسان در محیط‌های مختلف، پروژه کانتینری شده است.
+**الگوریسم Semantics-Preserving:**
+1. پیدا کردن symbol در location مشخص
+2. Conflict check: عدم تداخل نام جدید در same scope
+3. Shadow check: جلوگیری از shadowing ناخواسته
+4. Unified diff production
+5. Atomic apply: همه یا هیچ
 
-### ساخت ایمیج
+**الزام داکیومنت:** Rename باید scope-aware باشد، نه text-substitution ساده
+
+---
+
+#### 🔹 `src/auto_completer.py` (۲۴۶ خط)
+**وظیفه:** Context-Aware Auto-completion - Section 5.3
+
+**انواع تکمیل:**
+1. **Member Access:** پیشنهاد فیلدهای struct پس از `.` یا `->`
+2. **Function Args:** تکمیل آرگومان‌ها با فیلتر بر اساس expected type
+3. **Scope Completions:** متغیرها، توابع، types فعال در scope جاری
+
+**اولویت‌بندی:** local > parameter > variable > function > global
+
+---
+
+### بخش ۵: رابط کاربری
+
+#### 🔹 `web/app.py` (۱۹۳ خط)
+**وظیفه:** Backend API برای IDE تحت وب - Section 6.6
+
+**Framework:** FastAPI + Jinja2
+
+**Endpoints:**
+| Endpoint | وظیفه |
+|----------|-------|
+| `POST /api/compile` | کامپایل و تولید تمام گزارش‌ها |
+| `POST /api/hover` | Hover information |
+| `POST /api/goto` | Go-to-Definition |
+| `POST /api/refs` | Find References |
+| `POST /api/rename` | Safe Rename |
+| `POST /api/completion` | Auto-completion |
+
+---
+
+#### 🔹 `main.py` (۵۱۲ خط)
+**وظیفه:** Orchestrator کل pipeline
+
+**مراحل اجرا:**
+1. خواندن فایل منبع
+2. Lexical Analysis → tokens
+3. Parsing → AST
+4. ذخیره tokens و AST (JSON/TXT)
+5. Syntax Highlighting → HTML
+6. Symbol Table Construction (2 passes)
+7. Type Checking
+8. Graph Analysis (CFG + Call Graph)
+9. Data Flow Analysis
+10. IDE Features (Navigation, Completion, Refactoring)
+
+---
+
+## 📊 خروجی‌های پروژه (Deliverables)
+
+تمام خروجی‌ها در پوشه `outputs/` تولید می‌شوند:
+
+| فایل | توضیح | مربوط به فاز |
+|------|-------|-------------|
+| `tokens.json/txt` | لیست توکن‌ها با location | Phase 1 |
+| `ast.json/txt` | درخت نحوی | Phase 1 |
+| `highlighted_code.html` | کد رنگی شده | Phase 1 |
+| `symbol_table.json/txt` | جدول نمادها کامل | Phase 2 |
+| `semantic_report.json/txt` | خطاهای معنایی | Phase 2 |
+| `type_errors.json/txt` | خطاهای نوع | Phase 2 |
+| `cfg_report.json/txt` | CFG توابع | Phase 3 |
+| `call_graph.json/txt` | Call Graph | Phase 3 |
+| `data_flow_report.json/txt` | Dead code analysis | Phase 3 |
+| `navigation_report.json/txt` | Navigation queries | Phase 3 |
+| `completions.json/txt` | Completion suggestions | Phase 3 |
+| `rename.c` | کد پس از rename | Phase 3 |
+| `errors_log.json/txt` | تمام خطاها | All phases |
+
+---
+
+## 🚀 نحوه اجرا
+
+### اجرای خط فرمان (CLI):
 ```bash
-docker build -t mini-c-compiler .
+python main.py test_code.c
 ```
 
-### اجرای سریع
+### اجرای سرور وب (Web UI):
 ```bash
-docker run --rm -v $(pwd):/app mini-c-compiler python main.py
+uvicorn web.app:app --reload
 ```
-این دستور پوشه جاری را به کانتینر متصل کرده و خروجی‌ها را مستقیماً در همان پوشه محلی تولید می‌کند.
+مراجعه به `http://localhost:8000`
 
----
-
-## نمونه گزارش‌های خطا
-
-کامپایلر قادر است خطاهای متنوعی را با جزئیات دقیق گزارش دهد:
-
-### ۱. خطای نحوی (Syntax Error)
-```text
-[SYNTAX ERROR] Line 12, Column 5: Expected ';' after declaration, found '}'
-Context: int x = 10 }
-```
-
-### ۲. خطای معنایی (Semantic Error)
-```text
-[SEMANTIC ERROR] Line 25, Column 10: Variable 'undefinedVar' is not declared in this scope.
-```
-
-### ۳. خطای نوع (Type Error)
-```text
-[TYPE ERROR] Line 30, Column 15: Cannot assign type 'float' to 'int' without explicit cast.
-Expression: myInt = myFloat;
-```
-
-### ۴. اخطار (Warning)
-```text
-[WARNING] Line 5, Column 1: Function 'unusedFunc' is defined but never used.
+### Docker Deployment (Bonus):
+```bash
+docker-compose up --build
 ```
 
 ---
 
-## مجوز و سوابق
+## ✨ نوآوری‌ها و ویژگی‌های برجسته
 
-- **نام درس**: طراحی و پیاده‌سازی کامپایلرها
-- **زبان پیاده‌سازی**: Python 3.11+
-- **وضعیت پروژه**: تکمیل شده (شامل تمام مراحل Front-end کامپایلر)
-
-این پروژه صرفاً جهت اهداف آموزشی توسعه یافته و پیاده‌سازی آن منطبق بر استانداردهای آکادمیک و مستندات ارائه شده در درس می‌باشد.
+1. **پشتیبانی کامل از Structها** با scope اختصاصی
+2. **دو پاس بودن Symbol Table Builder** برای دقت بالاتر در resolution
+3. **تحلیل جریان داده واقعی** با Liveness Analysis و Definite Assignment
+4. **Safe Rename** با Conflict Detection و Shadow check
+5. **Auto-completion هوشمند** با درک context و type inference
+6. **Navigation کامل** مشابه VSCode (Go-to-def, Find refs, Hover)
+7. **خروجی‌های متنوع** JSON و TXT برای هر فاز جهت دیباگ و ارزیابی
+8. **رابط وب تعاملی** با تمام قابلیت‌های IDE
+9. **Error Recovery** در تمام فازها بدون crash کردن
+10. **معماری ماژولار** قابل توسعه به زبان‌های دیگر
 
 ---
 
-<div align="center">
-  <p>توسعه یافته با ❤️ برای یادگیری عمیق اصول کامپایلر</p>
-</div>
+## 📝 نتیجه‌گیری
+
+این پروژه یک **پیاده‌سازی کامل از Compiler Front-End همراه با Program Analysis Passes** است که دقیقاً مطابق با الزامات پروژه پایانی درس طراحی کامپایلورها توسعه یافته است.
+
+### دستاوردهای آموزشی:
+- ✅ تجربه عملی با اتوماتا، عبارات منظم، و گرامرهای صوری
+- ✅ درک کامل pipeline کامپایل از کاراکتر خام تا بازنمایی معنایی
+- ✅ پیاده‌سازی Scope Resolution و Type System
+- ✅ ساخت زیرساخت تحلیل برنامه (CFG, Call Graph, Data-flow)
+- ✅ تولید ابزار کاربردی قابل استفاده به عنوان plugin ادیتور
+
+### ارتباط با کامپایلرهای واقعی:
+الگوریتم‌ها و ساختار داده‌های پیاده‌سازی شده (DFA-driven lexing, recursive-descent parsing, symbol tables, CFGs, data-flow analysis) همان‌هایی هستند که در GCC, Clang, rustc, و Language Serverها استفاده می‌شوند.
+
+---
+
+**بهار ۱۴۰۴-۱۴۰۵**

@@ -66,16 +66,12 @@ class SymbolTableBuilder:
         return SourceLocation(self.source_file, 0, 0)
 
     def _register_type_reference(self, type_str: str, loc: SourceLocation):
-        """Helper to register a reference to a custom type (e.g., struct) when it is used."""
         if not type_str:
             return
-        # اگر نوع با "struct " شروع می‌شود، نام استراکت را استخراج می‌کنیم
         if type_str.startswith("struct "):
-            # پاک کردن مواردی مثل پوینتر (*) یا آرایه ([])
             base_name = type_str.split("*")[0].split("[")[0].strip()
             struct_name = base_name[7:].strip()  # حذف کلمه "struct "
 
-            # پیدا کردن نماد استراکت در جدول نمادها
             symbol = self.symbol_table.resolve(struct_name)
             if symbol and symbol.kind == "struct":
                 symbol.set_used()
@@ -158,7 +154,6 @@ class SymbolTableBuilder:
                         )
                         loc = self._make_location(field.var_name)
 
-                        # ثبت ارجاع اگر فیلد از نوع یک استراکت دیگر باشد
                         self._register_type_reference(field_type, loc)
 
                         field_symbol = Symbol(
@@ -211,21 +206,18 @@ class SymbolTableBuilder:
             if self.verbose:
                 print(f"\n  Analyzing function: {func_name}")
 
-            # ثبت ارجاع به عنوان فراخوانی یا اعلام (برای هر دو حالت Prototype و Definition)
             func_symbol = self.symbol_table.resolve(func_name)
             if func_symbol:
                 loc = self._make_location(node.func_name)
                 func_symbol.add_reference(loc)
                 func_symbol.set_used()
 
-            # ثبت ارجاع برای تایپ بازگشتی تابع
             return_type = (
                 node.return_type.type_name if hasattr(node, "return_type") else "void"
             )
             loc = self._make_location(node.func_name)
             self._register_type_reference(return_type, loc)
 
-            # اگر FunctionDef است وارد scope می‌شویم
             if isinstance(node, FunctionDef):
                 self.symbol_table.enter_scope("function")
 
@@ -239,7 +231,6 @@ class SymbolTableBuilder:
                     )
                     loc = self._make_location(param.var_name)
 
-                    # ثبت ارجاع برای تایپ پارامتر
                     self._register_type_reference(param_type, loc)
 
                     if isinstance(node, FunctionDef):
@@ -303,7 +294,6 @@ class SymbolTableBuilder:
 
                 loc = self._make_location(node.var_name)
 
-                # ثبت ارجاع برای تایپ متغیر محلی
                 self._register_type_reference(var_type, loc)
 
                 var_symbol = Symbol(
@@ -402,7 +392,6 @@ class SymbolTableBuilder:
             return
 
         elif isinstance(node, ForStmt):
-            # باز کردن اسکوپ مخصوص حلقه
             self.symbol_table.enter_scope("for_loop")
 
             if hasattr(node, "init"):
@@ -414,7 +403,6 @@ class SymbolTableBuilder:
             if hasattr(node, "body"):
                 self._pass2_resolution(node.body)
 
-            # بستن اسکوپ حلقه پس از اتمام پردازش آن
             self.symbol_table.exit_scope()
             return
 

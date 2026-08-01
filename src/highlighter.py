@@ -77,7 +77,6 @@ class SyntaxHighlighter:
                     token.lexeme, token.location.line, token.location.column, category
                 )
 
-        # 2. اضافه کردن خطاهای Parser (به عنوان error)
         for error in self.parser_errors:
             line = error.get("line", 0)
             col = error.get("col", 0)
@@ -87,11 +86,9 @@ class SyntaxHighlighter:
             if lexeme:
                 self._add_token(lexeme, line, col, "error")
 
-        # 3. تکمیل اطلاعات با AST
         if self.ast_root:
             self._enhance_with_ast(self.ast_root)
 
-        # 4. حذف تکراری‌ها (اولویت با error و اطلاعات AST)
         seen = {}
         for token in self.tokens_meta:
             key = (token["line"], token["col"])
@@ -114,7 +111,6 @@ class SyntaxHighlighter:
         return None
 
     def _get_token_category(self, token) -> str:
-        """تشخیص دسته‌ی رنگی از روی توکن"""
         t_type = token.type
         lexeme = token.lexeme
 
@@ -156,7 +152,6 @@ class SyntaxHighlighter:
         if not node:
             return
 
-        # توابع
         if isinstance(node, (FunctionDef, FunctionDecl)):
             if hasattr(node, "func_name") and node.func_name:
                 if hasattr(node.func_name, "id_name"):

@@ -8,7 +8,6 @@ class RenameEngine:
         self.source_code = source_code
 
     def rename(self, line: int, col: int, new_name: str) -> Dict[str, Any]:
-        # ۱. پیدا کردن نماد در سطر و ستون مشخص شده
         symbol = self.nav._find_symbol_at_location(line, col)
         if not symbol:
             return {
@@ -23,15 +22,13 @@ class RenameEngine:
                 "message": "The new name is identical to the current name.",
             }
 
-        # ۲. بررسی تداخل در اسکوپ جاری
-        # اگر نام جدید در همان اسکوپی که نماد تعریف شده وجود داشته باشد، خطا می‌دهیم
+
         if symbol.scope and new_name in symbol.scope.symbols:
             return {
                 "status": "error",
                 "message": f"Conflict Detection: '{new_name}' is already defined in this scope.",
             }
 
-        # ۳. استخراج تمام رفرنس‌ها شامل محل تعریف و استفاده‌ها
         refs_result = self.nav.find_all_references(line, col)
         if refs_result["status"] != "success":
             return {
@@ -41,22 +38,18 @@ class RenameEngine:
 
         references = refs_result["references"]
 
-        # ۴. مرتب‌سازی رفرنس‌ها به صورت نزولی (از پایین به بالا و از راست به چپ)
-        # این کار ضروری است تا با جایگزینی یک نام، مختصات (ستون‌ها) برای رفرنس‌های بعدی در همان خط به هم نریزد
         references.sort(key=lambda x: (x["line"], x["col"]), reverse=True)
 
-        # ۵. جایگزینی اتمیک
         lines = self.source_code.splitlines(keepends=True)
         old_name_len = len(old_name)
 
         for ref in references:
-            r_line = ref["line"] - 1  # تبدیل سطر از 1-based به 0-based
-            r_col = ref["col"] - 1  # تبدیل ستون از 1-based به 0-based
+            r_line = ref["line"] - 1
+            r_col = ref["col"] - 1
 
             if r_line < len(lines):
                 target_line = lines[r_line]
 
-                # بررسی ایمنی مضاعف: آیا رشته‌ای که می‌خواهیم عوض کنیم دقیقا همان نام قبلی است؟
                 if target_line[r_col : r_col + old_name_len] == old_name:
                     lines[r_line] = (
                         target_line[:r_col]

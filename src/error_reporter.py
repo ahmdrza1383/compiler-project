@@ -61,7 +61,6 @@ class ErrorReporter:
     def export_json(self, filepath: str):
         with open(filepath, "w", encoding="utf-8") as f:
             if not self.diagnostics:
-                # اگر اروری نبود، یک آبجکت جیسون با پیام موفقیت چاپ می‌شود
                 json.dump({"status": "No errors found."}, f, indent=2)
             else:
                 json.dump([d.to_dict() for d in self.diagnostics], f, indent=2)
@@ -69,7 +68,6 @@ class ErrorReporter:
     def export_txt(self, filepath: str):
         with open(filepath, "w", encoding="utf-8") as f:
             if not self.diagnostics:
-                # اگر اروری نبود، در فایل متنی هم ذکر می‌شود
                 f.write("No errors found.\n")
             for d in self.diagnostics:
                 f.write(str(d) + "\n")

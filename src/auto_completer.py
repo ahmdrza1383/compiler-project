@@ -170,7 +170,6 @@ class AutoCompleter:
         symbols = []
         seen = set()
 
-        # ۱. متغیرهای سراسری (با در نظر گرفتن اینکه در همان لحظه در حال تعریف نباشند)
         if hasattr(self.symbol_table, 'global_scope'):
             for name, symbol in self.symbol_table.global_scope.symbols.items():
                 def_line, def_col = self._get_loc_details(getattr(symbol, 'definition_loc', None))
@@ -198,14 +197,12 @@ class AutoCompleter:
                 else:
                     active_func_end = float('inf')
 
-        # ۳. استخراج متغیرهای محلی
         if hasattr(self.symbol_table, 'all_symbols'):
             for symbol in self.symbol_table.all_symbols:
                 if getattr(symbol, 'scope', '') != "global" and symbol.kind != "struct":
                     def_line, def_col = self._get_loc_details(getattr(symbol, 'definition_loc', None))
                     
                     if active_func_start <= def_line <= current_line:
-                        # بررسی اینکه متغیر دقیقاً زیر دست کرسر در حال تعریف نباشد
                         if def_line < current_line or (def_line == current_line and def_col < current_col - len(prefix)):
                             if symbol.name not in seen:
                                 seen.add(symbol.name)

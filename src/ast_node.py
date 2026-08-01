@@ -14,11 +14,10 @@ class SymbolCategory(Enum):
 
 class ASTNode(NodeMixin):
     def __init__(self, **kwargs):
-        # نام گره برای نمایش در anytree
         self.name = self.__class__.__name__
         for key, value in kwargs.items():
             setattr(self, key, value)
-            # اتصال خودکار فرزندان برای ساختار درختی
+
             if isinstance(value, ASTNode):
                 value.parent = self
             elif isinstance(value, list):
@@ -32,8 +31,8 @@ class ASTNode(NodeMixin):
             if key == "parent" or key.startswith("_"):
                 continue
 
-            # بررسی برای تبدیل امن مقادیر Enum (مثل SymbolCategory) به رشته یا مقدار پایه
-            if hasattr(value, "value"):  # اگر شیء از نوع Enum باشد
+
+            if hasattr(value, "value"):
                 result[key] = value.value
             elif isinstance(value, list):
                 result[key] = [

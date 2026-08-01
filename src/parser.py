@@ -4,7 +4,7 @@ from src.error_reporter import ErrorReporter, Severity
 
 
 class ParseError(Exception):
-    """استثنای داخلی برای مدیریت Panic-Mode"""
+    """ Panic-Mode"""
 
     pass
 
@@ -15,10 +15,8 @@ class Parser:
         self.pos = 0
         self.reporter = reporter if reporter else ErrorReporter()
 
-    # --- توابع کمکی پارسر ---
 
     def _loc(self, token: Token):
-        """یک تابع کمکی هوشمند برای استخراج امن سطر و ستون بدون توجه به نام متغیرها در کلاس‌های دیگر"""
         loc = getattr(token, "location", None)
         if not loc:
             return 0, 0
@@ -91,12 +89,10 @@ class Parser:
         line, col = self._loc(token)
         length = len(token.lexeme) if token.lexeme else 1
 
-        # ثبت ارور ساختاریافته در ریپورتر
         self.reporter.report("Parser", Severity.ERROR, message, line, col, length)
         raise ParseError()
 
     def synchronize(self):
-        """Panic-Mode Recovery: پریدن از توکن‌ها تا رسیدن به یک نقطه امن"""
         if self.is_at_end():
             return
 
@@ -122,9 +118,7 @@ class Parser:
                 return
             self.advance()
 
-    # ==========================================
-    # پیاده‌سازی قوانین گرامر
-    # ==========================================
+    # Implementation of grammar rules
 
     def parse(self) -> Program:
         declarations = []

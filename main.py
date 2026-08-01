@@ -391,7 +391,7 @@ def main():
         print(f"[INFO] Auto-completion text saved to {completion_txt_path}")
 
         # ==========================================
-        # اضافه شدن بخش ناوبری و اطلاعات IDE (فاز ۳)
+        # Navigation and IDE information features added (Phase 3)
         # ==========================================
         nav_engine = NavigationEngine(symbol_table, ast_root)
 
@@ -454,11 +454,10 @@ def main():
         print(f"[INFO] Navigation text report saved to {nav_txt_path}")
 
         # ==========================================
-        # اضافه شدن موتور تغییر نام امن (گام دوم فاز ۳)
+        # Safe rename engine added (Phase 3, Step 2)
         # ==========================================
         rename_engine = RenameEngine(nav_engine, source_code)
 
-        # تست: تلاش برای تغییر نام تابعی در خط 34 و ستون 20 (از test_queries خودتان) به نام جدید
         target_line = 5
         target_col = 14
         new_symbol_name = "nn"

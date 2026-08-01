@@ -71,7 +71,6 @@ class Lexer:
         ):
             lexeme += self._advance()
 
-        # بررسی کلیدواژه بودن
         token_type = (
             TokenType.KEYWORD if lexeme in self.keywords else TokenType.IDENTIFIER
         )
@@ -86,7 +85,6 @@ class Lexer:
         lexeme = ""
         token_type = TokenType.INT_LIT
 
-        # 1. تشخیص باینری و هگز
         if self._current_char() == "0" and self._peek() in ("b", "B", "x", "X"):
             if self._peek() in ("b", "B"):
                 lexeme += self._advance() + self._advance()
@@ -97,7 +95,6 @@ class Lexer:
                 while self._current_char() in "0123456789abcdefABCDEF":
                     lexeme += self._advance()
         else:
-            # 2. تشخیص اعداد دهدهی، اعشاری و علمی
             is_float = False
             while self._current_char().isdigit():
                 lexeme += self._advance()
@@ -122,19 +119,15 @@ class Lexer:
 
             token_type = TokenType.FLOAT_LIT if is_float else TokenType.INT_LIT
 
-        # 3. === رفع باگ: بررسی چسبیدن حروف غیرمجاز به عدد ===
-        # اگر بلافاصله بعد از پایان پردازش عدد، به حرف الفبا یا '_' رسیدیم، یعنی توکن خراب است
+
         if self._current_char().isalpha() or self._current_char() == "_":
-            # کل عبارت خراب را تا انتها می‌خوانیم تا توکن اشتباه دیگری تولید نشود
             while self._current_char().isalnum() or self._current_char() == "_":
                 lexeme += self._advance()
 
-            # ثبت خطا در ErrorReporter
             self._add_error(
                 f"Invalid numeric literal '{lexeme}'", self.line, start_col, len(lexeme)
             )
 
-            # برگرداندن توکن نامعتبر
             return Token(
                 TokenType.INVALID,
                 lexeme,
@@ -222,7 +215,6 @@ class Lexer:
             )
 
     def _read_comment(self) -> bool:
-        """خواندن کامنت و بازگرداندن True اگر کامل بسته شد، در غیر این صورت False"""
         if self._current_char() == "/" and self._peek() == "/":
             while self._current_char() != "\n" and self.pos < self.length:
                 self._advance()
@@ -356,14 +348,12 @@ class Lexer:
         )
 
     def peek_token(self) -> Token:
-        """برای نگاه به جلو (Lookahead) - برای پارسر بسیار مهم است"""
         current_pos = self.pos
         current_line = self.line
         current_col = self.col
 
         token = self.next_token()
 
-        # بازگردانی وضعیت لکسر
         self.pos = current_pos
         self.line = current_line
         self.col = current_col

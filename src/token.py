@@ -36,7 +36,6 @@ class Token:
     location: SourceLocation
 
     def to_dict(self) -> dict:
-        """تبدیل توکن به دیکشنری برای ذخیره در فایل JSON"""
         return {
             "type": self.type.value,
             "lexeme": self.lexeme,

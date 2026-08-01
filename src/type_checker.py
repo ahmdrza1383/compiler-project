@@ -423,26 +423,22 @@ class TypeChecker:
 
         field_name = node.member.id_name
 
-        # === تغییرات فاز ۳: ثبت ارجاع فیلد استراکت در جدول نمادها ===
         struct_scope = self.symbol_table.struct_scopes.get(struct_type.name)
         if struct_scope:
             field_symbol = struct_scope.resolve_local(field_name)
             if field_symbol:
                 field_symbol.set_used()
-                # ثبت موقعیت ارجاع
                 line = node.member.line if hasattr(node.member, "line") else 0
                 col = node.member.col if hasattr(node.member, "col") else 0
                 file_name = getattr(
                     field_symbol.definition_loc, "file_name", "<unknown>"
                 )
 
-                # برای جلوگیری از خطای ایمپورت
                 from .token import SourceLocation
 
                 loc = SourceLocation(file_name, line, col)
                 field_symbol.add_reference(loc)
 
-                # اتصال نماد به گره AST برای سیستم ناوبری
                 node.member.symbol = field_symbol
 
                 node.inferred_type = self._parse_type(field_symbol.type)
@@ -485,7 +481,6 @@ class TypeChecker:
             if init_type is None:
                 return
 
-            # استخراج نام پایه و تعداد پوینترها مستقیماً از درخت نحو
             base_type_name = node.var_type.type_name
             pointers_count = getattr(node.var_type, "pointers", 0)
             full_type_str = f"{base_type_name}{'*' * pointers_count}"

@@ -37,7 +37,6 @@ class Symbol:
         self.is_used = False
 
     def add_reference(self, location: SourceLocation):
-        """افزودن یک موقعیت استفاده به لیست references"""
         self.references.append(location)
 
     def set_initialized(self):
@@ -64,12 +63,6 @@ class Symbol:
 
 
 class Scope:
-    """
-    یک محدوده (Scope) در برنامه
-    طبق بخش 5.1.1 داک - Scope Hierarchy
-
-    Scopes are arranged as a tree; name lookup walks from inner to outer.
-    """
 
     def __init__(self, parent: Optional["Scope"] = None, scope_type: str = "global"):
         self.parent = parent  # Reference به Scope والد
@@ -78,7 +71,6 @@ class Scope:
         self.children: List["Scope"] = []
 
     def define(self, symbol: Symbol) -> bool:
-        """تعریف یک نماد در Scope جاری"""
         if symbol.name in self.symbols:
             return False
         symbol.scope = self
@@ -86,22 +78,16 @@ class Scope:
         return True
 
     def resolve(self, name: str) -> Optional[Symbol]:
-        """
-        پیدا کردن یک نماد با جستجو از inner به outer
-        طبق بخش 5.1.1: name lookup walks from inner to outer
-        """
-        # 1. جستجو در Scope جاری
+
         if name in self.symbols:
             return self.symbols[name]
 
-        # 2. جستجو در والدها (از inner به outer)
         if self.parent:
             return self.parent.resolve(name)
 
         return None
 
     def resolve_local(self, name: str) -> Optional[Symbol]:
-        """فقط در Scope جاری جستجو می‌کند (بدون والدها)"""
         return self.symbols.get(name)
 
     def get_all_symbols(self) -> List[Symbol]:
@@ -135,24 +121,19 @@ class SymbolTable:
     def get_global_scope(self) -> Scope:
         return self.global_scope
 
-    # ===== تعریف و جستجو (بخش 5.1) =====
 
     def define(self, symbol: Symbol) -> bool:
-        """تعریف یک نماد در Scope جاری"""
         if self.current_scope.define(symbol):
             self.all_symbols.append(symbol)
             return True
         return False
 
     def resolve(self, name: str) -> Optional[Symbol]:
-        """جستجو از inner به outer"""
         return self.current_scope.resolve(name)
 
     def resolve_global(self, name: str) -> Optional[Symbol]:
-        """جستجو فقط در Scope گلوبال"""
         return self.global_scope.resolve_local(name)
 
-    # ===== خروجی‌ها =====
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -168,7 +149,6 @@ class SymbolTable:
         }
 
     def print_table(self):
-        """چاپ جدول نمادها - طبق فرمت داک"""
         print("\n" + "=" * 70)
         print("📋 SYMBOL TABLE (بخش 5.1)")
         print("=" * 70)
