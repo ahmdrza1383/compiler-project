@@ -1,0 +1,9 @@
+{
+  "process_node": [],
+  "complex_algorithm": [
+    "process_node"
+  ],
+  "main": [
+    "complex_algorithm"
+  ]
+}

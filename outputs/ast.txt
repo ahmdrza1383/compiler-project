@@ -1,56 +1,153 @@
 Program
+├── StructDef
+│   ├── ID: Node (Struct)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: value (Variable)
+│   └── VarDecl
+│       ├── Type: struct Node*
+│       └── ID: next (Variable)
+├── FunctionDef
+│   ├── Type: int
+│   ├── ID: process_node (Function)
+│   ├── VarDecl
+│   │   ├── Type: struct Node*
+│   │   └── ID: n (Variable)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: threshold (Variable)
+│   └── Block
+│       ├── IfStmt
+│       │   ├── BinaryExpr (==)
+│       │   │   ├── ID: n (Variable)
+│       │   │   └── Literal: 0
+│       │   └── Block
+│       │       ├── ReturnStmt
+│       │       │   └── Literal: 0
+│       │       └── VarDecl
+│       │           ├── Type: int
+│       │           ├── ID: dead_var (Variable)
+│       │           └── Literal: 99
+│       └── IfStmt
+│           ├── BinaryExpr (>)
+│           │   ├── MemberAccess
+│           │   │   ├── ID: n (Variable)
+│           │   │   └── ID: value (Variable)
+│           │   └── ID: threshold (Variable)
+│           ├── Block
+│           │   └── ReturnStmt
+│           │       └── Literal: 1
+│           └── Block
+│               └── ReturnStmt
+│                   └── UnaryExpr (-)
+│                       └── Literal: 1
+├── FunctionDef
+│   ├── Type: int
+│   ├── ID: complex_algorithm (Function)
+│   ├── VarDecl
+│   │   ├── Type: int
+│   │   └── ID: max_iters (Variable)
+│   ├── VarDecl
+│   │   ├── Type: struct Node*
+│   │   └── ID: head (Variable)
+│   └── Block
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: i (Variable)
+│       │   └── Literal: 0
+│       ├── VarDecl
+│       │   ├── Type: int
+│       │   ├── ID: active_nodes (Variable)
+│       │   └── Literal: 0
+│       ├── WhileStmt
+│       │   ├── BinaryExpr (<)
+│       │   │   ├── ID: i (Variable)
+│       │   │   └── ID: max_iters (Variable)
+│       │   └── Block
+│       │       ├── IfStmt
+│       │       │   ├── BinaryExpr (==)
+│       │       │   │   ├── ID: head (Variable)
+│       │       │   │   └── Literal: 0
+│       │       │   └── Block
+│       │       │       └── BreakStmt
+│       │       ├── VarDecl
+│       │       │   ├── Type: int
+│       │       │   ├── ID: status (Variable)
+│       │       │   └── CallExpr
+│       │       │       ├── ID: process_node (Function)
+│       │       │       ├── ID: head (Variable)
+│       │       │       └── Literal: 50
+│       │       ├── IfStmt
+│       │       │   ├── BinaryExpr (==)
+│       │       │   │   ├── ID: status (Variable)
+│       │       │   │   └── Literal: 1
+│       │       │   ├── Block
+│       │       │   │   └── UnaryExpr (++)
+│       │       │   │       └── ID: active_nodes (Variable)
+│       │       │   └── Block
+│       │       │       └── IfStmt
+│       │       │           ├── BinaryExpr (==)
+│       │       │           │   ├── ID: status (Variable)
+│       │       │           │   └── UnaryExpr (-)
+│       │       │           │       └── Literal: 1
+│       │       │           └── Block
+│       │       │               ├── BinaryExpr (=)
+│       │       │               │   ├── ID: head (Variable)
+│       │       │               │   └── MemberAccess
+│       │       │               │       ├── ID: head (Variable)
+│       │       │               │       └── ID: next (Variable)
+│       │       │               └── ContinueStmt
+│       │       ├── BinaryExpr (=)
+│       │       │   ├── ID: head (Variable)
+│       │       │   └── MemberAccess
+│       │       │       ├── ID: head (Variable)
+│       │       │       └── ID: next (Variable)
+│       │       ├── UnaryExpr (++)
+│       │       │   └── ID: i (Variable)
+│       │       └── ForStmt
+│       │           ├── VarDecl
+│       │           │   ├── Type: int
+│       │           │   ├── ID: j (Variable)
+│       │           │   └── Literal: 0
+│       │           ├── BinaryExpr (<)
+│       │           │   ├── ID: j (Variable)
+│       │           │   └── Literal: 5
+│       │           ├── UnaryExpr (++)
+│       │           │   └── ID: j (Variable)
+│       │           └── Block
+│       │               └── IfStmt
+│       │                   ├── BinaryExpr (>)
+│       │                   │   ├── ID: active_nodes (Variable)
+│       │                   │   └── Literal: 100
+│       │                   └── Block
+│       │                       └── ReturnStmt
+│       │                           └── ID: active_nodes (Variable)
+│       └── ReturnStmt
+│           └── ID: active_nodes (Variable)
 └── FunctionDef
     ├── Type: int
     ├── ID: main (Function)
     └── Block
         ├── VarDecl
-        │   ├── Type: int
-        │   ├── ID: i (Variable)
-        │   └── Literal: 100
+        │   ├── Type: struct Node
+        │   ├── ID: n1 (Variable)
+        │   └── InitializerList
+        │       ├── Literal: 10
+        │       └── Literal: 0
+        ├── VarDecl
+        │   ├── Type: struct Node
+        │   ├── ID: n2 (Variable)
+        │   └── InitializerList
+        │       ├── Literal: 60
+        │       └── UnaryExpr (&)
+        │           └── ID: n1 (Variable)
         ├── VarDecl
         │   ├── Type: int
-        │   ├── ID: j (Variable)
-        │   └── Literal: 200
-        ├── ForStmt
-        │   ├── VarDecl
-        │   │   ├── Type: int
-        │   │   ├── ID: i (Variable)
-        │   │   └── Literal: 0
-        │   ├── BinaryExpr (<)
-        │   │   ├── ID: i (Variable)
-        │   │   └── Literal: 3
-        │   ├── UnaryExpr (++)
-        │   │   └── ID: i (Variable)
-        │   └── Block
-        │       ├── VarDecl
-        │       │   ├── Type: int
-        │       │   ├── ID: sum (Variable)
-        │       │   └── Literal: 0
-        │       └── ForStmt
-        │           ├── VarDecl
-        │           │   ├── Type: int
-        │           │   ├── ID: j (Variable)
-        │           │   └── Literal: 0
-        │           ├── BinaryExpr (<)
-        │           │   ├── ID: j (Variable)
-        │           │   └── Literal: 3
-        │           ├── UnaryExpr (++)
-        │           │   └── ID: j (Variable)
-        │           └── Block
-        │               ├── BinaryExpr (+=)
-        │               │   ├── ID: sum (Variable)
-        │               │   └── BinaryExpr (+)
-        │               │       ├── ID: i (Variable)
-        │               │       └── ID: j (Variable)
-        │               └── Block
-        │                   ├── VarDecl
-        │                   │   ├── Type: int
-        │                   │   ├── ID: i (Variable)
-        │                   │   └── Literal: 50
-        │                   └── BinaryExpr (+=)
-        │                       ├── ID: sum (Variable)
-        │                       └── ID: j (Variable)
+        │   ├── ID: result (Variable)
+        │   └── CallExpr
+        │       ├── ID: complex_algorithm (Function)
+        │       ├── Literal: 10
+        │       └── UnaryExpr (&)
+        │           └── ID: n2 (Variable)
         └── ReturnStmt
-            └── BinaryExpr (+)
-                ├── ID: i (Variable)
-                └── ID: j (Variable)
+            └── Literal: 0

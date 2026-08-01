@@ -1,19 +1,58 @@
-int main() {
-    int i = 100; // متغیر بیرونی
-    int j = 200;
+struct Node {
+    int value;
+    struct Node* next;
+};
 
-    for (int i = 0; i < 3; i++) { // حلقه بیرونی - متغیر 'i' اینجا متغیر بیرونی خط ۲ را سایه می‌کند
-        int sum = 0;
+int process_node(struct Node* n, int threshold) {
+    if (n == 0) {
+        return 0;
+        int dead_var = 99; // تست کد مرده
+    }
+    
+    if (n->value > threshold) {
+        return 1;
+    } else {
+        return -1;
+    }
+}
+
+int complex_algorithm(int max_iters, struct Node* head) {
+    int i = 0;
+    int active_nodes = 0;
+
+    while (i < max_iters) {
+        if (head == 0) {
+            break; 
+        }
         
-        for (int j = 0; j < 3; j++) { // حلقه داخلی - متغیر 'j' اینجا متغیر 'j' خط ۳ را سایه می‌کند
-            sum += i + j;
-            
-            {
-                int i = 50; // یک اسکوپ داخلی‌تر داخل حلقه‌ها
-                sum += j;
+        int status = process_node(head, 50);
+        
+        if (status == 1) {
+            active_nodes++;
+        } else {
+            if (status == -1) {
+                head = head->next;
+                continue; 
+            }
+        }
+        
+        head = head->next;
+        i++;
+        
+        for (int j = 0; j < 5; j++) {
+            if (active_nodes > 100) {
+                return active_nodes; 
             }
         }
     }
+    
+    return active_nodes;
+}
 
-    return i + j; // این دو متغیر دقیقاً همان مقادیر اولیه ۱۰۰ و ۲۰۰ را دارند
+int main() {
+    struct Node n1 = {10, 0};
+    struct Node n2 = {60, &n1};
+    
+    int result = complex_algorithm(10, &n2);
+    return 0;
 }

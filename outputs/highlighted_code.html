@@ -39,24 +39,63 @@
     </style>
 </head>
 <body>
-    <pre><span class="type">int</span> <span class="func">main</span>() {
-    <span class="type">int</span> <span class="ident">i</span> <span class="op">=</span> <span class="num">100</span>; // متغیر بیرونی
-    <span class="type">int</span> <span class="ident">j</span> <span class="op">=</span> <span class="num">200</span>;
+    <pre><span class="kw">struct</span> <span class="class">Node</span> {
+    <span class="type">int</span> <span class="ident">value</span>;
+    <span class="kw">struct</span> <span class="class">Node</span><span class="op">*</span> <span class="ident">next</span>;
+};
 
-    <span class="kw">for</span> (<span class="type">int</span> <span class="ident">i</span> <span class="op">=</span> <span class="num">0</span>; <span class="ident">i</span> <span class="op">&lt;</span> <span class="num">3</span>; <span class="ident">i</span><span class="op">++</span>) { // حلقه بیرونی - متغیر 'i' اینجا متغیر بیرونی خط ۲ را سایه می‌کند
-        <span class="type">int</span> <span class="ident">sum</span> <span class="op">=</span> <span class="num">0</span>;
+<span class="type">int</span> <span class="func">process_node</span>(<span class="kw">struct</span> <span class="class">Node</span><span class="op">*</span> <span class="ident">n</span>, <span class="type">int</span> <span class="ident">threshold</span>) {
+    <span class="kw">if</span> (<span class="ident">n</span> <span class="op">==</span> <span class="num">0</span>) {
+        <span class="kw">return</span> <span class="num">0</span>;
+        <span class="type">int</span> <span class="ident">dead_var</span> <span class="op">=</span> <span class="num">99</span>; // تست کد مرده
+    }
+    
+    <span class="kw">if</span> (<span class="ident">n</span><span class="op">-&gt;</span><span class="ident">value</span> <span class="op">&gt;</span> <span class="ident">threshold</span>) {
+        <span class="kw">return</span> <span class="num">1</span>;
+    } <span class="kw">else</span> {
+        <span class="kw">return</span> <span class="op">-</span><span class="num">1</span>;
+    }
+}
+
+<span class="type">int</span> <span class="func">complex_algorithm</span>(<span class="type">int</span> <span class="ident">max_iters</span>, <span class="kw">struct</span> <span class="class">Node</span><span class="op">*</span> <span class="ident">head</span>) {
+    <span class="type">int</span> <span class="ident">i</span> <span class="op">=</span> <span class="num">0</span>;
+    <span class="type">int</span> <span class="ident">active_nodes</span> <span class="op">=</span> <span class="num">0</span>;
+
+    <span class="kw">while</span> (<span class="ident">i</span> <span class="op">&lt;</span> <span class="ident">max_iters</span>) {
+        <span class="kw">if</span> (<span class="ident">head</span> <span class="op">==</span> <span class="num">0</span>) {
+            <span class="kw">break</span>; 
+        }
         
-        <span class="kw">for</span> (<span class="type">int</span> <span class="ident">j</span> <span class="op">=</span> <span class="num">0</span>; <span class="ident">j</span> <span class="op">&lt;</span> <span class="num">3</span>; <span class="ident">j</span><span class="op">++</span>) { // حلقه داخلی - متغیر 'j' اینجا متغیر 'j' خط ۳ را سایه می‌کند
-            <span class="ident">sum</span> <span class="op">+=</span> <span class="ident">i</span> <span class="op">+</span> <span class="ident">j</span>;
-            
-            {
-                <span class="type">int</span> <span class="ident">i</span> <span class="op">=</span> <span class="num">50</span>; // یک اسکوپ داخلی‌تر داخل حلقه‌ها
-                <span class="ident">sum</span> <span class="op">+=</span> <span class="ident">j</span>;
+        <span class="type">int</span> <span class="ident">status</span> <span class="op">=</span> <span class="func">process_node</span>(<span class="ident">head</span>, <span class="num">50</span>);
+        
+        <span class="kw">if</span> (<span class="ident">status</span> <span class="op">==</span> <span class="num">1</span>) {
+            <span class="ident">active_nodes</span><span class="op">++</span>;
+        } <span class="kw">else</span> {
+            <span class="kw">if</span> (<span class="ident">status</span> <span class="op">==</span> <span class="op">-</span><span class="num">1</span>) {
+                <span class="ident">head</span> <span class="op">=</span> <span class="ident">head</span><span class="op">-&gt;</span><span class="ident">next</span>;
+                <span class="kw">continue</span>; 
+            }
+        }
+        
+        <span class="ident">head</span> <span class="op">=</span> <span class="ident">head</span><span class="op">-&gt;</span><span class="ident">next</span>;
+        <span class="ident">i</span><span class="op">++</span>;
+        
+        <span class="kw">for</span> (<span class="type">int</span> <span class="ident">j</span> <span class="op">=</span> <span class="num">0</span>; <span class="ident">j</span> <span class="op">&lt;</span> <span class="num">5</span>; <span class="ident">j</span><span class="op">++</span>) {
+            <span class="kw">if</span> (<span class="ident">active_nodes</span> <span class="op">&gt;</span> <span class="num">100</span>) {
+                <span class="kw">return</span> <span class="ident">active_nodes</span>; 
             }
         }
     }
+    
+    <span class="kw">return</span> <span class="ident">active_nodes</span>;
+}
 
-    <span class="kw">return</span> <span class="ident">i</span> <span class="op">+</span> <span class="ident">j</span>; // این دو متغیر دقیقاً همان مقادیر اولیه ۱۰۰ و ۲۰۰ را دارند
+<span class="type">int</span> <span class="func">main</span>() {
+    <span class="kw">struct</span> <span class="class">Node</span> <span class="ident">n1</span> <span class="op">=</span> {<span class="num">10</span>, <span class="num">0</span>};
+    <span class="kw">struct</span> <span class="class">Node</span> <span class="ident">n2</span> <span class="op">=</span> {<span class="num">60</span>, <span class="op">&amp;</span><span class="ident">n1</span>};
+    
+    <span class="type">int</span> <span class="ident">result</span> <span class="op">=</span> <span class="func">complex_algorithm</span>(<span class="num">10</span>, <span class="op">&amp;</span><span class="ident">n2</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
 }</pre>
 </body>
 </html>

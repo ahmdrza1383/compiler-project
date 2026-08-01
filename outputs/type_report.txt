@@ -1,9 +1,8 @@
 TYPE REPORT
 ======================================================================
-Total Type Errors: 1
+Total Type Errors: 0
 Total Type Warnings: 0
 ----------------------------------------------------------------------
 
-ERRORS:
-  1. Redefinition of variable 'i' at Line 5, Col 14
+No type errors or warnings found.
 ======================================================================

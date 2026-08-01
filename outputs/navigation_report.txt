@@ -3,9 +3,16 @@
 ============================================================
 
 📌 Query at Line 34, Col 20 (Function factorial call):
-  - Hover Info: {}
-  - Go-to-Definition: Not found
-  - Total References Found: 0
+  - Hover Info: {'symbol': 'head', 'kind': 'parameter', 'type': 'struct Node*', 'scope': 'function', 'initialized': True, 'used': True}
+  - Go-to-Definition: {'file': 'test_code.c', 'line': 19, 'col': 51}
+  - Total References Found: 7
+    [Def] File: test_code.c, Line: 19, Col: 51
+    [Ref] File: test_code.c, Line: 24, Col: 13
+    [Ref] File: test_code.c, Line: 28, Col: 35
+    [Ref] File: test_code.c, Line: 34, Col: 17
+    [Ref] File: test_code.c, Line: 34, Col: 24
+    [Ref] File: test_code.c, Line: 39, Col: 9
+    [Ref] File: test_code.c, Line: 39, Col: 16
 ------------------------------------------------------------
 
 📌 Query at Line 87, Col 5 (Global variable global_count):

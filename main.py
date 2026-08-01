@@ -13,6 +13,8 @@ from src.type_checker import TypeChecker
 from src.auto_completer import AutoCompleter
 from src.navigation import NavigationEngine
 from src.refactoring import RenameEngine
+from src.graphs import CFGBuilder, CallGraphBuilder
+
 
 def read_source_file(file_path: str) -> str:
     try:
@@ -127,11 +129,87 @@ def write_type_report_txt(errors, warnings, output_path: str):
             f.write("\nNo type errors or warnings found.\n")
         f.write("=" * 70 + "\n")
 
+
 def clear_file(output_path: str, default_content: str = ""):
-    """این تابع فایل‌های قدیمی را با یک محتوای پیش‌فرض (مثل {} یا پیام متنی) بازنویسی می‌کند"""
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(default_content)
+
+
+def write_completions_txt(completions_data, output_path: str):
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("AUTO-COMPLETION REPORT\n")
+        f.write(
+            "======================================================================\n"
+        )
+        if not completions_data:
+            f.write("No completions found.\n")
+        for position, items in completions_data.items():
+            f.write(f"Position (Line:Col): {position}\n")
+            f.write("-" * 70 + "\n")
+            for item in items:
+                kind = item.get("kind", "unknown")
+                label = item.get("label", "")
+                detail = item.get("detail", "")
+                f.write(f"  [{kind:<9}] {label:<15} ({detail})\n")
+            f.write(
+                "======================================================================\n"
+            )
+
+
+def write_cfg_txt(cfgs, output_path: str):
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("CONTROL FLOW GRAPH (CFG) REPORT\n")
+        f.write(
+            "======================================================================\n"
+        )
+        if not cfgs:
+            f.write("No CFG generated.\n")
+        for func_name, cfg in cfgs.items():
+            f.write(f"\nFunction: {func_name}\n")
+            f.write(
+                f"Entry Block: {cfg.entry_block.id if cfg.entry_block else 'None'}\n"
+            )
+            f.write(f"Exit Block:  {cfg.exit_block.id if cfg.exit_block else 'None'}\n")
+            f.write("-" * 70 + "\n")
+            for block in cfg.blocks:
+                f.write(f"Block {block.id} [{block.label}]\n")
+                f.write(f"  Predecessors: {[b.id for b in block.predecessors]}\n")
+                f.write(f"  Successors:   {[b.id for b in block.successors]}\n")
+                f.write("  Statements:\n")
+                if not block.statements:
+                    f.write("    (Empty)\n")
+                else:
+                    for stmt in block.statements:
+                        f.write(f"    - {stmt.__class__.__name__}\n")
+                f.write("-" * 70 + "\n")
+        f.write(
+            "======================================================================\n"
+        )
+
+
+def write_call_graph_txt(call_graph, output_path: str):
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("CALL GRAPH REPORT\n")
+        f.write(
+            "======================================================================\n"
+        )
+        if not call_graph:
+            f.write("No function calls detected.\n")
+        for caller, callees in call_graph.items():
+            f.write(f"Caller: {caller}\n")
+            if not callees:
+                f.write("  -> (No external calls)\n")
+            else:
+                for callee in callees:
+                    f.write(f"  -> Calls: {callee}\n")
+            f.write("-" * 70 + "\n")
+        f.write(
+            "======================================================================\n"
+        )
 
 
 def main():
@@ -233,8 +311,36 @@ def main():
         write_type_report_txt(type_errors, type_warnings, type_report_path_txt)
         print(f"[INFO] Type report text saved to {type_report_path_txt}")
 
+        # ==========================================
+        #   Graph Infrastructure (CFG & Call Graph)
+        # ==========================================
+        print("[INFO] Building Control Flow Graph (CFG)...")
+        cfg_builder = CFGBuilder(ast_root)
+        cfgs = cfg_builder.build()
+
+        cfg_json_path = "outputs/cfg_report.json"
+        cfg_json_data = {func: cfg.to_dict() for func, cfg in cfgs.items()}
+        with open(cfg_json_path, "w", encoding="utf-8") as f:
+            json.dump(cfg_json_data, f, indent=2)
+
+        cfg_txt_path = "outputs/cfg_report.txt"
+        write_cfg_txt(cfgs, cfg_txt_path)
+        print(f"[INFO] CFG text report saved to {cfg_txt_path}")
+
+        print("[INFO] Building Call Graph...")
+        call_graph_builder = CallGraphBuilder(ast_root)
+        call_graph = call_graph_builder.build()
+
+        cg_json_path = "outputs/call_graph.json"
+        with open(cg_json_path, "w", encoding="utf-8") as f:
+            json.dump(call_graph, f, indent=2)
+
+        cg_txt_path = "outputs/call_graph.txt"
+        write_call_graph_txt(call_graph, cg_txt_path)
+        print(f"[INFO] Call Graph text report saved to {cg_txt_path}")
+
         completer = AutoCompleter(symbol_table, ast_root)
-        test_positions = [(8, 16), (8, 17), (1, 9), (1, 10), (9, 8)]
+        test_positions = [(12, 11), (28, 38), (34, 28), (57, 16)]
         all_completions = {}
         for line, col in test_positions:
             completions = completer.get_completions(source_code, line, col)
@@ -244,13 +350,17 @@ def main():
         completion_path = "outputs/completions.json"
         with open(completion_path, "w", encoding="utf-8") as f:
             json.dump(all_completions, f, indent=2)
-        print(f"[INFO] Auto-completion results saved to {completion_path}")
+        print(f"[INFO] Auto-completion JSON saved to {completion_path}")
+
+        completion_txt_path = "outputs/completions.txt"
+        write_completions_txt(all_completions, completion_txt_path)
+        print(f"[INFO] Auto-completion text saved to {completion_txt_path}")
 
         # ==========================================
         # اضافه شدن بخش ناوبری و اطلاعات IDE (فاز ۳)
         # ==========================================
         nav_engine = NavigationEngine(symbol_table, ast_root)
-        
+
         # مختصات تست برای بررسی Go-to-Definition و Find-References
         test_queries = [
             {"line": 34, "col": 20, "desc": "Function factorial call"},
@@ -267,26 +377,36 @@ def main():
 
         for q in test_queries:
             line, col = q["line"], q["col"]
-            
+
             def_result = nav_engine.goto_definition(line, col)
             refs_result = nav_engine.find_all_references(line, col)
             hover_result = nav_engine.get_hover_info(line, col)
-            
+
             query_data = {
                 "query_point": {"line": line, "col": col, "description": q["desc"]},
                 "goto_definition": def_result,
                 "find_references": refs_result,
-                "hover_info": hover_result
+                "hover_info": hover_result,
             }
             navigation_results.append(query_data)
-            
-            human_readable_txt.append(f"📌 Query at Line {line}, Col {col} ({q['desc']}):")
-            human_readable_txt.append(f"  - Hover Info: {hover_result.get('hover', {})}")
-            human_readable_txt.append(f"  - Go-to-Definition: {def_result.get('defined_at', 'Not found')}")
-            human_readable_txt.append(f"  - Total References Found: {refs_result.get('total_references', 0)}")
-            for r in refs_result.get('references', []):
-                tag = "[Def]" if r.get('is_definition') else "[Ref]"
-                human_readable_txt.append(f"    {tag} File: {r['file']}, Line: {r['line']}, Col: {r['col']}")
+
+            human_readable_txt.append(
+                f"📌 Query at Line {line}, Col {col} ({q['desc']}):"
+            )
+            human_readable_txt.append(
+                f"  - Hover Info: {hover_result.get('hover', {})}"
+            )
+            human_readable_txt.append(
+                f"  - Go-to-Definition: {def_result.get('defined_at', 'Not found')}"
+            )
+            human_readable_txt.append(
+                f"  - Total References Found: {refs_result.get('total_references', 0)}"
+            )
+            for r in refs_result.get("references", []):
+                tag = "[Def]" if r.get("is_definition") else "[Ref]"
+                human_readable_txt.append(
+                    f"    {tag} File: {r['file']}, Line: {r['line']}, Col: {r['col']}"
+                )
             human_readable_txt.append("-" * 60 + "\n")
 
         nav_json_path = "outputs/navigation_report.json"
@@ -298,26 +418,28 @@ def main():
         with open(nav_txt_path, "w", encoding="utf-8") as f:
             f.write("\n".join(human_readable_txt))
         print(f"[INFO] Navigation text report saved to {nav_txt_path}")
-        
+
         # ==========================================
         # اضافه شدن موتور تغییر نام امن (گام دوم فاز ۳)
         # ==========================================
         rename_engine = RenameEngine(nav_engine, source_code)
-        
+
         # تست: تلاش برای تغییر نام تابعی در خط 34 و ستون 20 (از test_queries خودتان) به نام جدید
         target_line = 5
         target_col = 14
         new_symbol_name = "nn"
-        
+
         rename_result = rename_engine.rename(target_line, target_col, new_symbol_name)
 
         rename_txt_path = "outputs/rename.c"
         os.makedirs(os.path.dirname(rename_txt_path), exist_ok=True)
-        
+
         if rename_result["status"] == "success":
             with open(rename_txt_path, "w", encoding="utf-8") as f:
                 f.write(rename_result["modified_source"])
-            print(f"[INFO] Safe Rename successful. Replaced {rename_result['total_replaced']} occurrences of '{rename_result['old_name']}' with '{rename_result['new_name']}'.")
+            print(
+                f"[INFO] Safe Rename successful. Replaced {rename_result['total_replaced']} occurrences of '{rename_result['old_name']}' with '{rename_result['new_name']}'."
+            )
             print(f"[INFO] Renamed C source code saved to {rename_txt_path}")
         else:
             with open(rename_txt_path, "w", encoding="utf-8") as f:

@@ -1,10 +1,4 @@
 {
-  "errors": [
-    "Redefinition of variable 'i' at Line 5, Col 14"
-  ],
-  "warnings": [
-    "Variable 'i' shadows outer declaration",
-    "Variable 'j' shadows outer declaration",
-    "Variable 'i' shadows outer declaration"
-  ]
+  "errors": [],
+  "warnings": []
 }

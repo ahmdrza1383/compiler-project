@@ -1,14 +1,8 @@
 SEMANTIC REPORT
 ======================================================================
-Total Errors: 1
-Total Warnings: 3
+Total Errors: 0
+Total Warnings: 0
 ----------------------------------------------------------------------
 
-ERRORS:
-  1. Redefinition of variable 'i' at Line 5, Col 14
-
-WARNINGS:
-  1. Variable 'i' shadows outer declaration
-  2. Variable 'j' shadows outer declaration
-  3. Variable 'i' shadows outer declaration
+No semantic errors or warnings found.
 ======================================================================

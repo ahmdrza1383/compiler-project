@@ -1,0 +1,39 @@
+AUTO-COMPLETION REPORT
+======================================================================
+Position (Line:Col): 28:38
+----------------------------------------------------------------------
+  [parameter] head            (struct Node* head)
+======================================================================
+Position (Line:Col): 34:28
+----------------------------------------------------------------------
+  [parameter] head            (struct Node* head)
+  [parameter] max_iters       (int max_iters)
+  [variable ] active_nodes    (int active_nodes)
+  [variable ] i               (int i)
+  [variable ] status          (int status)
+  [type     ] char            (primitive type)
+  [type     ] double          (primitive type)
+  [type     ] float           (primitive type)
+  [type     ] int             (primitive type)
+  [type     ] struct          (primitive type)
+  [type     ] void            (primitive type)
+  [function ] complex_algorithm ((int, struct Node*) -> int)
+  [function ] process_node    ((struct Node*, int) -> int)
+  [struct   ] Node            (struct Node Node)
+======================================================================
+Position (Line:Col): 57:16
+----------------------------------------------------------------------
+  [variable ] n1              (struct Node n1)
+  [variable ] n2              (struct Node n2)
+  [variable ] result          (int result)
+  [type     ] char            (primitive type)
+  [type     ] double          (primitive type)
+  [type     ] float           (primitive type)
+  [type     ] int             (primitive type)
+  [type     ] struct          (primitive type)
+  [type     ] void            (primitive type)
+  [function ] complex_algorithm ((int, struct Node*) -> int)
+  [function ] main            (() -> int)
+  [function ] process_node    ((struct Node*, int) -> int)
+  [struct   ] Node            (struct Node Node)
+======================================================================

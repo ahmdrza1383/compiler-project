@@ -1,18 +1,40 @@
 SYMBOL TABLE
 ======================================================================
 Scope: global
-  [function] 'main' : int  (def: 1:5, init=no, used=yes, refs=1)
+  [struct] 'Node' : struct Node  (def: 1:8, init=no, used=yes, refs=6)
+  [function] 'process_node' : int  (def: 6:5, init=no, used=yes, refs=2)
+  [function] 'complex_algorithm' : int  (def: 19:5, init=no, used=yes, refs=2)
+  [function] 'main' : int  (def: 52:5, init=no, used=yes, refs=1)
+  Scope: struct
+    [field] 'value' : int  (def: 2:9, init=no, used=no, refs=0)
+    [field] 'next' : struct Node*  (def: 3:18, init=no, used=no, refs=0)
+  Scope: function
+    [parameter] 'n' : struct Node*  (def: 6:31, init=yes, used=yes, refs=2)
+    [parameter] 'threshold' : int  (def: 6:38, init=yes, used=yes, refs=1)
+    Scope: block
+      Scope: block
+        [variable] 'dead_var' : int  (def: 9:13, init=yes, used=no, refs=0)
+      Scope: block
+      Scope: block
+  Scope: function
+    [parameter] 'max_iters' : int  (def: 19:27, init=yes, used=yes, refs=1)
+    [parameter] 'head' : struct Node*  (def: 19:51, init=yes, used=yes, refs=6)
+    Scope: block
+      [variable] 'i' : int  (def: 20:9, init=yes, used=yes, refs=2)
+      [variable] 'active_nodes' : int  (def: 21:9, init=yes, used=yes, refs=4)
+      Scope: block
+        [variable] 'status' : int  (def: 28:13, init=yes, used=yes, refs=2)
+        Scope: block
+        Scope: block
+        Scope: block
+          Scope: block
+        Scope: for_loop
+          [variable] 'j' : int  (def: 42:18, init=yes, used=yes, refs=2)
+          Scope: block
+            Scope: block
   Scope: function
     Scope: block
-      [variable] 'i' : int  (def: 2:9, init=yes, used=yes, refs=1)
-      [variable] 'j' : int  (def: 3:9, init=yes, used=yes, refs=1)
-      Scope: for_loop
-        [variable] 'i' : int  (def: 5:14, init=yes, used=yes, refs=3)
-        Scope: block
-          [variable] 'sum' : int  (def: 6:13, init=yes, used=yes, refs=2)
-          Scope: for_loop
-            [variable] 'j' : int  (def: 8:18, init=yes, used=yes, refs=4)
-            Scope: block
-              Scope: block
-                [variable] 'i' : int  (def: 12:21, init=yes, used=no, refs=0)
+      [variable] 'n1' : struct Node  (def: 53:17, init=yes, used=yes, refs=1)
+      [variable] 'n2' : struct Node  (def: 54:17, init=yes, used=yes, refs=1)
+      [variable] 'result' : int  (def: 56:9, init=yes, used=no, refs=0)
 ======================================================================

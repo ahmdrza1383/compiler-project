@@ -1,14 +1,35 @@
 {
-  "8:16": [
+  "28:38": [
     {
-      "label": "int",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
+      "label": "head",
+      "kind": "parameter",
+      "type": "struct Node*",
+      "detail": "struct Node* head",
+      "sortOrder": 1
     }
   ],
-  "8:17": [
+  "34:28": [
+    {
+      "label": "head",
+      "kind": "parameter",
+      "type": "struct Node*",
+      "detail": "struct Node* head",
+      "sortOrder": 1
+    },
+    {
+      "label": "max_iters",
+      "kind": "parameter",
+      "type": "int",
+      "detail": "int max_iters",
+      "sortOrder": 1
+    },
+    {
+      "label": "active_nodes",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int active_nodes",
+      "sortOrder": 2
+    },
     {
       "label": "i",
       "kind": "variable",
@@ -17,17 +38,10 @@
       "sortOrder": 2
     },
     {
-      "label": "j",
+      "label": "status",
       "kind": "variable",
       "type": "int",
-      "detail": "int j",
-      "sortOrder": 2
-    },
-    {
-      "label": "sum",
-      "kind": "variable",
-      "type": "int",
-      "detail": "int sum",
+      "detail": "int status",
       "sortOrder": 2
     },
     {
@@ -71,9 +85,51 @@
       "type": "keyword",
       "detail": "primitive type",
       "sortOrder": 4
+    },
+    {
+      "label": "complex_algorithm",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int, struct Node*) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "process_node",
+      "kind": "function",
+      "type": "int",
+      "detail": "(struct Node*, int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "Node",
+      "kind": "struct",
+      "type": "struct Node",
+      "detail": "struct Node Node",
+      "sortOrder": 6
     }
   ],
-  "1:9": [
+  "57:16": [
+    {
+      "label": "n1",
+      "kind": "variable",
+      "type": "struct Node",
+      "detail": "struct Node n1",
+      "sortOrder": 2
+    },
+    {
+      "label": "n2",
+      "kind": "variable",
+      "type": "struct Node",
+      "detail": "struct Node n2",
+      "sortOrder": 2
+    },
+    {
+      "label": "result",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int result",
+      "sortOrder": 2
+    },
     {
       "label": "char",
       "kind": "type",
@@ -115,50 +171,13 @@
       "type": "keyword",
       "detail": "primitive type",
       "sortOrder": 4
-    }
-  ],
-  "1:10": [
-    {
-      "label": "char",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
     },
     {
-      "label": "double",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "float",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "int",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "struct",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "void",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
+      "label": "complex_algorithm",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int, struct Node*) -> int",
+      "sortOrder": 5
     },
     {
       "label": "main",
@@ -166,78 +185,20 @@
       "type": "int",
       "detail": "() -> int",
       "sortOrder": 5
-    }
-  ],
-  "9:8": [
-    {
-      "label": "i",
-      "kind": "variable",
-      "type": "int",
-      "detail": "int i",
-      "sortOrder": 2
     },
     {
-      "label": "j",
-      "kind": "variable",
-      "type": "int",
-      "detail": "int j",
-      "sortOrder": 2
-    },
-    {
-      "label": "sum",
-      "kind": "variable",
-      "type": "int",
-      "detail": "int sum",
-      "sortOrder": 2
-    },
-    {
-      "label": "char",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "double",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "float",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "int",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "struct",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "void",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "main",
+      "label": "process_node",
       "kind": "function",
       "type": "int",
-      "detail": "() -> int",
+      "detail": "(struct Node*, int) -> int",
       "sortOrder": 5
+    },
+    {
+      "label": "Node",
+      "kind": "struct",
+      "type": "struct Node",
+      "detail": "struct Node Node",
+      "sortOrder": 6
     }
   ]
 }
