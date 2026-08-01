@@ -326,7 +326,6 @@ class SyntaxHighlighter:
 
         lines = self.source_code.split("\n")
         tokens_by_line = {}
-
         for t in self.tokens_meta:
             line = t["line"]
             if line not in tokens_by_line:
@@ -348,12 +347,11 @@ class SyntaxHighlighter:
                 col = t["col"] - 1
                 lexeme = t["lexeme"]
                 cat = t["category"]
-
                 css_class = self.CATEGORY_COLORS.get(cat, {}).get("class", "ident")
 
                 if 0 <= col < len(new_line):
                     if new_line[col : col + len(lexeme)] == lexeme:
-                        wrapped = f'<span class="{css_class}">{self._escape_html(lexeme)}</span>'
+                        wrapped = f'<span class="{css_class}" data-line="{line_idx}" data-col="{t["col"]}">{self._escape_html(lexeme)}</span>'
                         new_line = (
                             new_line[:col] + wrapped + new_line[col + len(lexeme) :]
                         )
