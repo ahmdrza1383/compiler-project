@@ -9,7 +9,13 @@
         "scope": "global",
         "definition_loc": "test_code.c:7:8",
         "references": [
-          "test_code.c:7:8"
+          "test_code.c:15:18",
+          "test_code.c:7:8",
+          "test_code.c:27:14",
+          "test_code.c:56:14",
+          "test_code.c:57:18",
+          "test_code.c:81:18",
+          "test_code.c:82:18"
         ],
         "signature": null,
         "is_initialized": false,
@@ -22,7 +28,10 @@
         "scope": "global",
         "definition_loc": "test_code.c:14:8",
         "references": [
-          "test_code.c:14:8"
+          "test_code.c:16:18",
+          "test_code.c:14:8",
+          "test_code.c:83:17",
+          "test_code.c:84:17"
         ],
         "signature": null,
         "is_initialized": false,
@@ -90,6 +99,7 @@
         "definition_loc": "test_code.c:26:5",
         "references": [
           "test_code.c:26:5",
+          "test_code.c:30:5",
           "test_code.c:34:20",
           "test_code.c:106:20"
         ],
@@ -105,6 +115,7 @@
         "definition_loc": "test_code.c:27:14",
         "references": [
           "test_code.c:27:14",
+          "test_code.c:56:14",
           "test_code.c:97:10"
         ],
         "signature": "(int, int, float) -> struct Point",
@@ -118,6 +129,7 @@
         "scope": "global",
         "definition_loc": "test_code.c:39:6",
         "references": [
+          "test_code.c:39:6",
           "test_code.c:107:5"
         ],
         "signature": "(int[], int) -> void",
@@ -130,10 +142,12 @@
         "type": "int",
         "scope": "global",
         "definition_loc": "test_code.c:65:5",
-        "references": [],
+        "references": [
+          "test_code.c:65:5"
+        ],
         "signature": "() -> int",
         "is_initialized": false,
-        "is_used": false
+        "is_used": true
       }
     },
     "children": [
@@ -604,7 +618,13 @@
       "scope": "global",
       "definition_loc": "test_code.c:7:8",
       "references": [
-        "test_code.c:7:8"
+        "test_code.c:15:18",
+        "test_code.c:7:8",
+        "test_code.c:27:14",
+        "test_code.c:56:14",
+        "test_code.c:57:18",
+        "test_code.c:81:18",
+        "test_code.c:82:18"
       ],
       "signature": null,
       "is_initialized": false,
@@ -617,7 +637,10 @@
       "scope": "global",
       "definition_loc": "test_code.c:14:8",
       "references": [
-        "test_code.c:14:8"
+        "test_code.c:16:18",
+        "test_code.c:14:8",
+        "test_code.c:83:17",
+        "test_code.c:84:17"
       ],
       "signature": null,
       "is_initialized": false,
@@ -685,6 +708,7 @@
       "definition_loc": "test_code.c:26:5",
       "references": [
         "test_code.c:26:5",
+        "test_code.c:30:5",
         "test_code.c:34:20",
         "test_code.c:106:20"
       ],
@@ -700,6 +724,7 @@
       "definition_loc": "test_code.c:27:14",
       "references": [
         "test_code.c:27:14",
+        "test_code.c:56:14",
         "test_code.c:97:10"
       ],
       "signature": "(int, int, float) -> struct Point",
@@ -713,6 +738,7 @@
       "scope": "global",
       "definition_loc": "test_code.c:39:6",
       "references": [
+        "test_code.c:39:6",
         "test_code.c:107:5"
       ],
       "signature": "(int[], int) -> void",
@@ -725,10 +751,12 @@
       "type": "int",
       "scope": "global",
       "definition_loc": "test_code.c:65:5",
-      "references": [],
+      "references": [
+        "test_code.c:65:5"
+      ],
       "signature": "() -> int",
       "is_initialized": false,
-      "is_used": false
+      "is_used": true
     },
     {
       "name": "n",

@@ -1,16 +1,16 @@
 SYMBOL TABLE
 ======================================================================
 Scope: global
-  [struct] 'Point' : struct Point  (def: 7:8, init=no, used=yes, refs=1)
-  [struct] 'Node' : struct Node  (def: 14:8, init=no, used=yes, refs=1)
+  [struct] 'Point' : struct Point  (def: 7:8, init=no, used=yes, refs=7)
+  [struct] 'Node' : struct Node  (def: 14:8, init=no, used=yes, refs=4)
   [variable] 'global_count' : int  (def: 20:5, init=no, used=yes, refs=3)
   [variable] 'PI' : float  (def: 21:7, init=no, used=yes, refs=1)
   [variable] 'NEWLINE' : char  (def: 22:6, init=no, used=yes, refs=1)
   [variable] 'greeting' : char*  (def: 23:7, init=no, used=yes, refs=1)
-  [function] 'factorial' : int  (def: 26:5, init=no, used=yes, refs=3)
-  [function] 'create_point' : struct Point  (def: 27:14, init=no, used=yes, refs=2)
-  [function] 'process_array' : void  (def: 39:6, init=no, used=yes, refs=1)
-  [function] 'main' : int  (def: 65:5, init=no, used=no, refs=0)
+  [function] 'factorial' : int  (def: 26:5, init=no, used=yes, refs=4)
+  [function] 'create_point' : struct Point  (def: 27:14, init=no, used=yes, refs=3)
+  [function] 'process_array' : void  (def: 39:6, init=no, used=yes, refs=2)
+  [function] 'main' : int  (def: 65:5, init=no, used=yes, refs=1)
   Scope: struct
     [field] 'x' : int  (def: 8:9, init=no, used=no, refs=0)
     [field] 'y' : int  (def: 9:9, init=no, used=no, refs=0)

@@ -49,6 +49,22 @@ class SymbolTableBuilder:
             return SourceLocation(self.source_file, node.line, node.col)
         return SourceLocation(self.source_file, 0, 0)
 
+    def _register_type_reference(self, type_str: str, loc: SourceLocation):
+        """Helper to register a reference to a custom type (e.g., struct) when it is used."""
+        if not type_str:
+            return
+        # اگر نوع با "struct " شروع می‌شود، نام استراکت را استخراج می‌کنیم
+        if type_str.startswith("struct "):
+            # پاک کردن مواردی مثل پوینتر (*) یا آرایه ([])
+            base_name = type_str.split('*')[0].split('[')[0].strip()
+            struct_name = base_name[7:].strip() # حذف کلمه "struct "
+            
+            # پیدا کردن نماد استراکت در جدول نمادها
+            symbol = self.symbol_table.resolve(struct_name)
+            if symbol and symbol.kind == "struct":
+                symbol.set_used()
+                symbol.add_reference(loc)
+
     # ==================== PASS 1 ====================
     def _pass1_declaration_scan(self, node):
         if not node:
@@ -100,7 +116,6 @@ class SymbolTableBuilder:
                 definition_loc=loc,
             )
 
-            # اصلاح باگ اول: ثبت اسکوپ استراکت فقط در صورت معتبر بودن تعریف اولیه
             if self.symbol_table.define(struct_symbol):
                 if self.verbose:
                     print(f"  Registered struct: {struct_name}")
@@ -126,6 +141,10 @@ class SymbolTableBuilder:
                             else "unknown"
                         )
                         loc = self._make_location(field.var_name)
+                        
+                        # ثبت ارجاع اگر فیلد از نوع یک استراکت دیگر باشد
+                        self._register_type_reference(field_type, loc)
+                        
                         field_symbol = Symbol(
                             name=field_name,
                             kind="field",
@@ -146,6 +165,10 @@ class SymbolTableBuilder:
                     else "unknown"
                 )
                 loc = self._make_location(node.var_name)
+                
+                # ثبت ارجاع برای تایپ متغیر سراسری
+                self._register_type_reference(var_type, loc)
+                
                 var_symbol = Symbol(
                     name=var_name,
                     kind="variable",
@@ -166,12 +189,26 @@ class SymbolTableBuilder:
         if not node:
             return
 
-        if isinstance(node, FunctionDef):
+        if isinstance(node, (FunctionDef, FunctionDecl)):
             func_name = node.func_name.id_name
             if self.verbose:
                 print(f"\n  Analyzing function: {func_name}")
 
-            self.symbol_table.enter_scope("function")
+            # ثبت ارجاع به عنوان فراخوانی یا اعلام (برای هر دو حالت Prototype و Definition)
+            func_symbol = self.symbol_table.resolve(func_name)
+            if func_symbol:
+                loc = self._make_location(node.func_name)
+                func_symbol.add_reference(loc)
+                func_symbol.set_used()
+
+            # ثبت ارجاع برای تایپ بازگشتی تابع
+            return_type = node.return_type.type_name if hasattr(node, "return_type") else "void"
+            loc = self._make_location(node.func_name)
+            self._register_type_reference(return_type, loc)
+
+            # اگر FunctionDef است وارد scope می‌شویم
+            if isinstance(node, FunctionDef):
+                self.symbol_table.enter_scope("function")
 
             for param in node.params:
                 if hasattr(param, "var_name"):
@@ -182,24 +219,28 @@ class SymbolTableBuilder:
                         else "unknown"
                     )
                     loc = self._make_location(param.var_name)
+                    
+                    # ثبت ارجاع برای تایپ پارامتر
+                    self._register_type_reference(param_type, loc)
 
-                    param_symbol = Symbol(
-                        name=param_name,
-                        kind="parameter",
-                        type_spec=param_type,
-                        definition_loc=loc,
-                        is_initialized=True,
-                    )
-                    self.symbol_table.define(param_symbol)
-                    if self.verbose:
-                        print(f"    Registered parameter: {param_name} : {param_type}")
+                    if isinstance(node, FunctionDef):
+                        param_symbol = Symbol(
+                            name=param_name,
+                            kind="parameter",
+                            type_spec=param_type,
+                            definition_loc=loc,
+                            is_initialized=True,
+                        )
+                        self.symbol_table.define(param_symbol)
+                        if self.verbose:
+                            print(f"    Registered parameter: {param_name} : {param_type}")
 
-            if hasattr(node, "body"):
-                self._pass2_resolution(node.body)
-
-            self.symbol_table.exit_scope()
-            if self.verbose:
-                print(f"  Finished analyzing: {func_name}")
+            if isinstance(node, FunctionDef):
+                if hasattr(node, "body"):
+                    self._pass2_resolution(node.body)
+                self.symbol_table.exit_scope()
+                if self.verbose:
+                    print(f"  Finished analyzing: {func_name}")
             return
 
         elif isinstance(node, Block):
@@ -230,7 +271,6 @@ class SymbolTableBuilder:
                         print(f"    Duplicate (same scope): {var_name}")
                     return
 
-                # اصلاح باگ سوم: حذف کدهای تکراری Shadowing و انجام یکباره آن در اینجا
                 outer_symbol = self.symbol_table.resolve(var_name)
                 if outer_symbol:
                     self.warnings.append(
@@ -240,6 +280,10 @@ class SymbolTableBuilder:
                         print(f"    Shadowing: {var_name} shadows outer declaration")
 
                 loc = self._make_location(node.var_name)
+                
+                # ثبت ارجاع برای تایپ متغیر محلی
+                self._register_type_reference(var_type, loc)
+                
                 var_symbol = Symbol(
                     name=var_name,
                     kind="variable",

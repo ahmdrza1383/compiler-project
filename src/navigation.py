@@ -10,7 +10,6 @@ class NavigationEngine:
                 return sym
             # بررسی ارجاعات
             for ref in sym.references:
-                # بررسی اینکه آیا مرجع یک شیء SourceLocation است یا رشته متنی
                 if hasattr(ref, 'line') and hasattr(ref, 'column'):
                     if ref.line == line and ref.column == col:
                         return sym
@@ -100,13 +99,30 @@ class NavigationEngine:
         if not symbol:
             return {"status": "error", "message": "No symbol info available at this location"}
             
+        # حل باگ دوم: استفاده از امضای تابع در صورت وجود
+        type_str = str(symbol.type) if symbol.type else "unknown"
+        if symbol.kind == "function" and getattr(symbol, "signature", None):
+            type_str = symbol.signature
+            
+        # حل باگ اول: استخراج صحیح نام اسکوپ
+        scope_str = "global"
+        if hasattr(symbol, "scope") and symbol.scope:
+            if hasattr(symbol.scope, "scope_type"):
+                scope_str = symbol.scope.scope_type
+            elif hasattr(symbol.scope, "name"):
+                scope_str = symbol.scope.name
+            elif isinstance(symbol.scope, str):
+                scope_str = symbol.scope
+            else:
+                scope_str = "local"
+                
         return {
             "status": "success",
             "hover": {
                 "symbol": symbol.name,
                 "kind": symbol.kind,
-                "type": str(symbol.type) if symbol.type else "unknown",
-                "scope": str(symbol.scope) if symbol.scope else "global",
+                "type": type_str,
+                "scope": scope_str,
                 "initialized": bool(symbol.is_initialized),
                 "used": bool(symbol.is_used)
             }
