@@ -348,15 +348,33 @@ class TypeChecker:
             return node.inferred_type
 
         field_name = node.member.id_name
-        field_type = self._find_field_type(struct_type.name, field_name)
+        
+        # === تغییرات فاز ۳: ثبت ارجاع فیلد استراکت در جدول نمادها ===
+        struct_scope = self.symbol_table.struct_scopes.get(struct_type.name)
+        if struct_scope:
+            field_symbol = struct_scope.resolve_local(field_name)
+            if field_symbol:
+                field_symbol.set_used()
+                # ثبت موقعیت ارجاع
+                line = node.member.line if hasattr(node.member, 'line') else 0
+                col = node.member.col if hasattr(node.member, 'col') else 0
+                file_name = getattr(field_symbol.definition_loc, 'file_name', '<unknown>')
+                
+                # برای جلوگیری از خطای ایمپورت
+                from .token import SourceLocation
+                loc = SourceLocation(file_name, line, col)
+                field_symbol.add_reference(loc)
+                
+                # اتصال نماد به گره AST برای سیستم ناوبری
+                node.member.symbol = field_symbol
+                
+                node.inferred_type = self._parse_type(field_symbol.type)
+                return node.inferred_type
+        # ==========================================================
 
-        if field_type:
-            node.inferred_type = field_type
-            return field_type
-        else:
-            self._report_error(node, f"Field '{field_name}' not found in struct '{struct_type.name}'")
-            node.inferred_type = PrimitiveType("int")
-            return node.inferred_type
+        self._report_error(node, f"Field '{field_name}' not found in struct '{struct_type.name}'")
+        node.inferred_type = PrimitiveType("int")
+        return node.inferred_type
 
     def _visit_ArrayAccess(self, node):
         array_type = self._visit(node.array)
