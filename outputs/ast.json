@@ -2,205 +2,6 @@
   "name": "Program",
   "declarations": [
     {
-      "name": "VarDecl",
-      "var_type": {
-        "name": "Type: int",
-        "type_name": "int",
-        "pointers": 0,
-        "category": "Type"
-      },
-      "var_name": {
-        "name": "ID: global_var (Variable)",
-        "id_name": "global_var",
-        "category": "Variable",
-        "line": 1,
-        "col": 5
-      },
-      "is_array": false,
-      "array_size": null,
-      "initializer": "100"
-    },
-    {
-      "name": "FunctionDef",
-      "return_type": {
-        "name": "Type: void",
-        "type_name": "void",
-        "pointers": 0,
-        "category": "Type"
-      },
-      "func_name": {
-        "name": "ID: test_func (Function)",
-        "id_name": "test_func",
-        "category": "Function",
-        "line": 3,
-        "col": 6
-      },
-      "params": [
-        {
-          "name": "VarDecl",
-          "var_type": {
-            "name": "Type: int",
-            "type_name": "int",
-            "pointers": 0,
-            "category": "Type"
-          },
-          "var_name": {
-            "name": "ID: global_var (Variable)",
-            "id_name": "global_var",
-            "category": "Variable",
-            "line": 3,
-            "col": 20
-          },
-          "is_array": false,
-          "array_size": null,
-          "initializer": null
-        }
-      ],
-      "body": {
-        "name": "Block",
-        "statements": [
-          {
-            "name": "VarDecl",
-            "var_type": {
-              "name": "Type: int",
-              "type_name": "int",
-              "pointers": 0,
-              "category": "Type"
-            },
-            "var_name": {
-              "name": "ID: x (Variable)",
-              "id_name": "x",
-              "category": "Variable",
-              "line": 4,
-              "col": 9
-            },
-            "is_array": false,
-            "array_size": null,
-            "initializer": "10"
-          },
-          {
-            "name": "VarDecl",
-            "var_type": {
-              "name": "Type: int",
-              "type_name": "int",
-              "pointers": 0,
-              "category": "Type"
-            },
-            "var_name": {
-              "name": "ID: y (Variable)",
-              "id_name": "y",
-              "category": "Variable",
-              "line": 5,
-              "col": 9
-            },
-            "is_array": false,
-            "array_size": null,
-            "initializer": "20"
-          },
-          {
-            "name": "Block",
-            "statements": [
-              {
-                "name": "VarDecl",
-                "var_type": {
-                  "name": "Type: int",
-                  "type_name": "int",
-                  "pointers": 0,
-                  "category": "Type"
-                },
-                "var_name": {
-                  "name": "ID: x (Variable)",
-                  "id_name": "x",
-                  "category": "Variable",
-                  "line": 8,
-                  "col": 13
-                },
-                "is_array": false,
-                "array_size": null,
-                "initializer": "20"
-              },
-              {
-                "name": "Block",
-                "statements": [
-                  {
-                    "name": "VarDecl",
-                    "var_type": {
-                      "name": "Type: int",
-                      "type_name": "int",
-                      "pointers": 0,
-                      "category": "Type"
-                    },
-                    "var_name": {
-                      "name": "ID: x (Variable)",
-                      "id_name": "x",
-                      "category": "Variable",
-                      "line": 10,
-                      "col": 17
-                    },
-                    "is_array": false,
-                    "array_size": null,
-                    "initializer": "30"
-                  }
-                ]
-              },
-              {
-                "name": "BinaryExpr (=)",
-                "op": "=",
-                "left": {
-                  "name": "ID: x (Variable)",
-                  "id_name": "x",
-                  "category": "Variable",
-                  "line": 13,
-                  "col": 9
-                },
-                "right": {
-                  "name": "BinaryExpr (+)",
-                  "op": "+",
-                  "left": {
-                    "name": "ID: x (Variable)",
-                    "id_name": "x",
-                    "category": "Variable",
-                    "line": 13,
-                    "col": 13
-                  },
-                  "right": "5"
-                }
-              }
-            ]
-          },
-          {
-            "name": "BinaryExpr (=)",
-            "op": "=",
-            "left": {
-              "name": "ID: x (Variable)",
-              "id_name": "x",
-              "category": "Variable",
-              "line": 16,
-              "col": 5
-            },
-            "right": {
-              "name": "BinaryExpr (+)",
-              "op": "+",
-              "left": {
-                "name": "ID: x (Variable)",
-                "id_name": "x",
-                "category": "Variable",
-                "line": 16,
-                "col": 9
-              },
-              "right": {
-                "name": "ID: global_var (Variable)",
-                "id_name": "global_var",
-                "category": "Variable",
-                "line": 16,
-                "col": 13
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
       "name": "FunctionDef",
       "return_type": {
         "name": "Type: int",
@@ -212,7 +13,7 @@
         "name": "ID: main (Function)",
         "id_name": "main",
         "category": "Function",
-        "line": 19,
+        "line": 1,
         "col": 5
       },
       "params": [],
@@ -228,20 +29,248 @@
               "category": "Type"
             },
             "var_name": {
-              "name": "ID: global_var (Variable)",
-              "id_name": "global_var",
+              "name": "ID: i (Variable)",
+              "id_name": "i",
               "category": "Variable",
-              "line": 20,
+              "line": 2,
               "col": 9
             },
             "is_array": false,
             "array_size": null,
-            "initializer": "50"
+            "initializer": "100"
+          },
+          {
+            "name": "VarDecl",
+            "var_type": {
+              "name": "Type: int",
+              "type_name": "int",
+              "pointers": 0,
+              "category": "Type"
+            },
+            "var_name": {
+              "name": "ID: j (Variable)",
+              "id_name": "j",
+              "category": "Variable",
+              "line": 3,
+              "col": 9
+            },
+            "is_array": false,
+            "array_size": null,
+            "initializer": "200"
+          },
+          {
+            "name": "ForStmt",
+            "init": {
+              "name": "VarDecl",
+              "var_type": {
+                "name": "Type: int",
+                "type_name": "int",
+                "pointers": 0,
+                "category": "Type"
+              },
+              "var_name": {
+                "name": "ID: i (Variable)",
+                "id_name": "i",
+                "category": "Variable",
+                "line": 5,
+                "col": 14
+              },
+              "is_array": false,
+              "array_size": null,
+              "initializer": "0"
+            },
+            "condition": {
+              "name": "BinaryExpr (<)",
+              "op": "<",
+              "left": {
+                "name": "ID: i (Variable)",
+                "id_name": "i",
+                "category": "Variable",
+                "line": 5,
+                "col": 21
+              },
+              "right": "3"
+            },
+            "step": {
+              "name": "UnaryExpr (++)",
+              "op": "++",
+              "operand": {
+                "name": "ID: i (Variable)",
+                "id_name": "i",
+                "category": "Variable",
+                "line": 5,
+                "col": 28
+              },
+              "is_postfix": true
+            },
+            "body": {
+              "name": "Block",
+              "statements": [
+                {
+                  "name": "VarDecl",
+                  "var_type": {
+                    "name": "Type: int",
+                    "type_name": "int",
+                    "pointers": 0,
+                    "category": "Type"
+                  },
+                  "var_name": {
+                    "name": "ID: sum (Variable)",
+                    "id_name": "sum",
+                    "category": "Variable",
+                    "line": 6,
+                    "col": 13
+                  },
+                  "is_array": false,
+                  "array_size": null,
+                  "initializer": "0"
+                },
+                {
+                  "name": "ForStmt",
+                  "init": {
+                    "name": "VarDecl",
+                    "var_type": {
+                      "name": "Type: int",
+                      "type_name": "int",
+                      "pointers": 0,
+                      "category": "Type"
+                    },
+                    "var_name": {
+                      "name": "ID: j (Variable)",
+                      "id_name": "j",
+                      "category": "Variable",
+                      "line": 8,
+                      "col": 18
+                    },
+                    "is_array": false,
+                    "array_size": null,
+                    "initializer": "0"
+                  },
+                  "condition": {
+                    "name": "BinaryExpr (<)",
+                    "op": "<",
+                    "left": {
+                      "name": "ID: j (Variable)",
+                      "id_name": "j",
+                      "category": "Variable",
+                      "line": 8,
+                      "col": 25
+                    },
+                    "right": "3"
+                  },
+                  "step": {
+                    "name": "UnaryExpr (++)",
+                    "op": "++",
+                    "operand": {
+                      "name": "ID: j (Variable)",
+                      "id_name": "j",
+                      "category": "Variable",
+                      "line": 8,
+                      "col": 32
+                    },
+                    "is_postfix": true
+                  },
+                  "body": {
+                    "name": "Block",
+                    "statements": [
+                      {
+                        "name": "BinaryExpr (+=)",
+                        "op": "+=",
+                        "left": {
+                          "name": "ID: sum (Variable)",
+                          "id_name": "sum",
+                          "category": "Variable",
+                          "line": 9,
+                          "col": 13
+                        },
+                        "right": {
+                          "name": "BinaryExpr (+)",
+                          "op": "+",
+                          "left": {
+                            "name": "ID: i (Variable)",
+                            "id_name": "i",
+                            "category": "Variable",
+                            "line": 9,
+                            "col": 20
+                          },
+                          "right": {
+                            "name": "ID: j (Variable)",
+                            "id_name": "j",
+                            "category": "Variable",
+                            "line": 9,
+                            "col": 24
+                          }
+                        }
+                      },
+                      {
+                        "name": "Block",
+                        "statements": [
+                          {
+                            "name": "VarDecl",
+                            "var_type": {
+                              "name": "Type: int",
+                              "type_name": "int",
+                              "pointers": 0,
+                              "category": "Type"
+                            },
+                            "var_name": {
+                              "name": "ID: i (Variable)",
+                              "id_name": "i",
+                              "category": "Variable",
+                              "line": 12,
+                              "col": 21
+                            },
+                            "is_array": false,
+                            "array_size": null,
+                            "initializer": "50"
+                          },
+                          {
+                            "name": "BinaryExpr (+=)",
+                            "op": "+=",
+                            "left": {
+                              "name": "ID: sum (Variable)",
+                              "id_name": "sum",
+                              "category": "Variable",
+                              "line": 13,
+                              "col": 17
+                            },
+                            "right": {
+                              "name": "ID: j (Variable)",
+                              "id_name": "j",
+                              "category": "Variable",
+                              "line": 13,
+                              "col": 24
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
           },
           {
             "name": "ReturnStmt",
-            "value": "0",
-            "line": 21,
+            "value": {
+              "name": "BinaryExpr (+)",
+              "op": "+",
+              "left": {
+                "name": "ID: i (Variable)",
+                "id_name": "i",
+                "category": "Variable",
+                "line": 18,
+                "col": 12
+              },
+              "right": {
+                "name": "ID: j (Variable)",
+                "id_name": "j",
+                "category": "Variable",
+                "line": 18,
+                "col": 16
+              }
+            },
+            "line": 18,
             "col": 5
           }
         ]

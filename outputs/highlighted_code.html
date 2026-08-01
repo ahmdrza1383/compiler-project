@@ -39,27 +39,24 @@
     </style>
 </head>
 <body>
-    <pre><span class="type">int</span> <span class="ident">global_var</span> <span class="op">=</span> <span class="num">100</span>;
+    <pre><span class="type">int</span> <span class="func">main</span>() {
+    <span class="type">int</span> <span class="ident">i</span> <span class="op">=</span> <span class="num">100</span>; // متغیر بیرونی
+    <span class="type">int</span> <span class="ident">j</span> <span class="op">=</span> <span class="num">200</span>;
 
-<span class="type">void</span> <span class="func">test_func</span>(<span class="type">int</span> <span class="ident">global_var</span>) { // پارامتر همنام با متغیر گلوبال (سایه‌زنی)
-    <span class="type">int</span> <span class="ident">x</span> <span class="op">=</span> <span class="num">10</span>;
-    <span class="type">int</span> <span class="ident">y</span> <span class="op">=</span> <span class="num">20</span>;
-    
-    {
-        <span class="type">int</span> <span class="ident">x</span> <span class="op">=</span> <span class="num">20</span>; // متغیر محلی جدید در بلاک داخلی (تداخل اسکوپ)
-        {
-            <span class="type">int</span> <span class="ident">x</span> <span class="op">=</span> <span class="num">30</span>; // بلاک داخلی‌تر
-            // اگر بخواهیم &#39;x&#39; این بلاک را تغییر دهیم، نباید روی xهای بیرون تاثیر بگذارد
+    <span class="kw">for</span> (<span class="type">int</span> <span class="ident">i</span> <span class="op">=</span> <span class="num">0</span>; <span class="ident">i</span> <span class="op">&lt;</span> <span class="num">3</span>; <span class="ident">i</span><span class="op">++</span>) { // حلقه بیرونی - متغیر 'i' اینجا متغیر بیرونی خط ۲ را سایه می‌کند
+        <span class="type">int</span> <span class="ident">sum</span> <span class="op">=</span> <span class="num">0</span>;
+        
+        <span class="kw">for</span> (<span class="type">int</span> <span class="ident">j</span> <span class="op">=</span> <span class="num">0</span>; <span class="ident">j</span> <span class="op">&lt;</span> <span class="num">3</span>; <span class="ident">j</span><span class="op">++</span>) { // حلقه داخلی - متغیر 'j' اینجا متغیر 'j' خط ۳ را سایه می‌کند
+            <span class="ident">sum</span> <span class="op">+=</span> <span class="ident">i</span> <span class="op">+</span> <span class="ident">j</span>;
+            
+            {
+                <span class="type">int</span> <span class="ident">i</span> <span class="op">=</span> <span class="num">50</span>; // یک اسکوپ داخلی‌تر داخل حلقه‌ها
+                <span class="ident">sum</span> <span class="op">+=</span> <span class="ident">j</span>;
+            }
         }
-        <span class="ident">x</span> <span class="op">=</span> <span class="ident">x</span> <span class="op">+</span> <span class="num">5</span>;
     }
-    
-    <span class="ident">x</span> <span class="op">=</span> <span class="ident">x</span> <span class="op">+</span> <span class="ident">global_var</span>;
-}
 
-<span class="type">int</span> <span class="func">main</span>() {
-    <span class="type">int</span> <span class="ident">global_var</span> <span class="op">=</span> <span class="num">50</span>; // متغیر محلی همنام با گلوبال در تابع main
-    <span class="kw">return</span> <span class="num">0</span>;
+    <span class="kw">return</span> <span class="ident">i</span> <span class="op">+</span> <span class="ident">j</span>; // این دو متغیر دقیقاً همان مقادیر اولیه ۱۰۰ و ۲۰۰ را دارند
 }</pre>
 </body>
 </html>

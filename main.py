@@ -305,8 +305,8 @@ def main():
         rename_engine = RenameEngine(nav_engine, source_code)
         
         # تست: تلاش برای تغییر نام تابعی در خط 34 و ستون 20 (از test_queries خودتان) به نام جدید
-        target_line = 1
-        target_col = 7
+        target_line = 5
+        target_col = 14
         new_symbol_name = "nn"
         
         rename_result = rename_engine.rename(target_line, target_col, new_symbol_name)

@@ -1,50 +1,56 @@
 Program
-├── VarDecl
-│   ├── Type: int
-│   ├── ID: global_var (Variable)
-│   └── Literal: 100
-├── FunctionDef
-│   ├── Type: void
-│   ├── ID: test_func (Function)
-│   ├── VarDecl
-│   │   ├── Type: int
-│   │   └── ID: global_var (Variable)
-│   └── Block
-│       ├── VarDecl
-│       │   ├── Type: int
-│       │   ├── ID: x (Variable)
-│       │   └── Literal: 10
-│       ├── VarDecl
-│       │   ├── Type: int
-│       │   ├── ID: y (Variable)
-│       │   └── Literal: 20
-│       ├── Block
-│       │   ├── VarDecl
-│       │   │   ├── Type: int
-│       │   │   ├── ID: x (Variable)
-│       │   │   └── Literal: 20
-│       │   ├── Block
-│       │   │   └── VarDecl
-│       │   │       ├── Type: int
-│       │   │       ├── ID: x (Variable)
-│       │   │       └── Literal: 30
-│       │   └── BinaryExpr (=)
-│       │       ├── ID: x (Variable)
-│       │       └── BinaryExpr (+)
-│       │           ├── ID: x (Variable)
-│       │           └── Literal: 5
-│       └── BinaryExpr (=)
-│           ├── ID: x (Variable)
-│           └── BinaryExpr (+)
-│               ├── ID: x (Variable)
-│               └── ID: global_var (Variable)
 └── FunctionDef
     ├── Type: int
     ├── ID: main (Function)
     └── Block
         ├── VarDecl
         │   ├── Type: int
-        │   ├── ID: global_var (Variable)
-        │   └── Literal: 50
+        │   ├── ID: i (Variable)
+        │   └── Literal: 100
+        ├── VarDecl
+        │   ├── Type: int
+        │   ├── ID: j (Variable)
+        │   └── Literal: 200
+        ├── ForStmt
+        │   ├── VarDecl
+        │   │   ├── Type: int
+        │   │   ├── ID: i (Variable)
+        │   │   └── Literal: 0
+        │   ├── BinaryExpr (<)
+        │   │   ├── ID: i (Variable)
+        │   │   └── Literal: 3
+        │   ├── UnaryExpr (++)
+        │   │   └── ID: i (Variable)
+        │   └── Block
+        │       ├── VarDecl
+        │       │   ├── Type: int
+        │       │   ├── ID: sum (Variable)
+        │       │   └── Literal: 0
+        │       └── ForStmt
+        │           ├── VarDecl
+        │           │   ├── Type: int
+        │           │   ├── ID: j (Variable)
+        │           │   └── Literal: 0
+        │           ├── BinaryExpr (<)
+        │           │   ├── ID: j (Variable)
+        │           │   └── Literal: 3
+        │           ├── UnaryExpr (++)
+        │           │   └── ID: j (Variable)
+        │           └── Block
+        │               ├── BinaryExpr (+=)
+        │               │   ├── ID: sum (Variable)
+        │               │   └── BinaryExpr (+)
+        │               │       ├── ID: i (Variable)
+        │               │       └── ID: j (Variable)
+        │               └── Block
+        │                   ├── VarDecl
+        │                   │   ├── Type: int
+        │                   │   ├── ID: i (Variable)
+        │                   │   └── Literal: 50
+        │                   └── BinaryExpr (+=)
+        │                       ├── ID: sum (Variable)
+        │                       └── ID: j (Variable)
         └── ReturnStmt
-            └── Literal: 0
+            └── BinaryExpr (+)
+                ├── ID: i (Variable)
+                └── ID: j (Variable)

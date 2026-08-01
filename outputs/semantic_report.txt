@@ -1,11 +1,14 @@
 SEMANTIC REPORT
 ======================================================================
-Total Errors: 0
+Total Errors: 1
 Total Warnings: 3
 ----------------------------------------------------------------------
 
+ERRORS:
+  1. Redefinition of variable 'i' at Line 5, Col 14
+
 WARNINGS:
-  1. Variable 'x' shadows outer declaration
-  2. Variable 'x' shadows outer declaration
-  3. Variable 'global_var' shadows outer declaration
+  1. Variable 'i' shadows outer declaration
+  2. Variable 'j' shadows outer declaration
+  3. Variable 'i' shadows outer declaration
 ======================================================================

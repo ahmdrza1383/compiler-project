@@ -1,4 +1,6 @@
 {
-  "errors": [],
+  "errors": [
+    "Redefinition of variable 'i' at Line 5, Col 14"
+  ],
   "warnings": []
 }

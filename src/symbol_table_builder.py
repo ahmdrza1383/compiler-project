@@ -253,7 +253,8 @@ class SymbolTableBuilder:
 
         elif isinstance(node, VarDecl):
             parent = getattr(node, "parent", None)
-            if isinstance(parent, Block):
+            # اینجا ForStmt اضافه شده تا متغیرهای حلقه را مجاز بشمارد
+            if isinstance(parent, (Block, ForStmt)):
                 var_name = node.var_name.id_name
                 var_type = (
                     self._resolve_type_str(node.var_type, node)
@@ -381,6 +382,9 @@ class SymbolTableBuilder:
             return
 
         elif isinstance(node, ForStmt):
+            # باز کردن اسکوپ مخصوص حلقه
+            self.symbol_table.enter_scope("for_loop")
+            
             if hasattr(node, "init"):
                 self._pass2_resolution(node.init)
             if hasattr(node, "condition"):
@@ -389,6 +393,9 @@ class SymbolTableBuilder:
                 self._pass2_resolution(node.step)
             if hasattr(node, "body"):
                 self._pass2_resolution(node.body)
+                
+            # بستن اسکوپ حلقه پس از اتمام پردازش آن
+            self.symbol_table.exit_scope()
             return
 
         elif isinstance(node, ReturnStmt):

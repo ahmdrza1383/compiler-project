@@ -360,12 +360,24 @@ class Parser:
     def parse_for_stmt(self):
         self.consume("for", "Expected 'for'")
         self.consume("(", "Expected '('")
-        init = self.parse_expr() if not self.check(";") else None
-        self.consume(";", "Expected ';'")
+        
+        init = None
+        # بررسی اینکه آیا با تعریف متغیر (مثل C99) روبرو هستیم یا نه
+        if self.peek().lexeme in ["struct", "int", "float", "double", "char", "void"]:
+            # تابع parse_declaration خودش سیمیکالون (;) را بررسی و مصرف می‌کند
+            init = self.parse_declaration()
+        else:
+            # حالت کلاسیک: یک عبارت معمولی یا بخش خالی
+            if not self.check(";"):
+                init = self.parse_expr()
+            self.consume(";", "Expected ';'")
+            
         cond = self.parse_expr() if not self.check(";") else None
         self.consume(";", "Expected ';'")
+        
         step = self.parse_expr() if not self.check(")") else None
         self.consume(")", "Expected ')'")
+        
         body = self.parse_statement()
         return ForStmt(init, cond, step, body)
 

@@ -1,19 +1,18 @@
 SYMBOL TABLE
 ======================================================================
 Scope: global
-  [variable] 'global_var' : int  (def: 1:5, init=no, used=no, refs=0)
-  [function] 'test_func' : void  (def: 3:6, init=no, used=yes, refs=1)
-  [function] 'main' : int  (def: 19:5, init=no, used=yes, refs=1)
+  [function] 'main' : int  (def: 1:5, init=no, used=yes, refs=1)
   Scope: function
-    [parameter] 'global_var' : int  (def: 3:20, init=yes, used=yes, refs=1)
     Scope: block
-      [variable] 'x' : int  (def: 4:9, init=yes, used=yes, refs=2)
-      [variable] 'y' : int  (def: 5:9, init=yes, used=no, refs=0)
-      Scope: block
-        [variable] 'x' : int  (def: 8:13, init=yes, used=yes, refs=2)
+      [variable] 'i' : int  (def: 2:9, init=yes, used=yes, refs=1)
+      [variable] 'j' : int  (def: 3:9, init=yes, used=yes, refs=1)
+      Scope: for_loop
+        [variable] 'i' : int  (def: 5:14, init=yes, used=yes, refs=3)
         Scope: block
-          [variable] 'x' : int  (def: 10:17, init=yes, used=no, refs=0)
-  Scope: function
-    Scope: block
-      [variable] 'global_var' : int  (def: 20:9, init=yes, used=no, refs=0)
+          [variable] 'sum' : int  (def: 6:13, init=yes, used=yes, refs=2)
+          Scope: for_loop
+            [variable] 'j' : int  (def: 8:18, init=yes, used=yes, refs=4)
+            Scope: block
+              Scope: block
+                [variable] 'i' : int  (def: 12:21, init=yes, used=no, refs=0)
 ======================================================================

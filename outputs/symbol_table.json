@@ -2,38 +2,14 @@
   "global_scope": {
     "type": "global",
     "symbols": {
-      "global_var": {
-        "name": "global_var",
-        "kind": "variable",
-        "type": "int",
-        "scope": "global",
-        "definition_loc": "test_code.c:1:5",
-        "references": [],
-        "signature": null,
-        "is_initialized": false,
-        "is_used": false
-      },
-      "test_func": {
-        "name": "test_func",
-        "kind": "function",
-        "type": "void",
-        "scope": "global",
-        "definition_loc": "test_code.c:3:6",
-        "references": [
-          "test_code.c:3:6"
-        ],
-        "signature": "(int) -> void",
-        "is_initialized": false,
-        "is_used": true
-      },
       "main": {
         "name": "main",
         "kind": "function",
         "type": "int",
         "scope": "global",
-        "definition_loc": "test_code.c:19:5",
+        "definition_loc": "test_code.c:1:5",
         "references": [
-          "test_code.c:19:5"
+          "test_code.c:1:5"
         ],
         "signature": "() -> int",
         "is_initialized": false,
@@ -43,64 +19,52 @@
     "children": [
       {
         "type": "function",
-        "symbols": {
-          "global_var": {
-            "name": "global_var",
-            "kind": "parameter",
-            "type": "int",
-            "scope": "function",
-            "definition_loc": "test_code.c:3:20",
-            "references": [
-              "test_code.c:16:13"
-            ],
-            "signature": null,
-            "is_initialized": true,
-            "is_used": true
-          }
-        },
+        "symbols": {},
         "children": [
           {
             "type": "block",
             "symbols": {
-              "x": {
-                "name": "x",
+              "i": {
+                "name": "i",
                 "kind": "variable",
                 "type": "int",
                 "scope": "block",
-                "definition_loc": "test_code.c:4:9",
+                "definition_loc": "test_code.c:2:9",
                 "references": [
-                  "test_code.c:16:5",
-                  "test_code.c:16:9"
+                  "test_code.c:18:12"
                 ],
                 "signature": null,
                 "is_initialized": true,
                 "is_used": true
               },
-              "y": {
-                "name": "y",
+              "j": {
+                "name": "j",
                 "kind": "variable",
                 "type": "int",
                 "scope": "block",
-                "definition_loc": "test_code.c:5:9",
-                "references": [],
+                "definition_loc": "test_code.c:3:9",
+                "references": [
+                  "test_code.c:18:16"
+                ],
                 "signature": null,
                 "is_initialized": true,
-                "is_used": false
+                "is_used": true
               }
             },
             "children": [
               {
-                "type": "block",
+                "type": "for_loop",
                 "symbols": {
-                  "x": {
-                    "name": "x",
+                  "i": {
+                    "name": "i",
                     "kind": "variable",
                     "type": "int",
-                    "scope": "block",
-                    "definition_loc": "test_code.c:8:13",
+                    "scope": "for_loop",
+                    "definition_loc": "test_code.c:5:14",
                     "references": [
-                      "test_code.c:13:9",
-                      "test_code.c:13:13"
+                      "test_code.c:5:21",
+                      "test_code.c:5:28",
+                      "test_code.c:9:20"
                     ],
                     "signature": null,
                     "is_initialized": true,
@@ -111,46 +75,73 @@
                   {
                     "type": "block",
                     "symbols": {
-                      "x": {
-                        "name": "x",
+                      "sum": {
+                        "name": "sum",
                         "kind": "variable",
                         "type": "int",
                         "scope": "block",
-                        "definition_loc": "test_code.c:10:17",
-                        "references": [],
+                        "definition_loc": "test_code.c:6:13",
+                        "references": [
+                          "test_code.c:9:13",
+                          "test_code.c:13:17"
+                        ],
                         "signature": null,
                         "is_initialized": true,
-                        "is_used": false
+                        "is_used": true
                       }
                     },
-                    "children": []
+                    "children": [
+                      {
+                        "type": "for_loop",
+                        "symbols": {
+                          "j": {
+                            "name": "j",
+                            "kind": "variable",
+                            "type": "int",
+                            "scope": "for_loop",
+                            "definition_loc": "test_code.c:8:18",
+                            "references": [
+                              "test_code.c:8:25",
+                              "test_code.c:8:32",
+                              "test_code.c:9:24",
+                              "test_code.c:13:24"
+                            ],
+                            "signature": null,
+                            "is_initialized": true,
+                            "is_used": true
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "block",
+                            "symbols": {},
+                            "children": [
+                              {
+                                "type": "block",
+                                "symbols": {
+                                  "i": {
+                                    "name": "i",
+                                    "kind": "variable",
+                                    "type": "int",
+                                    "scope": "block",
+                                    "definition_loc": "test_code.c:12:21",
+                                    "references": [],
+                                    "signature": null,
+                                    "is_initialized": true,
+                                    "is_used": false
+                                  }
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
                   }
                 ]
               }
             ]
-          }
-        ]
-      },
-      {
-        "type": "function",
-        "symbols": {},
-        "children": [
-          {
-            "type": "block",
-            "symbols": {
-              "global_var": {
-                "name": "global_var",
-                "kind": "variable",
-                "type": "int",
-                "scope": "block",
-                "definition_loc": "test_code.c:20:9",
-                "references": [],
-                "signature": null,
-                "is_initialized": true,
-                "is_used": false
-              }
-            },
-            "children": []
           }
         ]
       }
@@ -158,111 +149,95 @@
   },
   "all_symbols": [
     {
-      "name": "global_var",
-      "kind": "variable",
-      "type": "int",
-      "scope": "global",
-      "definition_loc": "test_code.c:1:5",
-      "references": [],
-      "signature": null,
-      "is_initialized": false,
-      "is_used": false
-    },
-    {
-      "name": "test_func",
-      "kind": "function",
-      "type": "void",
-      "scope": "global",
-      "definition_loc": "test_code.c:3:6",
-      "references": [
-        "test_code.c:3:6"
-      ],
-      "signature": "(int) -> void",
-      "is_initialized": false,
-      "is_used": true
-    },
-    {
       "name": "main",
       "kind": "function",
       "type": "int",
       "scope": "global",
-      "definition_loc": "test_code.c:19:5",
+      "definition_loc": "test_code.c:1:5",
       "references": [
-        "test_code.c:19:5"
+        "test_code.c:1:5"
       ],
       "signature": "() -> int",
       "is_initialized": false,
       "is_used": true
     },
     {
-      "name": "global_var",
-      "kind": "parameter",
+      "name": "i",
+      "kind": "variable",
       "type": "int",
-      "scope": "function",
-      "definition_loc": "test_code.c:3:20",
+      "scope": "block",
+      "definition_loc": "test_code.c:2:9",
       "references": [
-        "test_code.c:16:13"
+        "test_code.c:18:12"
       ],
       "signature": null,
       "is_initialized": true,
       "is_used": true
     },
     {
-      "name": "x",
+      "name": "j",
       "kind": "variable",
       "type": "int",
       "scope": "block",
-      "definition_loc": "test_code.c:4:9",
+      "definition_loc": "test_code.c:3:9",
       "references": [
-        "test_code.c:16:5",
-        "test_code.c:16:9"
+        "test_code.c:18:16"
       ],
       "signature": null,
       "is_initialized": true,
       "is_used": true
     },
     {
-      "name": "y",
+      "name": "i",
       "kind": "variable",
       "type": "int",
-      "scope": "block",
-      "definition_loc": "test_code.c:5:9",
-      "references": [],
-      "signature": null,
-      "is_initialized": true,
-      "is_used": false
-    },
-    {
-      "name": "x",
-      "kind": "variable",
-      "type": "int",
-      "scope": "block",
-      "definition_loc": "test_code.c:8:13",
+      "scope": "for_loop",
+      "definition_loc": "test_code.c:5:14",
       "references": [
-        "test_code.c:13:9",
-        "test_code.c:13:13"
+        "test_code.c:5:21",
+        "test_code.c:5:28",
+        "test_code.c:9:20"
       ],
       "signature": null,
       "is_initialized": true,
       "is_used": true
     },
     {
-      "name": "x",
+      "name": "sum",
       "kind": "variable",
       "type": "int",
       "scope": "block",
-      "definition_loc": "test_code.c:10:17",
-      "references": [],
+      "definition_loc": "test_code.c:6:13",
+      "references": [
+        "test_code.c:9:13",
+        "test_code.c:13:17"
+      ],
       "signature": null,
       "is_initialized": true,
-      "is_used": false
+      "is_used": true
     },
     {
-      "name": "global_var",
+      "name": "j",
+      "kind": "variable",
+      "type": "int",
+      "scope": "for_loop",
+      "definition_loc": "test_code.c:8:18",
+      "references": [
+        "test_code.c:8:25",
+        "test_code.c:8:32",
+        "test_code.c:9:24",
+        "test_code.c:13:24"
+      ],
+      "signature": null,
+      "is_initialized": true,
+      "is_used": true
+    },
+    {
+      "name": "i",
       "kind": "variable",
       "type": "int",
       "scope": "block",
-      "definition_loc": "test_code.c:20:9",
+      "definition_loc": "test_code.c:12:21",
       "references": [],
       "signature": null,
       "is_initialized": true,

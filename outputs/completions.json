@@ -1,96 +1,33 @@
 {
   "8:16": [
     {
-      "label": "global_var",
-      "kind": "variable",
-      "type": "int",
-      "detail": "int global_var",
-      "sortOrder": 2
-    },
-    {
-      "label": "x",
-      "kind": "variable",
-      "type": "int",
-      "detail": "int x",
-      "sortOrder": 2
-    },
-    {
-      "label": "y",
-      "kind": "variable",
-      "type": "int",
-      "detail": "int y",
-      "sortOrder": 2
-    },
-    {
-      "label": "char",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "double",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "float",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
       "label": "int",
       "kind": "type",
       "type": "keyword",
       "detail": "primitive type",
       "sortOrder": 4
-    },
-    {
-      "label": "struct",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "void",
-      "kind": "type",
-      "type": "keyword",
-      "detail": "primitive type",
-      "sortOrder": 4
-    },
-    {
-      "label": "test_func",
-      "kind": "function",
-      "type": "void",
-      "detail": "(int) -> void",
-      "sortOrder": 5
     }
   ],
   "8:17": [
     {
-      "label": "global_var",
+      "label": "i",
       "kind": "variable",
       "type": "int",
-      "detail": "int global_var",
+      "detail": "int i",
       "sortOrder": 2
     },
     {
-      "label": "x",
+      "label": "j",
       "kind": "variable",
       "type": "int",
-      "detail": "int x",
+      "detail": "int j",
       "sortOrder": 2
     },
     {
-      "label": "y",
+      "label": "sum",
       "kind": "variable",
       "type": "int",
-      "detail": "int y",
+      "detail": "int sum",
       "sortOrder": 2
     },
     {
@@ -134,35 +71,123 @@
       "type": "keyword",
       "detail": "primitive type",
       "sortOrder": 4
+    }
+  ],
+  "1:9": [
+    {
+      "label": "char",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
     },
     {
-      "label": "test_func",
+      "label": "double",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "float",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "int",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "struct",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "void",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    }
+  ],
+  "1:10": [
+    {
+      "label": "char",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "double",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "float",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "int",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "struct",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "void",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "main",
       "kind": "function",
-      "type": "void",
-      "detail": "(int) -> void",
+      "type": "int",
+      "detail": "() -> int",
       "sortOrder": 5
     }
   ],
   "9:8": [
     {
-      "label": "global_var",
+      "label": "i",
       "kind": "variable",
       "type": "int",
-      "detail": "int global_var",
+      "detail": "int i",
       "sortOrder": 2
     },
     {
-      "label": "x",
+      "label": "j",
       "kind": "variable",
       "type": "int",
-      "detail": "int x",
+      "detail": "int j",
       "sortOrder": 2
     },
     {
-      "label": "y",
+      "label": "sum",
       "kind": "variable",
       "type": "int",
-      "detail": "int y",
+      "detail": "int sum",
       "sortOrder": 2
     },
     {
@@ -208,10 +233,10 @@
       "sortOrder": 4
     },
     {
-      "label": "test_func",
+      "label": "main",
       "kind": "function",
-      "type": "void",
-      "detail": "(int) -> void",
+      "type": "int",
+      "detail": "() -> int",
       "sortOrder": 5
     }
   ]
