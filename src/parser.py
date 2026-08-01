@@ -129,9 +129,10 @@ class Parser:
     def parse(self) -> Program:
         declarations = []
         while not self.is_at_end():
-            if self.peek().type == TokenType.INVALID:
+            if self.peek().type in (TokenType.INVALID, TokenType.DIRECTIVE):
                 self.advance()
                 continue
+
             try:
                 decl = self.parse_declaration()
                 if isinstance(decl, list):
@@ -360,7 +361,7 @@ class Parser:
     def parse_for_stmt(self):
         self.consume("for", "Expected 'for'")
         self.consume("(", "Expected '('")
-        
+
         init = None
         # بررسی اینکه آیا با تعریف متغیر (مثل C99) روبرو هستیم یا نه
         if self.peek().lexeme in ["struct", "int", "float", "double", "char", "void"]:
@@ -371,25 +372,25 @@ class Parser:
             if not self.check(";"):
                 init = self.parse_expr()
             self.consume(";", "Expected ';'")
-            
+
         cond = self.parse_expr() if not self.check(";") else None
         self.consume(";", "Expected ';'")
-        
+
         step = self.parse_expr() if not self.check(")") else None
         self.consume(")", "Expected ')'")
-        
+
         body = self.parse_statement()
         return ForStmt(init, cond, step, body)
 
     def parse_return_stmt(self):
         return_tok = self.consume("return", "Expected 'return'")
         line, col = self._loc(return_tok)
-        
+
         val = None
         if not self.check(";"):
             val = self.parse_expr()
         self.consume(";", "Expected ';'")
-        
+
         return ReturnStmt(val, line, col)
 
     def parse_break_stmt(self):

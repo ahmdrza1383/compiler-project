@@ -1,234 +1,364 @@
 CONTROL FLOW GRAPH (CFG) REPORT
 ======================================================================
 
-Function: process_node
+Function: add
 Entry Block: 0
 Exit Block:  1
 ----------------------------------------------------------------------
 Block 0 [ENTRY]
   Predecessors: []
-  Successors:   [2, 3]
+  Successors:   [1]
   Statements:
-    - BinaryExpr
+    - ReturnStmt
 ----------------------------------------------------------------------
 Block 1 [EXIT]
-  Predecessors: [2, 5, 8, 6]
+  Predecessors: [0, 2]
   Successors:   []
   Statements:
     (Empty)
 ----------------------------------------------------------------------
-Block 2 [IF_THEN]
-  Predecessors: [0]
-  Successors:   [1]
-  Statements:
-    - ReturnStmt
-----------------------------------------------------------------------
-Block 3 [IF_MERGE]
-  Predecessors: [4, 0]
-  Successors:   [5, 8]
-  Statements:
-    - BinaryExpr
-----------------------------------------------------------------------
-Block 4 [UNREACHABLE]
+Block 2 [UNREACHABLE]
   Predecessors: []
-  Successors:   [3]
-  Statements:
-    - VarDecl
-----------------------------------------------------------------------
-Block 5 [IF_THEN]
-  Predecessors: [3]
   Successors:   [1]
-  Statements:
-    - ReturnStmt
-----------------------------------------------------------------------
-Block 6 [IF_MERGE]
-  Predecessors: [7, 9]
-  Successors:   [1]
-  Statements:
-    (Empty)
-----------------------------------------------------------------------
-Block 7 [UNREACHABLE]
-  Predecessors: []
-  Successors:   [6]
-  Statements:
-    (Empty)
-----------------------------------------------------------------------
-Block 8 [IF_ELSE]
-  Predecessors: [3]
-  Successors:   [1]
-  Statements:
-    - ReturnStmt
-----------------------------------------------------------------------
-Block 9 [UNREACHABLE]
-  Predecessors: []
-  Successors:   [6]
   Statements:
     (Empty)
 ----------------------------------------------------------------------
 
-Function: complex_algorithm
-Entry Block: 10
-Exit Block:  11
+Function: multiply
+Entry Block: 3
+Exit Block:  4
 ----------------------------------------------------------------------
-Block 10 [ENTRY]
+Block 3 [ENTRY]
   Predecessors: []
-  Successors:   [12]
+  Successors:   [4]
   Statements:
-    - VarDecl
-    - VarDecl
+    - ReturnStmt
 ----------------------------------------------------------------------
-Block 11 [EXIT]
-  Predecessors: [28, 14, 31]
+Block 4 [EXIT]
+  Predecessors: [3, 5]
   Successors:   []
   Statements:
     (Empty)
 ----------------------------------------------------------------------
-Block 12 [WHILE_COND]
-  Predecessors: [10, 21, 27]
-  Successors:   [13, 14]
-  Statements:
-    - BinaryExpr
-----------------------------------------------------------------------
-Block 13 [WHILE_BODY]
-  Predecessors: [12]
-  Successors:   [15, 16]
-  Statements:
-    - BinaryExpr
-----------------------------------------------------------------------
-Block 14 [WHILE_EXIT]
-  Predecessors: [12, 15]
-  Successors:   [11]
-  Statements:
-    - ReturnStmt
-----------------------------------------------------------------------
-Block 15 [IF_THEN]
-  Predecessors: [13]
-  Successors:   [14]
+Block 5 [UNREACHABLE]
+  Predecessors: []
+  Successors:   [4]
   Statements:
     (Empty)
 ----------------------------------------------------------------------
-Block 16 [IF_MERGE]
-  Predecessors: [17, 13]
-  Successors:   [18, 20]
+
+Function: factorial
+Entry Block: 6
+Exit Block:  7
+----------------------------------------------------------------------
+Block 6 [ENTRY]
+  Predecessors: []
+  Successors:   [8, 9]
   Statements:
-    - VarDecl
     - BinaryExpr
+----------------------------------------------------------------------
+Block 7 [EXIT]
+  Predecessors: [8, 9, 11]
+  Successors:   []
+  Statements:
+    (Empty)
+----------------------------------------------------------------------
+Block 8 [IF_THEN]
+  Predecessors: [6]
+  Successors:   [7]
+  Statements:
+    - ReturnStmt
+----------------------------------------------------------------------
+Block 9 [IF_MERGE]
+  Predecessors: [10, 6]
+  Successors:   [7]
+  Statements:
+    - ReturnStmt
+----------------------------------------------------------------------
+Block 10 [UNREACHABLE]
+  Predecessors: []
+  Successors:   [9]
+  Statements:
+    (Empty)
+----------------------------------------------------------------------
+Block 11 [UNREACHABLE]
+  Predecessors: []
+  Successors:   [7]
+  Statements:
+    (Empty)
+----------------------------------------------------------------------
+
+Function: fibonacci
+Entry Block: 12
+Exit Block:  13
+----------------------------------------------------------------------
+Block 12 [ENTRY]
+  Predecessors: []
+  Successors:   [14, 15]
+  Statements:
+    - BinaryExpr
+----------------------------------------------------------------------
+Block 13 [EXIT]
+  Predecessors: [14, 15, 17]
+  Successors:   []
+  Statements:
+    (Empty)
+----------------------------------------------------------------------
+Block 14 [IF_THEN]
+  Predecessors: [12]
+  Successors:   [13]
+  Statements:
+    - ReturnStmt
+----------------------------------------------------------------------
+Block 15 [IF_MERGE]
+  Predecessors: [16, 12]
+  Successors:   [13]
+  Statements:
+    - ReturnStmt
+----------------------------------------------------------------------
+Block 16 [UNREACHABLE]
+  Predecessors: []
+  Successors:   [15]
+  Statements:
+    (Empty)
 ----------------------------------------------------------------------
 Block 17 [UNREACHABLE]
   Predecessors: []
-  Successors:   [16]
+  Successors:   [13]
   Statements:
     (Empty)
 ----------------------------------------------------------------------
-Block 18 [IF_THEN]
-  Predecessors: [16]
-  Successors:   [19]
-  Statements:
-    - UnaryExpr
+
+Function: compute
+Entry Block: 18
+Exit Block:  19
 ----------------------------------------------------------------------
-Block 19 [IF_MERGE]
-  Predecessors: [18, 22]
-  Successors:   [24]
+Block 18 [ENTRY]
+  Predecessors: []
+  Successors:   [20, 22]
+  Statements:
+    - VarDecl
+    - VarDecl
+    - VarDecl
+    - BinaryExpr
+    - BinaryExpr
+    - BinaryExpr
+----------------------------------------------------------------------
+Block 19 [EXIT]
+  Predecessors: [32, 33]
+  Successors:   []
+  Statements:
+    (Empty)
+----------------------------------------------------------------------
+Block 20 [IF_THEN]
+  Predecessors: [18]
+  Successors:   [21]
   Statements:
     - BinaryExpr
-    - UnaryExpr
+    - BinaryExpr
+----------------------------------------------------------------------
+Block 21 [IF_MERGE]
+  Predecessors: [20, 22]
+  Successors:   [23]
+  Statements:
     - VarDecl
 ----------------------------------------------------------------------
-Block 20 [IF_ELSE]
-  Predecessors: [16]
-  Successors:   [21, 22]
+Block 22 [IF_ELSE]
+  Predecessors: [18]
+  Successors:   [21]
+  Statements:
+    - BinaryExpr
+    - BinaryExpr
+----------------------------------------------------------------------
+Block 23 [FOR_COND]
+  Predecessors: [21, 25]
+  Successors:   [24, 26]
   Statements:
     - BinaryExpr
 ----------------------------------------------------------------------
-Block 21 [IF_THEN]
-  Predecessors: [20]
-  Successors:   [12]
+Block 24 [FOR_BODY]
+  Predecessors: [23]
+  Successors:   [27, 29]
   Statements:
     - BinaryExpr
 ----------------------------------------------------------------------
-Block 22 [IF_MERGE]
-  Predecessors: [23, 20]
+Block 25 [FOR_STEP]
+  Predecessors: [28]
+  Successors:   [23]
+  Statements:
+    - BinaryExpr
+----------------------------------------------------------------------
+Block 26 [FOR_EXIT]
+  Predecessors: [23]
+  Successors:   [30]
+  Statements:
+    - VarDecl
+----------------------------------------------------------------------
+Block 27 [IF_THEN]
+  Predecessors: [24]
+  Successors:   [28]
+  Statements:
+    - BinaryExpr
+----------------------------------------------------------------------
+Block 28 [IF_MERGE]
+  Predecessors: [27, 29]
+  Successors:   [25]
+  Statements:
+    (Empty)
+----------------------------------------------------------------------
+Block 29 [IF_ELSE]
+  Predecessors: [24]
+  Successors:   [28]
+  Statements:
+    - BinaryExpr
+----------------------------------------------------------------------
+Block 30 [WHILE_COND]
+  Predecessors: [26, 31]
+  Successors:   [31, 32]
+  Statements:
+    - BinaryExpr
+----------------------------------------------------------------------
+Block 31 [WHILE_BODY]
+  Predecessors: [30]
+  Successors:   [30]
+  Statements:
+    - BinaryExpr
+    - BinaryExpr
+----------------------------------------------------------------------
+Block 32 [WHILE_EXIT]
+  Predecessors: [30]
+  Successors:   [19]
+  Statements:
+    - BinaryExpr
+    - ReturnStmt
+----------------------------------------------------------------------
+Block 33 [UNREACHABLE]
+  Predecessors: []
   Successors:   [19]
   Statements:
     (Empty)
 ----------------------------------------------------------------------
-Block 23 [UNREACHABLE]
+
+Function: nested_calls
+Entry Block: 34
+Exit Block:  35
+----------------------------------------------------------------------
+Block 34 [ENTRY]
   Predecessors: []
-  Successors:   [22]
-  Statements:
-    (Empty)
-----------------------------------------------------------------------
-Block 24 [FOR_COND]
-  Predecessors: [19, 26]
-  Successors:   [25, 27]
+  Successors:   [36, 37]
   Statements:
     - BinaryExpr
 ----------------------------------------------------------------------
-Block 25 [FOR_BODY]
-  Predecessors: [24]
-  Successors:   [28, 29]
-  Statements:
-    - BinaryExpr
-----------------------------------------------------------------------
-Block 26 [FOR_STEP]
-  Predecessors: [29]
-  Successors:   [24]
-  Statements:
-    - UnaryExpr
-----------------------------------------------------------------------
-Block 27 [FOR_EXIT]
-  Predecessors: [24]
-  Successors:   [12]
+Block 35 [EXIT]
+  Predecessors: [36, 37, 39]
+  Successors:   []
   Statements:
     (Empty)
 ----------------------------------------------------------------------
-Block 28 [IF_THEN]
-  Predecessors: [25]
-  Successors:   [11]
+Block 36 [IF_THEN]
+  Predecessors: [34]
+  Successors:   [35]
   Statements:
     - ReturnStmt
 ----------------------------------------------------------------------
-Block 29 [IF_MERGE]
-  Predecessors: [30, 25]
-  Successors:   [26]
+Block 37 [IF_MERGE]
+  Predecessors: [38, 34]
+  Successors:   [35]
+  Statements:
+    - VarDecl
+    - VarDecl
+    - VarDecl
+    - ReturnStmt
+----------------------------------------------------------------------
+Block 38 [UNREACHABLE]
+  Predecessors: []
+  Successors:   [37]
   Statements:
     (Empty)
 ----------------------------------------------------------------------
-Block 30 [UNREACHABLE]
+Block 39 [UNREACHABLE]
   Predecessors: []
-  Successors:   [29]
+  Successors:   [35]
   Statements:
     (Empty)
 ----------------------------------------------------------------------
-Block 31 [UNREACHABLE]
+
+Function: process_array
+Entry Block: 40
+Exit Block:  41
+----------------------------------------------------------------------
+Block 40 [ENTRY]
   Predecessors: []
-  Successors:   [11]
+  Successors:   [42]
+  Statements:
+    - VarDecl
+----------------------------------------------------------------------
+Block 41 [EXIT]
+  Predecessors: [44]
+  Successors:   []
+  Statements:
+    (Empty)
+----------------------------------------------------------------------
+Block 42 [WHILE_COND]
+  Predecessors: [40, 43]
+  Successors:   [43, 44]
+  Statements:
+    - BinaryExpr
+----------------------------------------------------------------------
+Block 43 [WHILE_BODY]
+  Predecessors: [42]
+  Successors:   [42]
+  Statements:
+    - BinaryExpr
+    - BinaryExpr
+----------------------------------------------------------------------
+Block 44 [WHILE_EXIT]
+  Predecessors: [42]
+  Successors:   [41]
   Statements:
     (Empty)
 ----------------------------------------------------------------------
 
 Function: main
-Entry Block: 32
-Exit Block:  33
+Entry Block: 45
+Exit Block:  46
 ----------------------------------------------------------------------
-Block 32 [ENTRY]
+Block 45 [ENTRY]
   Predecessors: []
-  Successors:   [33]
+  Successors:   [46]
   Statements:
     - VarDecl
     - VarDecl
     - VarDecl
+    - VarDecl
+    - VarDecl
+    - BinaryExpr
+    - BinaryExpr
+    - VarDecl
+    - VarDecl
+    - VarDecl
+    - VarDecl
+    - VarDecl
+    - VarDecl
+    - CallExpr
+    - CallExpr
+    - CallExpr
+    - CallExpr
+    - CallExpr
+    - CallExpr
+    - CallExpr
+    - CallExpr
     - ReturnStmt
 ----------------------------------------------------------------------
-Block 33 [EXIT]
-  Predecessors: [32, 34]
+Block 46 [EXIT]
+  Predecessors: [45, 47]
   Successors:   []
   Statements:
     (Empty)
 ----------------------------------------------------------------------
-Block 34 [UNREACHABLE]
+Block 47 [UNREACHABLE]
   Predecessors: []
-  Successors:   [33]
+  Successors:   [46]
   Statements:
     (Empty)
 ----------------------------------------------------------------------

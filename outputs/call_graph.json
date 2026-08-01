@@ -1,9 +1,31 @@
 {
-  "process_node": [],
-  "complex_algorithm": [
-    "process_node"
+  "add": [],
+  "multiply": [],
+  "factorial": [
+    "factorial"
   ],
+  "fibonacci": [
+    "fibonacci"
+  ],
+  "compute": [
+    "multiply",
+    "add"
+  ],
+  "nested_calls": [
+    "nested_calls",
+    "fibonacci",
+    "compute",
+    "factorial"
+  ],
+  "process_array": [],
   "main": [
-    "complex_algorithm"
+    "printf",
+    "compute",
+    "factorial",
+    "nested_calls",
+    "multiply",
+    "add",
+    "process_array",
+    "fibonacci"
   ]
 }

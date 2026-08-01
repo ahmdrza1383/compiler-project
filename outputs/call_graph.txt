@@ -1,12 +1,38 @@
 CALL GRAPH REPORT
 ======================================================================
-Caller: process_node
+Caller: add
   -> (No external calls)
 ----------------------------------------------------------------------
-Caller: complex_algorithm
-  -> Calls: process_node
+Caller: multiply
+  -> (No external calls)
+----------------------------------------------------------------------
+Caller: factorial
+  -> Calls: factorial
+----------------------------------------------------------------------
+Caller: fibonacci
+  -> Calls: fibonacci
+----------------------------------------------------------------------
+Caller: compute
+  -> Calls: multiply
+  -> Calls: add
+----------------------------------------------------------------------
+Caller: nested_calls
+  -> Calls: nested_calls
+  -> Calls: fibonacci
+  -> Calls: compute
+  -> Calls: factorial
+----------------------------------------------------------------------
+Caller: process_array
+  -> (No external calls)
 ----------------------------------------------------------------------
 Caller: main
-  -> Calls: complex_algorithm
+  -> Calls: printf
+  -> Calls: compute
+  -> Calls: factorial
+  -> Calls: nested_calls
+  -> Calls: multiply
+  -> Calls: add
+  -> Calls: process_array
+  -> Calls: fibonacci
 ----------------------------------------------------------------------
 ======================================================================

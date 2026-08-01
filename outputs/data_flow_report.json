@@ -1,0 +1,15 @@
+{
+  "dead_code_warnings": [
+    "Unreachable Code: Block 2 [UNREACHABLE] in function 'add' can never be executed.",
+    "Unreachable Code: Block 5 [UNREACHABLE] in function 'multiply' can never be executed.",
+    "Unreachable Code: Block 10 [UNREACHABLE] in function 'factorial' can never be executed.",
+    "Unreachable Code: Block 11 [UNREACHABLE] in function 'factorial' can never be executed.",
+    "Unreachable Code: Block 16 [UNREACHABLE] in function 'fibonacci' can never be executed.",
+    "Unreachable Code: Block 17 [UNREACHABLE] in function 'fibonacci' can never be executed.",
+    "Unreachable Code: Block 33 [UNREACHABLE] in function 'compute' can never be executed.",
+    "Dead Store: Value assigned to 'result' in function 'compute' is never used subsequently.",
+    "Unreachable Code: Block 38 [UNREACHABLE] in function 'nested_calls' can never be executed.",
+    "Unreachable Code: Block 39 [UNREACHABLE] in function 'nested_calls' can never be executed.",
+    "Unreachable Code: Block 47 [UNREACHABLE] in function 'main' can never be executed."
+  ]
+}

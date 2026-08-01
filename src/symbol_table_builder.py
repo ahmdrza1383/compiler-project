@@ -32,6 +32,24 @@ class SymbolTableBuilder:
         if not ast_root:
             return
 
+        builtins = [
+            ("printf", "(...) -> int", "int"),
+            ("scanf", "(...) -> int", "int"),
+            ("malloc", "(int) -> void*", "void*"),
+            ("free", "(void*) -> void", "void"),
+        ]
+
+        for name, sig, ret_type in builtins:
+            builtin_sym = Symbol(
+                name=name,
+                kind="function",
+                type_spec=ret_type,
+                definition_loc=SourceLocation("<builtin>", 0, 0),
+                signature=sig,
+            )
+            builtin_sym.is_defined = True
+            self.symbol_table.define(builtin_sym)
+
         if self.verbose:
             print("\nPASS 1: Declaration Scan")
             print("-" * 50)
@@ -41,8 +59,6 @@ class SymbolTableBuilder:
             print("\nPASS 2: Resolution Pass")
             print("-" * 50)
         self._pass2_resolution(self.ast_root)
-
-        # self._check_unused_variables()
 
     def _make_location(self, node) -> SourceLocation:
         if hasattr(node, "line") and hasattr(node, "col"):
@@ -56,9 +72,9 @@ class SymbolTableBuilder:
         # اگر نوع با "struct " شروع می‌شود، نام استراکت را استخراج می‌کنیم
         if type_str.startswith("struct "):
             # پاک کردن مواردی مثل پوینتر (*) یا آرایه ([])
-            base_name = type_str.split('*')[0].split('[')[0].strip()
-            struct_name = base_name[7:].strip() # حذف کلمه "struct "
-            
+            base_name = type_str.split("*")[0].split("[")[0].strip()
+            struct_name = base_name[7:].strip()  # حذف کلمه "struct "
+
             # پیدا کردن نماد استراکت در جدول نمادها
             symbol = self.symbol_table.resolve(struct_name)
             if symbol and symbol.kind == "struct":
@@ -141,10 +157,10 @@ class SymbolTableBuilder:
                             else "unknown"
                         )
                         loc = self._make_location(field.var_name)
-                        
+
                         # ثبت ارجاع اگر فیلد از نوع یک استراکت دیگر باشد
                         self._register_type_reference(field_type, loc)
-                        
+
                         field_symbol = Symbol(
                             name=field_name,
                             kind="field",
@@ -164,12 +180,12 @@ class SymbolTableBuilder:
                     if hasattr(node, "var_type")
                     else "unknown"
                 )
-        
+
                 loc = self._make_location(node.var_name)
-                
+
                 # ثبت ارجاع برای تایپ متغیر سراسری
                 self._register_type_reference(var_type, loc)
-                
+
                 var_symbol = Symbol(
                     name=var_name,
                     kind="variable",
@@ -203,7 +219,9 @@ class SymbolTableBuilder:
                 func_symbol.set_used()
 
             # ثبت ارجاع برای تایپ بازگشتی تابع
-            return_type = node.return_type.type_name if hasattr(node, "return_type") else "void"
+            return_type = (
+                node.return_type.type_name if hasattr(node, "return_type") else "void"
+            )
             loc = self._make_location(node.func_name)
             self._register_type_reference(return_type, loc)
 
@@ -220,7 +238,7 @@ class SymbolTableBuilder:
                         else "unknown"
                     )
                     loc = self._make_location(param.var_name)
-                    
+
                     # ثبت ارجاع برای تایپ پارامتر
                     self._register_type_reference(param_type, loc)
 
@@ -234,7 +252,9 @@ class SymbolTableBuilder:
                         )
                         self.symbol_table.define(param_symbol)
                         if self.verbose:
-                            print(f"    Registered parameter: {param_name} : {param_type}")
+                            print(
+                                f"    Registered parameter: {param_name} : {param_type}"
+                            )
 
             if isinstance(node, FunctionDef):
                 if hasattr(node, "body"):
@@ -282,10 +302,10 @@ class SymbolTableBuilder:
                         print(f"    Shadowing: {var_name} shadows outer declaration")
 
                 loc = self._make_location(node.var_name)
-                
+
                 # ثبت ارجاع برای تایپ متغیر محلی
                 self._register_type_reference(var_type, loc)
-                
+
                 var_symbol = Symbol(
                     name=var_name,
                     kind="variable",
@@ -384,7 +404,7 @@ class SymbolTableBuilder:
         elif isinstance(node, ForStmt):
             # باز کردن اسکوپ مخصوص حلقه
             self.symbol_table.enter_scope("for_loop")
-            
+
             if hasattr(node, "init"):
                 self._pass2_resolution(node.init)
             if hasattr(node, "condition"):
@@ -393,7 +413,7 @@ class SymbolTableBuilder:
                 self._pass2_resolution(node.step)
             if hasattr(node, "body"):
                 self._pass2_resolution(node.body)
-                
+
             # بستن اسکوپ حلقه پس از اتمام پردازش آن
             self.symbol_table.exit_scope()
             return

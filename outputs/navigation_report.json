@@ -6,75 +6,16 @@
       "description": "Function factorial call"
     },
     "goto_definition": {
-      "status": "success",
-      "symbol": "head",
-      "kind": "parameter",
-      "type": "struct Node*",
-      "defined_at": {
-        "file": "test_code.c",
-        "line": 19,
-        "col": 51
-      }
+      "status": "error",
+      "message": "Symbol or definition not found"
     },
     "find_references": {
-      "status": "success",
-      "symbol": "head",
-      "total_references": 7,
-      "references": [
-        {
-          "file": "test_code.c",
-          "line": 19,
-          "col": 51,
-          "is_definition": true
-        },
-        {
-          "file": "test_code.c",
-          "line": 24,
-          "col": 13,
-          "is_definition": false
-        },
-        {
-          "file": "test_code.c",
-          "line": 28,
-          "col": 35,
-          "is_definition": false
-        },
-        {
-          "file": "test_code.c",
-          "line": 34,
-          "col": 17,
-          "is_definition": false
-        },
-        {
-          "file": "test_code.c",
-          "line": 34,
-          "col": 24,
-          "is_definition": false
-        },
-        {
-          "file": "test_code.c",
-          "line": 39,
-          "col": 9,
-          "is_definition": false
-        },
-        {
-          "file": "test_code.c",
-          "line": 39,
-          "col": 16,
-          "is_definition": false
-        }
-      ]
+      "status": "error",
+      "message": "Symbol not found"
     },
     "hover_info": {
-      "status": "success",
-      "hover": {
-        "symbol": "head",
-        "kind": "parameter",
-        "type": "struct Node*",
-        "scope": "function",
-        "initialized": true,
-        "used": true
-      }
+      "status": "error",
+      "message": "No symbol info available at this location"
     }
   },
   {
@@ -103,16 +44,45 @@
       "description": "Function create_point call"
     },
     "goto_definition": {
-      "status": "error",
-      "message": "Symbol or definition not found"
+      "status": "success",
+      "symbol": "comp",
+      "kind": "variable",
+      "type": "int",
+      "defined_at": {
+        "file": "test_code.c",
+        "line": 97,
+        "col": 9
+      }
     },
     "find_references": {
-      "status": "error",
-      "message": "Symbol not found"
+      "status": "success",
+      "symbol": "comp",
+      "total_references": 2,
+      "references": [
+        {
+          "file": "test_code.c",
+          "line": 97,
+          "col": 9,
+          "is_definition": true
+        },
+        {
+          "file": "test_code.c",
+          "line": 106,
+          "col": 29,
+          "is_definition": false
+        }
+      ]
     },
     "hover_info": {
-      "status": "error",
-      "message": "No symbol info available at this location"
+      "status": "success",
+      "hover": {
+        "symbol": "comp",
+        "kind": "variable",
+        "type": "int",
+        "scope": "block",
+        "initialized": true,
+        "used": true
+      }
     }
   },
   {

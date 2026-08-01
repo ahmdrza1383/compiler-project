@@ -48,8 +48,13 @@ class PointerType(Type):
     def is_assignable_from(self, other: Type) -> bool:
         if isinstance(other, PointerType):
             return self.base_type.is_assignable_from(other.base_type)
+
+        if isinstance(other, ArrayType):
+            return self.base_type.is_assignable_from(other.base_type)
+
         if isinstance(self.base_type, PrimitiveType) and self.base_type.name == "void":
             return isinstance(other, PointerType)
+
         return False
 
     def is_compatible_with(self, other: Type) -> bool:
@@ -328,6 +333,20 @@ class TypeChecker:
 
     def _visit_CallExpr(self, node):
         if isinstance(node.func_name, Identifier):
+            builtins = ["printf", "scanf", "malloc", "free"]
+            if node.func_name.id_name in builtins:
+                for arg in getattr(node, "args", []):
+                    self._visit(arg)
+
+                if node.func_name.id_name == "malloc":
+                    node.inferred_type = PointerType(PrimitiveType("void"))
+                elif node.func_name.id_name == "free":
+                    node.inferred_type = PrimitiveType("void")
+                else:
+                    node.inferred_type = PrimitiveType("int")
+
+                return node.inferred_type
+
             func_symbol = self.symbol_table.resolve(node.func_name.id_name)
             if func_symbol and func_symbol.kind == "function":
                 return_type, param_types = self._parse_function_signature(

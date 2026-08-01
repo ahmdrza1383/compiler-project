@@ -1,47 +1,24 @@
 {
-  "28:38": [
+  "12:11": [
     {
-      "label": "head",
+      "label": "a",
       "kind": "parameter",
-      "type": "struct Node*",
-      "detail": "struct Node* head",
-      "sortOrder": 1
-    }
-  ],
-  "34:28": [
-    {
-      "label": "head",
-      "kind": "parameter",
-      "type": "struct Node*",
-      "detail": "struct Node* head",
+      "type": "int",
+      "detail": "int a",
       "sortOrder": 1
     },
     {
-      "label": "max_iters",
+      "label": "b",
       "kind": "parameter",
       "type": "int",
-      "detail": "int max_iters",
+      "detail": "int b",
       "sortOrder": 1
     },
     {
-      "label": "active_nodes",
+      "label": "global_counter",
       "kind": "variable",
       "type": "int",
-      "detail": "int active_nodes",
-      "sortOrder": 2
-    },
-    {
-      "label": "i",
-      "kind": "variable",
-      "type": "int",
-      "detail": "int i",
-      "sortOrder": 2
-    },
-    {
-      "label": "status",
-      "kind": "variable",
-      "type": "int",
-      "detail": "int status",
+      "detail": "int global_counter",
       "sortOrder": 2
     },
     {
@@ -87,40 +64,196 @@
       "sortOrder": 4
     },
     {
-      "label": "complex_algorithm",
+      "label": "add",
       "kind": "function",
       "type": "int",
-      "detail": "(int, struct Node*) -> int",
+      "detail": "(int, int) -> int",
       "sortOrder": 5
     },
     {
-      "label": "process_node",
+      "label": "free",
       "kind": "function",
-      "type": "int",
-      "detail": "(struct Node*, int) -> int",
+      "type": "void",
+      "detail": "(void*) -> void",
       "sortOrder": 5
     },
     {
-      "label": "Node",
+      "label": "malloc",
+      "kind": "function",
+      "type": "void*",
+      "detail": "(int) -> void*",
+      "sortOrder": 5
+    },
+    {
+      "label": "printf",
+      "kind": "function",
+      "type": "int",
+      "detail": "(...) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "scanf",
+      "kind": "function",
+      "type": "int",
+      "detail": "(...) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "Point",
       "kind": "struct",
-      "type": "struct Node",
-      "detail": "struct Node Node",
+      "type": "struct Point",
+      "detail": "struct Point Point",
       "sortOrder": 6
     }
   ],
-  "57:16": [
+  "28:38": [
     {
-      "label": "n1",
+      "label": "n",
+      "kind": "parameter",
+      "type": "int",
+      "detail": "int n",
+      "sortOrder": 1
+    },
+    {
+      "label": "global_counter",
       "kind": "variable",
-      "type": "struct Node",
-      "detail": "struct Node n1",
+      "type": "int",
+      "detail": "int global_counter",
       "sortOrder": 2
     },
     {
-      "label": "n2",
+      "label": "char",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "double",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "float",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "int",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "struct",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "void",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "add",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int, int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "factorial",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "fibonacci",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "free",
+      "kind": "function",
+      "type": "void",
+      "detail": "(void*) -> void",
+      "sortOrder": 5
+    },
+    {
+      "label": "malloc",
+      "kind": "function",
+      "type": "void*",
+      "detail": "(int) -> void*",
+      "sortOrder": 5
+    },
+    {
+      "label": "multiply",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int, int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "printf",
+      "kind": "function",
+      "type": "int",
+      "detail": "(...) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "scanf",
+      "kind": "function",
+      "type": "int",
+      "detail": "(...) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "Point",
+      "kind": "struct",
+      "type": "struct Point",
+      "detail": "struct Point Point",
+      "sortOrder": 6
+    }
+  ],
+  "34:28": [
+    {
+      "label": "flag",
+      "kind": "parameter",
+      "type": "int",
+      "detail": "int flag",
+      "sortOrder": 1
+    },
+    {
+      "label": "x",
+      "kind": "parameter",
+      "type": "int",
+      "detail": "int x",
+      "sortOrder": 1
+    },
+    {
+      "label": "y",
+      "kind": "parameter",
+      "type": "int",
+      "detail": "int y",
+      "sortOrder": 1
+    },
+    {
+      "label": "global_counter",
       "kind": "variable",
-      "type": "struct Node",
-      "detail": "struct Node n2",
+      "type": "int",
+      "detail": "int global_counter",
       "sortOrder": 2
     },
     {
@@ -131,6 +264,13 @@
       "sortOrder": 2
     },
     {
+      "label": "temp",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int temp",
+      "sortOrder": 2
+    },
+    {
       "label": "char",
       "kind": "type",
       "type": "keyword",
@@ -173,31 +313,250 @@
       "sortOrder": 4
     },
     {
-      "label": "complex_algorithm",
+      "label": "add",
       "kind": "function",
       "type": "int",
-      "detail": "(int, struct Node*) -> int",
+      "detail": "(int, int) -> int",
       "sortOrder": 5
     },
     {
-      "label": "main",
+      "label": "compute",
       "kind": "function",
       "type": "int",
-      "detail": "() -> int",
+      "detail": "(int, int, int) -> int",
       "sortOrder": 5
     },
     {
-      "label": "process_node",
+      "label": "factorial",
       "kind": "function",
       "type": "int",
-      "detail": "(struct Node*, int) -> int",
+      "detail": "(int) -> int",
       "sortOrder": 5
     },
     {
-      "label": "Node",
+      "label": "fibonacci",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "free",
+      "kind": "function",
+      "type": "void",
+      "detail": "(void*) -> void",
+      "sortOrder": 5
+    },
+    {
+      "label": "malloc",
+      "kind": "function",
+      "type": "void*",
+      "detail": "(int) -> void*",
+      "sortOrder": 5
+    },
+    {
+      "label": "multiply",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int, int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "printf",
+      "kind": "function",
+      "type": "int",
+      "detail": "(...) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "scanf",
+      "kind": "function",
+      "type": "int",
+      "detail": "(...) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "Point",
       "kind": "struct",
-      "type": "struct Node",
-      "detail": "struct Node Node",
+      "type": "struct Point",
+      "detail": "struct Point Point",
+      "sortOrder": 6
+    }
+  ],
+  "57:16": [
+    {
+      "label": "flag",
+      "kind": "parameter",
+      "type": "int",
+      "detail": "int flag",
+      "sortOrder": 1
+    },
+    {
+      "label": "x",
+      "kind": "parameter",
+      "type": "int",
+      "detail": "int x",
+      "sortOrder": 1
+    },
+    {
+      "label": "y",
+      "kind": "parameter",
+      "type": "int",
+      "detail": "int y",
+      "sortOrder": 1
+    },
+    {
+      "label": "global_counter",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int global_counter",
+      "sortOrder": 2
+    },
+    {
+      "label": "i",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int i",
+      "sortOrder": 2
+    },
+    {
+      "label": "j",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int j",
+      "sortOrder": 2
+    },
+    {
+      "label": "p",
+      "kind": "variable",
+      "type": "struct Point",
+      "detail": "struct Point p",
+      "sortOrder": 2
+    },
+    {
+      "label": "result",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int result",
+      "sortOrder": 2
+    },
+    {
+      "label": "temp",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int temp",
+      "sortOrder": 2
+    },
+    {
+      "label": "char",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "double",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "float",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "int",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "struct",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "void",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "add",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int, int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "compute",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int, int, int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "factorial",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "fibonacci",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "free",
+      "kind": "function",
+      "type": "void",
+      "detail": "(void*) -> void",
+      "sortOrder": 5
+    },
+    {
+      "label": "malloc",
+      "kind": "function",
+      "type": "void*",
+      "detail": "(int) -> void*",
+      "sortOrder": 5
+    },
+    {
+      "label": "multiply",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int, int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "printf",
+      "kind": "function",
+      "type": "int",
+      "detail": "(...) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "scanf",
+      "kind": "function",
+      "type": "int",
+      "detail": "(...) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "Point",
+      "kind": "struct",
+      "type": "struct Point",
+      "detail": "struct Point Point",
       "sortOrder": 6
     }
   ]

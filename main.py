@@ -14,6 +14,7 @@ from src.auto_completer import AutoCompleter
 from src.navigation import NavigationEngine
 from src.refactoring import RenameEngine
 from src.graphs import CFGBuilder, CallGraphBuilder
+from src.data_flow import DataFlowAnalyzer
 
 
 def read_source_file(file_path: str) -> str:
@@ -212,6 +213,23 @@ def write_call_graph_txt(call_graph, output_path: str):
         )
 
 
+def write_data_flow_report_txt(warnings, output_path: str):
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("DATA FLOW & DEAD CODE REPORT\n")
+        f.write(
+            "======================================================================\n"
+        )
+        if not warnings:
+            f.write("No dead code or data flow issues detected.\n")
+        else:
+            for i, w in enumerate(warnings, 1):
+                f.write(f"  {i}. {w}\n")
+        f.write(
+            "======================================================================\n"
+        )
+
+
 def main():
     source_file = "test_code.c"
     if len(sys.argv) > 1:
@@ -338,6 +356,22 @@ def main():
         cg_txt_path = "outputs/call_graph.txt"
         write_call_graph_txt(call_graph, cg_txt_path)
         print(f"[INFO] Call Graph text report saved to {cg_txt_path}")
+
+        # ==========================================
+        #   Data-Flow & Dead Code Analysis
+        # ==========================================
+        print("[INFO] Running Data-Flow and Dead Code Analysis...")
+        df_analyzer = DataFlowAnalyzer(cfgs, call_graph)
+        df_warnings = df_analyzer.analyze()
+
+        df_json_path = "outputs/data_flow_report.json"
+        with open(df_json_path, "w", encoding="utf-8") as f:
+            json.dump({"dead_code_warnings": df_warnings}, f, indent=2)
+        print(f"[INFO] Data-Flow JSON report saved to {df_json_path}")
+
+        df_report_path = "outputs/data_flow_report.txt"
+        write_data_flow_report_txt(df_warnings, df_report_path)
+        print(f"[INFO] Data-Flow text report saved to {df_report_path}")
 
         completer = AutoCompleter(symbol_table, ast_root)
         test_positions = [(12, 11), (28, 38), (34, 28), (57, 16)]
