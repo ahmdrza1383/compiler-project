@@ -11,6 +11,7 @@ from src.highlighter import SyntaxHighlighter
 from src.symbol_table_builder import SymbolTableBuilder
 from src.type_checker import TypeChecker
 from src.auto_completer import AutoCompleter
+from src.navigation import NavigationEngine
 
 
 def read_source_file(file_path: str) -> str:
@@ -233,7 +234,7 @@ def main():
         print(f"[INFO] Type report text saved to {type_report_path_txt}")
 
         completer = AutoCompleter(symbol_table, ast_root)
-        test_positions = [(8, 16), (8, 17), (1,9), (1, 10), (9, 8)]
+        test_positions = [(8, 16), (8, 17), (1, 9), (1, 10), (9, 8)]
         all_completions = {}
         for line, col in test_positions:
             completions = completer.get_completions(source_code, line, col)
@@ -244,6 +245,60 @@ def main():
         with open(completion_path, "w", encoding="utf-8") as f:
             json.dump(all_completions, f, indent=2)
         print(f"[INFO] Auto-completion results saved to {completion_path}")
+
+        # ==========================================
+        # اضافه شدن بخش ناوبری و اطلاعات IDE (فاز ۳)
+        # ==========================================
+        nav_engine = NavigationEngine(symbol_table, ast_root)
+        
+        # مختصات تست برای بررسی Go-to-Definition و Find-References
+        test_queries = [
+            {"line": 34, "col": 20, "desc": "Function factorial call"},
+            {"line": 87, "col": 5, "desc": "Global variable global_count"},
+            {"line": 97, "col": 10, "desc": "Function create_point call"},
+            {"line": 7, "col": 8, "desc": "Struct Point Definition"},
+        ]
+
+        navigation_results = []
+        human_readable_txt = []
+        human_readable_txt.append("=" * 60)
+        human_readable_txt.append("🧭 NAVIGATION & IDE INTELLIGENCE REPORT (PHASE 3)")
+        human_readable_txt.append("=" * 60 + "\n")
+
+        for q in test_queries:
+            line, col = q["line"], q["col"]
+            
+            def_result = nav_engine.goto_definition(line, col)
+            refs_result = nav_engine.find_all_references(line, col)
+            hover_result = nav_engine.get_hover_info(line, col)
+            
+            query_data = {
+                "query_point": {"line": line, "col": col, "description": q["desc"]},
+                "goto_definition": def_result,
+                "find_references": refs_result,
+                "hover_info": hover_result
+            }
+            navigation_results.append(query_data)
+            
+            human_readable_txt.append(f"📌 Query at Line {line}, Col {col} ({q['desc']}):")
+            human_readable_txt.append(f"  - Hover Info: {hover_result.get('hover', {})}")
+            human_readable_txt.append(f"  - Go-to-Definition: {def_result.get('defined_at', 'Not found')}")
+            human_readable_txt.append(f"  - Total References Found: {refs_result.get('total_references', 0)}")
+            for r in refs_result.get('references', []):
+                tag = "[Def]" if r.get('is_definition') else "[Ref]"
+                human_readable_txt.append(f"    {tag} File: {r['file']}, Line: {r['line']}, Col: {r['col']}")
+            human_readable_txt.append("-" * 60 + "\n")
+
+        nav_json_path = "outputs/navigation_report.json"
+        with open(nav_json_path, "w", encoding="utf-8") as f:
+            json.dump(navigation_results, f, indent=2)
+        print(f"[INFO] Navigation JSON report saved to {nav_json_path}")
+
+        nav_txt_path = "outputs/navigation_report.txt"
+        with open(nav_txt_path, "w", encoding="utf-8") as f:
+            f.write("\n".join(human_readable_txt))
+        print(f"[INFO] Navigation text report saved to {nav_txt_path}")
+        # ==========================================
 
         all_errors = semantic_errors + type_errors
         all_warnings = semantic_warnings + type_warnings

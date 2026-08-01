@@ -1,0 +1,40 @@
+============================================================
+🧭 NAVIGATION & IDE INTELLIGENCE REPORT (PHASE 3)
+============================================================
+
+📌 Query at Line 34, Col 20 (Function factorial call):
+  - Hover Info: {'symbol': 'factorial', 'kind': 'function', 'type': '(int) -> int', 'scope': 'global', 'initialized': False, 'used': True}
+  - Go-to-Definition: {'file': 'test_code.c', 'line': 26, 'col': 5}
+  - Total References Found: 4
+    [Def] File: test_code.c, Line: 26, Col: 5
+    [Ref] File: test_code.c, Line: 26, Col: 5
+    [Ref] File: test_code.c, Line: 34, Col: 20
+    [Ref] File: test_code.c, Line: 106, Col: 20
+------------------------------------------------------------
+
+📌 Query at Line 87, Col 5 (Global variable global_count):
+  - Hover Info: {'symbol': 'global_count', 'kind': 'variable', 'type': 'int', 'scope': 'global', 'initialized': False, 'used': True}
+  - Go-to-Definition: {'file': 'test_code.c', 'line': 20, 'col': 5}
+  - Total References Found: 4
+    [Def] File: test_code.c, Line: 20, Col: 5
+    [Ref] File: test_code.c, Line: 87, Col: 5
+    [Ref] File: test_code.c, Line: 110, Col: 12
+    [Ref] File: test_code.c, Line: 111, Col: 9
+------------------------------------------------------------
+
+📌 Query at Line 97, Col 10 (Function create_point call):
+  - Hover Info: {'symbol': 'create_point', 'kind': 'function', 'type': '(int, int, float) -> struct Point', 'scope': 'global', 'initialized': False, 'used': True}
+  - Go-to-Definition: {'file': 'test_code.c', 'line': 27, 'col': 14}
+  - Total References Found: 3
+    [Def] File: test_code.c, Line: 27, Col: 14
+    [Ref] File: test_code.c, Line: 27, Col: 14
+    [Ref] File: test_code.c, Line: 97, Col: 10
+------------------------------------------------------------
+
+📌 Query at Line 7, Col 8 (Struct Point Definition):
+  - Hover Info: {'symbol': 'Point', 'kind': 'struct', 'type': 'struct Point', 'scope': 'global', 'initialized': False, 'used': True}
+  - Go-to-Definition: {'file': 'test_code.c', 'line': 7, 'col': 8}
+  - Total References Found: 2
+    [Def] File: test_code.c, Line: 7, Col: 8
+    [Ref] File: test_code.c, Line: 7, Col: 8
+------------------------------------------------------------
