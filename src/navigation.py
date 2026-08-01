@@ -5,20 +5,32 @@ class NavigationEngine:
 
     def _find_symbol_at_location(self, line: int, col: int):
         for sym in self.symbol_table.all_symbols:
+            # محاسبه طول نام نماد برای ایجاد بازه مکانی
+            name_len = len(sym.name) if sym.name else 0
+            
             # بررسی محل تعریف
-            if sym.definition_loc and sym.definition_loc.line == line and sym.definition_loc.column == col:
-                return sym
+            if sym.definition_loc:
+                d_line = getattr(sym.definition_loc, 'line', -1)
+                d_col = getattr(sym.definition_loc, 'column', getattr(sym.definition_loc, 'col', -1))
+                # بررسی اینکه آیا کرسر روی هر کجای این کلمه قرار دارد یا خیر
+                if d_line == line and d_col <= col <= d_col + name_len:
+                    return sym
+                    
             # بررسی ارجاعات
             for ref in sym.references:
-                if hasattr(ref, 'line') and hasattr(ref, 'column'):
-                    if ref.line == line and ref.column == col:
+                # اگر ارجاع به صورت شیء باشد
+                if hasattr(ref, 'line') or hasattr(ref, 'column') or hasattr(ref, 'col'):
+                    r_line = getattr(ref, 'line', -1)
+                    r_col = getattr(ref, 'column', getattr(ref, 'col', -1))
+                    if r_line == line and r_col <= col <= r_col + name_len:
                         return sym
+                # اگر ارجاع به صورت رشته متنی ذخیره شده باشد
                 elif isinstance(ref, str):
                     parts = ref.split(':')
                     if len(parts) >= 3:
                         try:
                             r_line, r_col = int(parts[1]), int(parts[2])
-                            if r_line == line and r_col == col:
+                            if r_line == line and r_col <= col <= r_col + name_len:
                                 return sym
                         except ValueError:
                             continue
