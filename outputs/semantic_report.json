@@ -1,4 +1,8 @@
 {
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "Variable 'x' shadows outer declaration",
+    "Variable 'x' shadows outer declaration",
+    "Variable 'global_var' shadows outer declaration"
+  ]
 }

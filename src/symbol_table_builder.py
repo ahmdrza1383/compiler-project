@@ -164,6 +164,7 @@ class SymbolTableBuilder:
                     if hasattr(node, "var_type")
                     else "unknown"
                 )
+        
                 loc = self._make_location(node.var_name)
                 
                 # ثبت ارجاع برای تایپ متغیر سراسری

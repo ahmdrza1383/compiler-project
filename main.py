@@ -12,7 +12,7 @@ from src.symbol_table_builder import SymbolTableBuilder
 from src.type_checker import TypeChecker
 from src.auto_completer import AutoCompleter
 from src.navigation import NavigationEngine
-
+from src.refactoring import RenameEngine
 
 def read_source_file(file_path: str) -> str:
     try:
@@ -298,6 +298,31 @@ def main():
         with open(nav_txt_path, "w", encoding="utf-8") as f:
             f.write("\n".join(human_readable_txt))
         print(f"[INFO] Navigation text report saved to {nav_txt_path}")
+        
+        # ==========================================
+        # اضافه شدن موتور تغییر نام امن (گام دوم فاز ۳)
+        # ==========================================
+        rename_engine = RenameEngine(nav_engine, source_code)
+        
+        # تست: تلاش برای تغییر نام تابعی در خط 34 و ستون 20 (از test_queries خودتان) به نام جدید
+        target_line = 4
+        target_col = 9
+        new_symbol_name = "nn"
+        
+        rename_result = rename_engine.rename(target_line, target_col, new_symbol_name)
+
+        rename_txt_path = "outputs/rename.c"
+        os.makedirs(os.path.dirname(rename_txt_path), exist_ok=True)
+        
+        if rename_result["status"] == "success":
+            with open(rename_txt_path, "w", encoding="utf-8") as f:
+                f.write(rename_result["modified_source"])
+            print(f"[INFO] Safe Rename successful. Replaced {rename_result['total_replaced']} occurrences of '{rename_result['old_name']}' with '{rename_result['new_name']}'.")
+            print(f"[INFO] Renamed C source code saved to {rename_txt_path}")
+        else:
+            with open(rename_txt_path, "w", encoding="utf-8") as f:
+                f.write(f"/* Rename Failed:\n{rename_result['message']} */")
+            print(f"[ERROR] Safe Rename failed: {rename_result['message']}")
         # ==========================================
 
         all_errors = semantic_errors + type_errors

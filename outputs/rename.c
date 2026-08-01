@@ -1,7 +1,7 @@
 int global_var = 100;
 
 void test_func(int global_var) { // پارامتر همنام با متغیر گلوبال (سایه‌زنی)
-    int x = 10;
+    int nn = 10;
     int y = 20;
     
     {
@@ -13,7 +13,7 @@ void test_func(int global_var) { // پارامتر همنام با متغیر گ
         x = x + 5;
     }
     
-    x = x + global_var;
+    nn = nn + global_var;
 }
 
 int main() {

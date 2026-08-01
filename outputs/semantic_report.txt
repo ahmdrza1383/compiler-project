@@ -1,8 +1,11 @@
 SEMANTIC REPORT
 ======================================================================
 Total Errors: 0
-Total Warnings: 0
+Total Warnings: 3
 ----------------------------------------------------------------------
 
-No semantic errors or warnings found.
+WARNINGS:
+  1. Variable 'x' shadows outer declaration
+  2. Variable 'x' shadows outer declaration
+  3. Variable 'global_var' shadows outer declaration
 ======================================================================
