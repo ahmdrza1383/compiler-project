@@ -152,9 +152,14 @@ class SymbolTableBuilder:
                             if hasattr(field, "var_type")
                             else "unknown"
                         )
-                        loc = self._make_location(field.var_name)
 
-                        self._register_type_reference(field_type, loc)
+                        loc = self._make_location(field.var_name)
+                        type_loc = (
+                            self._make_location(field.var_type)
+                            if hasattr(field, "var_type")
+                            else loc
+                        )
+                        self._register_type_reference(field_type, type_loc)
 
                         field_symbol = Symbol(
                             name=field_name,
@@ -177,9 +182,12 @@ class SymbolTableBuilder:
                 )
 
                 loc = self._make_location(node.var_name)
-
-                # ثبت ارجاع برای تایپ متغیر سراسری
-                self._register_type_reference(var_type, loc)
+                type_loc = (
+                    self._make_location(node.var_type)
+                    if hasattr(node, "var_type")
+                    else loc
+                )
+                self._register_type_reference(var_type, type_loc)
 
                 var_symbol = Symbol(
                     name=var_name,
@@ -215,8 +223,14 @@ class SymbolTableBuilder:
             return_type = (
                 node.return_type.type_name if hasattr(node, "return_type") else "void"
             )
+
             loc = self._make_location(node.func_name)
-            self._register_type_reference(return_type, loc)
+            type_loc = (
+                self._make_location(node.return_type)
+                if hasattr(node, "return_type")
+                else loc
+            )
+            self._register_type_reference(return_type, type_loc)
 
             if isinstance(node, FunctionDef):
                 self.symbol_table.enter_scope("function")
@@ -229,9 +243,14 @@ class SymbolTableBuilder:
                         if hasattr(param, "var_type")
                         else "unknown"
                     )
-                    loc = self._make_location(param.var_name)
 
-                    self._register_type_reference(param_type, loc)
+                    loc = self._make_location(param.var_name)
+                    type_loc = (
+                        self._make_location(param.var_type)
+                        if hasattr(param, "var_type")
+                        else loc
+                    )
+                    self._register_type_reference(param_type, type_loc)
 
                     if isinstance(node, FunctionDef):
                         param_symbol = Symbol(
@@ -293,8 +312,12 @@ class SymbolTableBuilder:
                         print(f"    Shadowing: {var_name} shadows outer declaration")
 
                 loc = self._make_location(node.var_name)
-
-                self._register_type_reference(var_type, loc)
+                type_loc = (
+                    self._make_location(node.var_type)
+                    if hasattr(node, "var_type")
+                    else loc
+                )
+                self._register_type_reference(var_type, type_loc)
 
                 var_symbol = Symbol(
                     name=var_name,

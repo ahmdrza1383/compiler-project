@@ -4,7 +4,7 @@ from src.error_reporter import ErrorReporter, Severity
 
 
 class ParseError(Exception):
-    """ Panic-Mode"""
+    """Panic-Mode"""
 
     pass
 
@@ -14,7 +14,6 @@ class Parser:
         self.tokens = tokens
         self.pos = 0
         self.reporter = reporter if reporter else ErrorReporter()
-
 
     def _loc(self, token: Token):
         loc = getattr(token, "location", None)
@@ -152,7 +151,7 @@ class Parser:
             fields = self.parse_struct_body()
             return StructDef(ident, fields)
         else:
-            type_spec = TypeSpecifier(f"struct {ident.id_name}")
+            type_spec = TypeSpecifier(f"struct {ident.id_name}", 0, line, col)
             return self.parse_type_rest(type_spec)
 
     def parse_struct_body(self):
@@ -206,46 +205,51 @@ class Parser:
     def parse_basic_type_spec(self):
         if not self.match("int", "float", "double", "char", "void"):
             self.error(self.peek(), "Expected basic type")
-        type_name = self.previous().lexeme
+        tok = self.previous()
+        type_name = tok.lexeme
+        line, col = self._loc(tok)
         pointers = 0
         while self.match("*"):
             pointers += 1
-        return TypeSpecifier(type_name, pointers)
+        return TypeSpecifier(type_name, pointers, line, col)
 
     def parse_type_spec(self):
         if self.match("struct"):
-            ident = self.consume_type(TokenType.IDENTIFIER, "Expected struct name")
+            struct_tok = self.previous()
+            ident_tok = self.consume_type(TokenType.IDENTIFIER, "Expected struct name")
+            ident_line, ident_col = self._loc(ident_tok)
             pointers = 0
             while self.match("*"):
                 pointers += 1
-            return TypeSpecifier(f"struct {ident.lexeme}", pointers)
+            return TypeSpecifier(
+                f"struct {ident_tok.lexeme}", pointers, ident_line, ident_col
+            )
         return self.parse_basic_type_spec()
 
     def parse_var_init(self, base_type_spec):
         pointers = 0
         while self.match("*"):
             pointers += 1
-
         ident_tok = self.consume_type(
             TokenType.IDENTIFIER, "Expected identifier in variable initialization"
         )
         line, col = self._loc(ident_tok)
         ident = Identifier(ident_tok.lexeme, SymbolCategory.VARIABLE, line, col)
-
         is_array = False
         array_size = None
         initz = None
-
         if self.match("["):
             is_array = True
             array_size = self.parse_expr()
             self.consume("]", "Expected ']'")
-
         if self.match("="):
             initz = self.parse_initializer()
 
         var_type = TypeSpecifier(
-            base_type_spec.type_name, base_type_spec.pointers + pointers
+            base_type_spec.type_name,
+            base_type_spec.pointers + pointers,
+            getattr(base_type_spec, "line", 0),
+            getattr(base_type_spec, "col", 0),
         )
         return VarDecl(var_type, ident, is_array, array_size, initz)
 

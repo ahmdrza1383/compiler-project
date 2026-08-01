@@ -1,4 +1,3 @@
-import os
 from typing import Dict, Any
 
 
@@ -21,7 +20,6 @@ class RenameEngine:
                 "status": "error",
                 "message": "The new name is identical to the current name.",
             }
-
 
         if symbol.scope and new_name in symbol.scope.symbols:
             return {

@@ -329,21 +329,21 @@ class SyntaxHighlighter:
 
         highlighted_lines = []
         for line_idx, line_text in enumerate(lines, start=1):
+            line_prefix = f'<span class="line-number">{line_idx}</span>'
+
             if line_idx not in tokens_by_line:
-                highlighted_lines.append(self._escape_html(line_text))
+                highlighted_lines.append(line_prefix + self._escape_html(line_text))
                 continue
 
             line_tokens = sorted(
                 tokens_by_line[line_idx], key=lambda x: x["col"], reverse=True
             )
             new_line = line_text
-
             for t in line_tokens:
                 col = t["col"] - 1
                 lexeme = t["lexeme"]
                 cat = t["category"]
                 css_class = self.CATEGORY_COLORS.get(cat, {}).get("class", "ident")
-
                 if 0 <= col < len(new_line):
                     if new_line[col : col + len(lexeme)] == lexeme:
                         wrapped = f'<span class="{css_class}" data-line="{line_idx}" data-col="{t["col"]}">{self._escape_html(lexeme)}</span>'
@@ -351,7 +351,7 @@ class SyntaxHighlighter:
                             new_line[:col] + wrapped + new_line[col + len(lexeme) :]
                         )
 
-            highlighted_lines.append(new_line)
+            highlighted_lines.append(line_prefix + new_line)
 
         body = "\n".join(highlighted_lines)
         css = self._generate_css()
@@ -390,18 +390,23 @@ class SyntaxHighlighter:
 
     def _generate_css(self) -> str:
         return """
-            .kw { color: #0000FF; font-weight: bold; }
-            .type { color: #00FF00; }
-            .class { color: #00FF00; font-weight: bold; }
-            .func { color: #FFD700; }
-            .ident { color: #FFFFFF; }
-            .num { color: #FFA500; }
-            .str { color: #32CD32; }
-            .char { color: #32CD32; }
-            .op { color: #D3D3D3; }
-            .comment { color: #808080; font-style: italic; }
-            .preproc { color: #FF00FF; }
-            .error { color: #FF0000; text-decoration: underline; }
+            .kw { color: #3b82f6; font-weight: bold; }
+            .type { color: #06b6d4; }
+            .class { color: #22c55e; font-weight: bold; }
+            .func { color: #eab308; }
+            .ident { color: #e2e8f0; }
+            .num { color: #f97316; }
+            .str { color: #84cc16; }
+            .char { color: #84cc16; }
+            .op { color: #d1d5db; }
+            .comment { color: #6b7280; font-style: italic; }
+            .preproc { color: #d946ef; }
+            .error { color: #ef4444; text-decoration: underline wavy #ef4444; }
+            .line-number { 
+                color: #475569; display: inline-block; min-width: 2.5rem; 
+                text-align: right; margin-right: 0.75rem; border-right: 1px solid #334155; 
+                padding-right: 0.75rem; user-select: none; 
+            }
         """
 
     def _escape_html(self, text: str) -> str:

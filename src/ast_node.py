@@ -31,7 +31,6 @@ class ASTNode(NodeMixin):
             if key == "parent" or key.startswith("_"):
                 continue
 
-
             if hasattr(value, "value"):
                 result[key] = value.value
             elif isinstance(value, list):
@@ -69,9 +68,13 @@ class Literal(ASTNode):
 
 
 class TypeSpecifier(ASTNode):
-    def __init__(self, type_name: str, pointers: int = 0):
+    def __init__(self, type_name: str, pointers: int = 0, line: int = 0, col: int = 0):
         super().__init__(
-            type_name=type_name, pointers=pointers, category=SymbolCategory.TYPE
+            type_name=type_name,
+            pointers=pointers,
+            category=SymbolCategory.TYPE,
+            line=line,
+            col=col,
         )
         self.name = f"Type: {type_name}" + ("*" * pointers)
 

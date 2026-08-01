@@ -53,84 +53,116 @@
 
       /* ----- Code Editor (Textarea) ----- */
       #sourceCode {
-        background: #0f172a;
+        flex: 1;
+        height: 100%;
+        min-height: 0;
+        overflow-y: auto;
+        border-radius: 0;
+        padding: 1.25rem 1.25rem 1.25rem 1rem;
+        background: transparent;
         color: #a5f3fc;
-        font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+        font-family: "JetBrains Mono", "Fira Code", monospace;
         font-size: 14px;
         line-height: 1.7;
         resize: none;
         outline: none;
         border: none;
-        width: 100%;
-        /* Fix: flex-1 forces it to fill the remaining height of the parent card */
-        flex: 1;
-        min-height: 420px;
-        padding: 1.25rem;
         tab-size: 4;
-        letter-spacing: 0.2px;
       }
       #sourceCode:focus {
         box-shadow: inset 0 0 0 2px #3b82f6;
         background: #0a1225;
       }
 
+      /* ----- Editor Wrapper & Line Numbers ----- */
+      .editor-wrapper {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+        background: #0f172a;
+        border-radius: 0 0 12px 12px;
+        position: relative;
+      }
+      .editor-line-numbers {
+        padding: 1.25rem 0.5rem 1.25rem 1.25rem;
+        background: #0f172a;
+        color: #475569;
+        font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+        font-size: 14px;
+        line-height: 1.8;
+        text-align: right;
+        user-select: none;
+        border-right: 1px solid #334155;
+        overflow: hidden;
+        min-width: 3.5rem;
+      }
+
       /* ----- Highlighted Output Container ----- */
       .highlighted-output {
         background: #0f172a;
-        border-radius: 12px;
+        border-radius: 0 0 12px 12px;
         padding: 1.25rem;
         font-family: "JetBrains Mono", "Fira Code", monospace;
         font-size: 14px;
         line-height: 1.8;
-        /* Fix: flex-1 forces it to fill vertical space identically to textarea */
         flex: 1;
-        max-height: 500px;
-        overflow: auto;
+        min-height: 0;
+        overflow-y: auto;
         white-space: pre-wrap;
         word-break: break-word;
       }
 
       /* ----- Custom Syntax Highlighting (Backend Generated) ----- */
       .kw {
-        color: #569cd6;
+        color: #3b82f6;
         font-weight: bold;
-      } /* Keywords */
+      } /* Bold blue (Keywords) */
       .type {
-        color: #4ec9b0;
-      } /* Types */
+        color: #06b6d4;
+      } /* Teal / cyan (Type names) */
       .class {
-        color: #4ec9b0;
+        color: #22c55e;
         font-weight: bold;
-      } /* Structs */
+      } /* Bright green (Type / class names) */
       .func {
-        color: #dcdcaa;
-      } /* Functions */
+        color: #eab308;
+      } /* Yellow / gold (Function names) */
       .ident {
-        color: #9cdcfe;
-      } /* Variables/Identifiers */
+        color: #e2e8f0;
+      } /* White / default (Variable identifiers) */
       .num {
-        color: #b5cea8;
-      } /* Numbers */
-      .str {
-        color: #ce9178;
-      } /* Strings */
+        color: #f97316;
+      } /* Orange (Integer, float, boolean literals) */
+      .str,
       .char {
-        color: #ce9178;
-      } /* Characters */
+        color: #84cc16;
+      } /* Warm green (String and char literals) */
       .op {
-        color: #d4d4d4;
-      } /* Operators */
+        color: #d1d5db;
+      } /* Light gray (Operators) */
       .comment {
-        color: #6a9955;
+        color: #6b7280;
         font-style: italic;
-      } /* Comments */
+      } /* Dim gray, italic (Comments) */
       .preproc {
-        color: #c586c0;
-      } /* Preprocessor */
+        color: #d946ef;
+      } /* Magenta (Preprocessor) */
       .error {
-        color: #f44747;
-        text-decoration: underline wavy #f44747;
-      } /* Errors */
+        color: #ef4444;
+        text-decoration: underline wavy #ef4444;
+      } /* Red underline (Errors) */
+
+      /* ----- Line Numbers ----- */
+      .line-number {
+        display: inline-block;
+        min-width: 2.5rem;
+        padding-right: 0.75rem;
+        margin-right: 0.75rem;
+        text-align: right;
+        color: #475569;
+        border-right: 1px solid #334155;
+        user-select: none; /* جلوگیری از کپی شدن شماره خطوط هنگام کپی کردن کد */
+      }
 
       /* Hover effect for interactive tokens */
       .highlighted-output span[data-line] {
@@ -288,7 +320,7 @@
     >
       <!-- Left: Editor -->
       <div
-        class="glass-card rounded-2xl overflow-hidden flex flex-col transition-all hover:border-slate-600/60 h-full"
+        class="glass-card rounded-2xl overflow-hidden flex flex-col transition-all hover:border-slate-600/60 h-[550px]"
       >
         <div
           class="bg-slate-800/40 px-5 py-3 border-b border-slate-700/60 flex justify-between items-center"
@@ -297,12 +329,14 @@
             >Source Code (C)</span
           >
         </div>
-        <!-- Fix: Removed wrapper div, made textarea fill flex space -->
-        <textarea
-          id="sourceCode"
-          spellcheck="false"
-          placeholder="// Write your C code here..."
-        >
+
+        <div class="editor-wrapper">
+          <div id="editorLineNumbers" class="editor-line-numbers"></div>
+          <textarea
+            id="sourceCode"
+            spellcheck="false"
+            placeholder="// Write your C code here..."
+          >
 struct Point {
     int x;
     int y;
@@ -313,12 +347,13 @@ int main() {
     int sum = p.x + p.y;
     return sum;
 }</textarea
-        >
+          >
+        </div>
       </div>
 
       <!-- Right: Highlighted Output -->
       <div
-        class="glass-card rounded-2xl overflow-hidden flex flex-col transition-all hover:border-slate-600/60 h-full relative"
+        class="glass-card rounded-2xl overflow-hidden flex flex-col transition-all hover:border-slate-600/60 h-[550px] relative"
       >
         <div
           class="bg-slate-800/40 px-5 py-3 border-b border-slate-700/60 flex justify-between items-center"
@@ -845,8 +880,54 @@ int main() {
         selectedCol = null;
       }
 
+      // ===== Editor Line Numbers & Synchronized Scrolling =====
+      const sourceCodeEl = document.getElementById("sourceCode");
+      const editorLineNumbersEl = document.getElementById("editorLineNumbers");
+      const highlightedContainerEl = document.getElementById(
+        "highlightedContainer",
+      );
+
+      function updateEditorLineNumbers() {
+        const linesCount = sourceCodeEl.value.split("\n").length;
+        if (editorLineNumbersEl.children.length !== linesCount) {
+          let numbersHtml = "";
+          for (let i = 1; i <= linesCount; i++) {
+            numbersHtml += `<div>${i}</div>`;
+          }
+          editorLineNumbersEl.innerHTML = numbersHtml;
+        }
+      }
+
+      let isSyncingLeft = false;
+      let isSyncingRight = false;
+
+      sourceCodeEl.addEventListener("scroll", function () {
+        if (!isSyncingLeft) {
+          isSyncingRight = true;
+
+          editorLineNumbersEl.scrollTop = this.scrollTop;
+
+          highlightedContainerEl.scrollTop = this.scrollTop;
+        }
+        isSyncingLeft = false;
+      });
+
+      highlightedContainerEl.addEventListener("scroll", function () {
+        if (!isSyncingRight) {
+          isSyncingLeft = true;
+
+          sourceCodeEl.scrollTop = this.scrollTop;
+
+          editorLineNumbersEl.scrollTop = this.scrollTop;
+        }
+        isSyncingRight = false;
+      });
+
+      sourceCodeEl.addEventListener("input", updateEditorLineNumbers);
+
       // Run on startup
       window.onload = function () {
+        updateEditorLineNumbers();
         compileCode();
       };
     </script>
