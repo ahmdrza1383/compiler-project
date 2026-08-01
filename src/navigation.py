@@ -1,125 +1,113 @@
-from typing import Optional, Dict, Any, List
-from .ast_node import ASTNode, Identifier
-from .symbol_table import SymbolTable, Symbol
-
 class NavigationEngine:
-    def __init__(self, symbol_table: SymbolTable, ast_root: ASTNode):
+    def __init__(self, symbol_table, ast_root=None):
         self.symbol_table = symbol_table
         self.ast_root = ast_root
 
-    def _find_node_at(self, node: ASTNode, line: int, col: int) -> Optional[Identifier]:
-        """پیمایش بازگشتی درخت AST برای یافتن شناسه در سطر و ستون مشخص شده"""
-        if not node:
-            return None
-
-        # بررسی اینکه آیا گره فعلی یک شناسه است و در مختصات کرسر قرار دارد
-        if isinstance(node, Identifier):
-            n_line = getattr(node, 'line', -1)
-            n_col = getattr(node, 'col', -1)
-            length = len(node.id_name)
-            
-            # کرسر روی کلمه قرار داشته باشد
-            if n_line == line and n_col <= col < (n_col + length):
-                return node
-
-        # جستجو در فرزندان
-        for child in getattr(node, 'children', []):
-            found = self._find_node_at(child, line, col)
-            if found:
-                return found
-
-        return None
-
-    def _get_symbol_at(self, line: int, col: int) -> Optional[Symbol]:
-        """یافتن نماد متصل به گره در محل کرسر"""
-        # ۱. جستجو در استفاده‌های بدنه کد (درخت AST)
-        node = self._find_node_at(self.ast_root, line, col)
-        if node and hasattr(node, 'symbol') and node.symbol:
-            return node.symbol
-
-        # ۲. جستجو در محل تعریف نمادها (در صورت کلیک روی خود خط تعریف)
+    def _find_symbol_at_location(self, line: int, col: int):
         for sym in self.symbol_table.all_symbols:
-            d_loc = sym.definition_loc
-            if d_loc:
-                d_line = getattr(d_loc, 'line', -1)
-                d_col = getattr(d_loc, 'column', getattr(d_loc, 'col', -1))
-                if d_line == line and d_col <= col < (d_col + len(sym.name)):
-                    return sym
-
+            # بررسی محل تعریف
+            if sym.definition_loc and sym.definition_loc.line == line and sym.definition_loc.column == col:
+                return sym
+            # بررسی ارجاعات
+            for ref in sym.references:
+                # بررسی اینکه آیا مرجع یک شیء SourceLocation است یا رشته متنی
+                if hasattr(ref, 'line') and hasattr(ref, 'column'):
+                    if ref.line == line and ref.column == col:
+                        return sym
+                elif isinstance(ref, str):
+                    parts = ref.split(':')
+                    if len(parts) >= 3:
+                        try:
+                            r_line, r_col = int(parts[1]), int(parts[2])
+                            if r_line == line and r_col == col:
+                                return sym
+                        except ValueError:
+                            continue
         return None
 
-    def goto_definition(self, line: int, col: int) -> Dict[str, Any]:
-        """انتقال به محل تعریف نماد زیر کرسر"""
-        symbol = self._get_symbol_at(line, col)
-        
+    def goto_definition(self, line: int, col: int) -> dict:
+        symbol = self._find_symbol_at_location(line, col)
         if not symbol or not symbol.definition_loc:
-            return {"status": "error", "message": "Symbol or definition not found at this location."}
-
-        d_loc = symbol.definition_loc
+            return {"status": "error", "message": "Symbol or definition not found"}
+        
         return {
             "status": "success",
             "symbol": symbol.name,
             "kind": symbol.kind,
-            "type": symbol.signature if symbol.kind == "function" else symbol.type,
+            "type": symbol.type,
             "defined_at": {
-                "file": getattr(d_loc, 'file_name', ''),
-                "line": getattr(d_loc, 'line', 0),
-                "col": getattr(d_loc, 'column', getattr(d_loc, 'col', 0))
+                "file": symbol.definition_loc.file_name,
+                "line": symbol.definition_loc.line,
+                "col": symbol.definition_loc.column
             }
         }
 
-    def find_all_references(self, line: int, col: int) -> Dict[str, Any]:
-        """پیدا کردن تمامی ارجاعات به یک نماد"""
-        symbol = self._get_symbol_at(line, col)
-        
+    def find_all_references(self, line: int, col: int) -> dict:
+        symbol = self._find_symbol_at_location(line, col)
         if not symbol:
-            return {"status": "error", "message": "No valid symbol found at this location."}
-
-        refs_list = []
+            return {"status": "error", "message": "Symbol not found"}
+            
+        refs = []
+        added_locations = set()
         
-        # ۱. اضافه کردن محل تعریف به عنوان اولین ارجاع
-        d_loc = symbol.definition_loc
-        if d_loc:
-            refs_list.append({
-                "file": getattr(d_loc, 'file_name', ''),
-                "line": getattr(d_loc, 'line', 0),
-                "col": getattr(d_loc, 'column', getattr(d_loc, 'col', 0)),
+        if symbol.definition_loc:
+            refs.append({
+                "file": symbol.definition_loc.file_name,
+                "line": symbol.definition_loc.line,
+                "col": symbol.definition_loc.column,
                 "is_definition": True
             })
-
-        # ۲. اضافه کردن بقیه ارجاعات از بدنه کد
+            added_locations.add((symbol.definition_loc.line, symbol.definition_loc.column))
+            
         for ref in symbol.references:
-            refs_list.append({
-                "file": getattr(ref, 'file_name', ''),
-                "line": getattr(ref, 'line', 0),
-                "col": getattr(ref, 'column', getattr(ref, 'col', 0)),
-                "is_definition": False
-            })
-
+            if hasattr(ref, 'line') and hasattr(ref, 'column'):
+                r_file = getattr(ref, 'file_name', 'test_code.c')
+                r_line, r_col = ref.line, ref.column
+                if (r_line, r_col) not in added_locations:
+                    refs.append({
+                        "file": r_file,
+                        "line": r_line,
+                        "col": r_col,
+                        "is_definition": False
+                    })
+                    added_locations.add((r_line, r_col))
+            elif isinstance(ref, str):
+                parts = ref.split(':')
+                if len(parts) >= 3:
+                    r_file = parts[0]
+                    try:
+                        r_line, r_col = int(parts[1]), int(parts[2])
+                        if (r_line, r_col) not in added_locations:
+                            refs.append({
+                                "file": r_file,
+                                "line": r_line,
+                                "col": r_col,
+                                "is_definition": False
+                            })
+                            added_locations.add((r_line, r_col))
+                    except ValueError:
+                        continue
+                    
         return {
             "status": "success",
             "symbol": symbol.name,
-            "total_references": len(refs_list),
-            "references": refs_list
+            "total_references": len(refs),
+            "references": refs
         }
 
-    def get_hover_info(self, line: int, col: int) -> Dict[str, Any]:
-        """نمایش اطلاعات شناور برای نماد زیر کرسر"""
-        symbol = self._get_symbol_at(line, col)
-        
+    def get_hover_info(self, line: int, col: int) -> dict:
+        symbol = self._find_symbol_at_location(line, col)
         if not symbol:
-            return {"status": "error", "message": "No hover information available."}
-
-        info = {
-            "symbol": symbol.name,
-            "kind": symbol.kind,
-            "type": symbol.signature if symbol.kind == "function" else symbol.type,
-            "scope": getattr(symbol.scope, 'scope_type', 'unknown') if symbol.scope else "unknown",
-            "initialized": symbol.is_initialized,
-            "used": symbol.is_used
-        }
-        
+            return {"status": "error", "message": "No symbol info available at this location"}
+            
         return {
             "status": "success",
-            "hover": info
+            "hover": {
+                "symbol": symbol.name,
+                "kind": symbol.kind,
+                "type": str(symbol.type) if symbol.type else "unknown",
+                "scope": str(symbol.scope) if symbol.scope else "global",
+                "initialized": bool(symbol.is_initialized),
+                "used": bool(symbol.is_used)
+            }
         }

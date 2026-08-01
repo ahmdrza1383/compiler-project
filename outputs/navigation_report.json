@@ -9,7 +9,7 @@
       "status": "success",
       "symbol": "factorial",
       "kind": "function",
-      "type": "(int) -> int",
+      "type": "int",
       "defined_at": {
         "file": "test_code.c",
         "line": 26,
@@ -19,19 +19,13 @@
     "find_references": {
       "status": "success",
       "symbol": "factorial",
-      "total_references": 4,
+      "total_references": 3,
       "references": [
         {
           "file": "test_code.c",
           "line": 26,
           "col": 5,
           "is_definition": true
-        },
-        {
-          "file": "test_code.c",
-          "line": 26,
-          "col": 5,
-          "is_definition": false
         },
         {
           "file": "test_code.c",
@@ -52,8 +46,8 @@
       "hover": {
         "symbol": "factorial",
         "kind": "function",
-        "type": "(int) -> int",
-        "scope": "global",
+        "type": "int",
+        "scope": "<src.symbol_table.Scope object at 0x000002C81800ABA0>",
         "initialized": false,
         "used": true
       }
@@ -113,7 +107,7 @@
         "symbol": "global_count",
         "kind": "variable",
         "type": "int",
-        "scope": "global",
+        "scope": "<src.symbol_table.Scope object at 0x000002C81800ABA0>",
         "initialized": false,
         "used": true
       }
@@ -129,7 +123,7 @@
       "status": "success",
       "symbol": "create_point",
       "kind": "function",
-      "type": "(int, int, float) -> struct Point",
+      "type": "struct Point",
       "defined_at": {
         "file": "test_code.c",
         "line": 27,
@@ -139,19 +133,13 @@
     "find_references": {
       "status": "success",
       "symbol": "create_point",
-      "total_references": 3,
+      "total_references": 2,
       "references": [
         {
           "file": "test_code.c",
           "line": 27,
           "col": 14,
           "is_definition": true
-        },
-        {
-          "file": "test_code.c",
-          "line": 27,
-          "col": 14,
-          "is_definition": false
         },
         {
           "file": "test_code.c",
@@ -166,8 +154,8 @@
       "hover": {
         "symbol": "create_point",
         "kind": "function",
-        "type": "(int, int, float) -> struct Point",
-        "scope": "global",
+        "type": "struct Point",
+        "scope": "<src.symbol_table.Scope object at 0x000002C81800ABA0>",
         "initialized": false,
         "used": true
       }
@@ -193,19 +181,13 @@
     "find_references": {
       "status": "success",
       "symbol": "Point",
-      "total_references": 2,
+      "total_references": 1,
       "references": [
         {
           "file": "test_code.c",
           "line": 7,
           "col": 8,
           "is_definition": true
-        },
-        {
-          "file": "test_code.c",
-          "line": 7,
-          "col": 8,
-          "is_definition": false
         }
       ]
     },
@@ -215,7 +197,7 @@
         "symbol": "Point",
         "kind": "struct",
         "type": "struct Point",
-        "scope": "global",
+        "scope": "<src.symbol_table.Scope object at 0x000002C81800ABA0>",
         "initialized": false,
         "used": true
       }
