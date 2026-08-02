@@ -63,7 +63,7 @@
         color: #a5f3fc;
         font-family: "JetBrains Mono", "Fira Code", monospace;
         font-size: 14px;
-        line-height: 1.7;
+        line-height: 1.8;
         resize: none;
         outline: none;
         border: none;
@@ -557,15 +557,23 @@ int main() {
               '<span class="text-slate-500">No highlighted output available.</span>';
           }
 
-          // Build Mermaid Graph Strings
           let mermaidCfg = "graph TD;\n";
           if (data.cfg && Object.keys(data.cfg).length > 0) {
             for (let func in data.cfg) {
               let cfg = data.cfg[func];
               if (cfg.blocks) {
                 cfg.blocks.forEach((b) => {
-                  let label = `Block ${b.id} (${b.label})`;
+                  let label = `<b>Block ${b.id}</b><br/><i>${b.label}</i>`;
+
+                  if (b.statements && b.statements.length > 0) {
+                    label += `<br/><hr/>`;
+                    b.statements.forEach((stmt) => {
+                      label += `<span style='font-size: 11px'>- ${stmt}</span><br/>`;
+                    });
+                  }
+
                   mermaidCfg += `    F_${func}_${b.id}["${label}"]\n`;
+
                   b.successors.forEach((succId) => {
                     mermaidCfg += `    F_${func}_${b.id} --> F_${func}_${succId}\n`;
                   });
@@ -968,11 +976,11 @@ int main() {
 
       sourceCodeEl.addEventListener("keydown", function (e) {
         if (e.key === "Tab") {
-          e.preventDefault(); 
+          e.preventDefault();
 
           const start = this.selectionStart;
           const end = this.selectionEnd;
-          const spaces = "    "; 
+          const spaces = "    ";
 
           this.value =
             this.value.substring(0, start) + spaces + this.value.substring(end);

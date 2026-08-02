@@ -28,10 +28,42 @@ class BasicBlock:
             block.predecessors.append(self)
 
     def to_dict(self):
+        def get_line(node):
+            if not node:
+                return "?"
+            if hasattr(node, "line"):
+                return node.line
+            if hasattr(node, "member"):
+                return get_line(node.member)
+            if hasattr(node, "left"):
+                return get_line(node.left)
+            if hasattr(node, "var_name"):
+                return get_line(node.var_name)
+            if hasattr(node, "func_name"):
+                return get_line(node.func_name)
+            if hasattr(node, "operand"):
+                return get_line(node.operand)
+            if hasattr(node, "obj"):
+                return get_line(node.obj)
+            if hasattr(node, "children") and node.children:
+                return get_line(node.children[0])
+            return "?"
+
+        stmt_strings = []
+        for stmt in self.statements:
+            name = getattr(stmt, "name", stmt.__class__.__name__)
+
+            line = get_line(stmt)
+
+            if line != "?":
+                stmt_strings.append(f"{name} (Line {line})")
+            else:
+                stmt_strings.append(name)
+
         return {
             "id": self.id,
             "label": self.label,
-            "statements": [stmt.__class__.__name__ for stmt in self.statements],
+            "statements": stmt_strings,
             "successors": [b.id for b in self.successors],
         }
 

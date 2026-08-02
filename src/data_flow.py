@@ -15,6 +15,19 @@ class DataFlowAnalyzer:
         self.call_graph = call_graph
         self.warnings = []
 
+    def _get_loc(self, node):
+        if not node:
+            return "?"
+        if hasattr(node, "line"):
+            return node.line
+        if hasattr(node, "member"):
+            return self._get_loc(node.member)
+        if hasattr(node, "left"):
+            return self._get_loc(node.left)
+        if hasattr(node, "var_name"):
+            return self._get_loc(node.var_name)
+        return "?"
+
     def analyze(self):
         self._find_dead_functions()
         for func_name, cfg in self.cfgs.items():
@@ -58,8 +71,16 @@ class DataFlowAnalyzer:
 
         for block in cfg.blocks:
             if block.id not in reachable:
+                if not block.statements:
+                    continue
+
+                line_info = ""
+                line_num = self._get_loc(block.statements[0])
+                if line_num != "?":
+                    line_info = f" starting at Line {line_num}"
+
                 self.warnings.append(
-                    f"Unreachable Code: Block {block.id} [{block.label}] in function '{func_name}' can never be executed."
+                    f"Unreachable Code: Block {block.id} [{block.label}] in function '{func_name}' can never be executed{line_info}."
                 )
 
     def _analyze_liveness_and_dead_stores(self, func_name, cfg):
@@ -83,23 +104,26 @@ class DataFlowAnalyzer:
                     new_out.update(in_l[succ.id])
                 out_l[block.id] = new_out
 
-                new_in = use_set[block.id].union(out_l[block.id] - def_set[block.id])
+                def_keys = set(def_set[block.id].keys())
+                new_in = use_set[block.id].union(out_l[block.id] - def_keys)
                 if new_in != in_l[block.id]:
                     in_l[block.id] = new_in
                     changed = True
 
         for block in cfg.blocks:
-            for defined_var in def_set[block.id]:
+            for defined_var, node in def_set[block.id].items():
                 if (
                     defined_var not in out_l[block.id]
                     and defined_var not in use_set[block.id]
                 ):
+                    line_num = self._get_loc(node)
+                    line_info = f" at Line {line_num}" if line_num != "?" else ""
                     self.warnings.append(
-                        f"Dead Store: Value assigned to '{defined_var}' in function '{func_name}' is never used subsequently."
+                        f"Dead Store: Value assigned to '{defined_var}' in function '{func_name}' is never used subsequently{line_info}."
                     )
 
     def _extract_def_use(self, statements):
-        d_set = set()
+        d_dict = {}
         u_set = set()
 
         def visit(node, is_def=False):
@@ -107,11 +131,11 @@ class DataFlowAnalyzer:
                 return
             if isinstance(node, Identifier):
                 if is_def:
-                    d_set.add(node.id_name)
+                    d_dict[node.id_name] = node
                 else:
                     u_set.add(node.id_name)
             elif isinstance(node, VarDecl):
-                d_set.add(node.var_name.id_name)
+                d_dict[node.var_name.id_name] = node
                 if getattr(node, "initializer", None):
                     visit(node.initializer, is_def=False)
             elif isinstance(node, BinaryExpr):
@@ -142,4 +166,4 @@ class DataFlowAnalyzer:
         for stmt in statements:
             visit(stmt)
 
-        return d_set, u_set
+        return d_dict, u_set

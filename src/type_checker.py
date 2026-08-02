@@ -125,25 +125,34 @@ class TypeChecker:
         self.scope_stack = [set()]
 
     def _report_error(self, node, message):
-        """Helper to extract line/col robustly and format the error"""
-        line, col = "?", "?"
-        if hasattr(node, "line") and hasattr(node, "col"):
-            line, col = node.line, node.col
-        elif hasattr(node, "member") and hasattr(node.member, "line") and hasattr(node.member, "col"):
-            line, col = node.member.line, node.member.col
-        elif hasattr(node, "var_name") and hasattr(node.var_name, "line"):
-            line, col = node.var_name.line, node.var_name.col
-        elif hasattr(node, "left") and hasattr(node.left, "line"):
-            line, col = node.left.line, node.left.col
-        elif hasattr(node, "func_name") and hasattr(node.func_name, "line"):
-            line, col = node.func_name.line, node.func_name.col
-
+        line, col = self._get_loc(node)
         self.errors.append(f"{message} at Line {line}, Col {col}")
 
     def check(self, node):
         if node is None:
             return None
         return self._visit(node)
+
+    def _get_loc(self, node):
+        if not node:
+            return "?", "?"
+        if hasattr(node, "line") and hasattr(node, "col"):
+            return node.line, node.col
+        if hasattr(node, "member"):
+            return self._get_loc(node.member)
+        if hasattr(node, "left"):
+            return self._get_loc(node.left)
+        if hasattr(node, "var_name"):
+            return self._get_loc(node.var_name)
+        if hasattr(node, "func_name"):
+            return self._get_loc(node.func_name)
+        if hasattr(node, "operand"):
+            return self._get_loc(node.operand)
+        if hasattr(node, "obj"):
+            return self._get_loc(node.obj)
+        if hasattr(node, "children") and node.children:
+            return self._get_loc(node.children[0])
+        return "?", "?"
 
     def _visit(self, node):
         method = getattr(self, f"_visit_{node.__class__.__name__}", self._visit_default)
@@ -210,16 +219,28 @@ class TypeChecker:
         if op in ["+", "-"]:
             is_left_ptr = isinstance(left_type, PointerType)
             is_right_ptr = isinstance(right_type, PointerType)
-            is_left_arith = isinstance(left_type, PrimitiveType) and left_type.name in ["char", "int", "float", "double"]
-            is_right_arith = isinstance(right_type, PrimitiveType) and right_type.name in ["char", "int", "float", "double"]
+            is_left_arith = isinstance(left_type, PrimitiveType) and left_type.name in [
+                "char",
+                "int",
+                "float",
+                "double",
+            ]
+            is_right_arith = isinstance(
+                right_type, PrimitiveType
+            ) and right_type.name in ["char", "int", "float", "double"]
 
             # حالت ۱: پوینتر + عدد صحیح (یا برعکس در جمع)
-            if (is_left_ptr and is_right_arith) or (op == "+" and is_left_arith and is_right_ptr):
+            if (is_left_ptr and is_right_arith) or (
+                op == "+" and is_left_arith and is_right_ptr
+            ):
                 # بررسی اینکه عدد اعشاری نباشد (پوینتر فقط با int/char جمع/تفریق می‌شود)
                 arith_type = left_type if is_left_arith else right_type
                 if arith_type.name not in ["char", "int"]:
-                    self._report_error(node, f"Invalid operand type for pointer arithmetic: {arith_type}")
-                
+                    self._report_error(
+                        node,
+                        f"Invalid operand type for pointer arithmetic: {arith_type}",
+                    )
+
                 node.inferred_type = left_type if is_left_ptr else right_type
                 return node.inferred_type
 
@@ -230,7 +251,10 @@ class TypeChecker:
 
             # حالت‌های غیرمجاز پوینتر (مثلاً جمع دو پوینتر یا پوینتر با float)
             if is_left_ptr or is_right_ptr:
-                self._report_error(node, f"Invalid operands for pointer arithmetic: {left_type} and {right_type}")
+                self._report_error(
+                    node,
+                    f"Invalid operands for pointer arithmetic: {left_type} and {right_type}",
+                )
                 node.inferred_type = PrimitiveType("int")
                 return node.inferred_type
 
@@ -251,11 +275,17 @@ class TypeChecker:
                 if left_type.name in order and right_type.name in order:
                     left_idx = order.index(left_type.name)
                     right_idx = order.index(right_type.name)
-                    
+
                     # بررسی اختصاصی برای عملگر ماژولو (%)
                     if op == "%":
-                        if left_type.name not in ["char", "int"] or right_type.name not in ["char", "int"]:
-                            self._report_error(node, f"Invalid operands for '%' operator: {left_type} and {right_type}")
+                        if left_type.name not in [
+                            "char",
+                            "int",
+                        ] or right_type.name not in ["char", "int"]:
+                            self._report_error(
+                                node,
+                                f"Invalid operands for '%' operator: {left_type} and {right_type}",
+                            )
                             node.inferred_type = PrimitiveType("int")
                             return node.inferred_type
 
@@ -263,7 +293,10 @@ class TypeChecker:
                     node.inferred_type = PrimitiveType(result_name)
                     return node.inferred_type
             else:
-                self._report_error(node, f"Invalid operands for multiplicative operator '{op}': {left_type} and {right_type}")
+                self._report_error(
+                    node,
+                    f"Invalid operands for multiplicative operator '{op}': {left_type} and {right_type}",
+                )
 
         if op in ["<", "<=", ">", ">=", "==", "!="]:
             is_ptr_and_int = (
@@ -303,7 +336,7 @@ class TypeChecker:
 
         node.inferred_type = PrimitiveType("int")
         return node.inferred_type
-    
+
     def _visit_UnaryExpr(self, node):
         operand_type = self._visit(node.operand)
         if node.op in ["+", "-"]:
@@ -445,15 +478,21 @@ class TypeChecker:
             return node.inferred_type
 
         struct_type = None
-        
+
         # بررسی تطابق نوع با عملگر (.) یا (->)
         if not node.is_pointer and isinstance(obj_type, StructType):
             struct_type = obj_type
-        elif node.is_pointer and isinstance(obj_type, PointerType) and isinstance(obj_type.base_type, StructType):
+        elif (
+            node.is_pointer
+            and isinstance(obj_type, PointerType)
+            and isinstance(obj_type.base_type, StructType)
+        ):
             struct_type = obj_type.base_type
         else:
             op_str = "->" if node.is_pointer else "."
-            self._report_error(node, f"Invalid member access operator '{op_str}' for type {obj_type}")
+            self._report_error(
+                node, f"Invalid member access operator '{op_str}' for type {obj_type}"
+            )
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
