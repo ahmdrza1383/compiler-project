@@ -299,6 +299,13 @@
   ],
   "57:16": [
     {
+      "label": "arr",
+      "kind": "parameter",
+      "type": "int[]",
+      "detail": "int[] arr",
+      "sortOrder": 1
+    },
+    {
       "label": "size",
       "kind": "parameter",
       "type": "int",
@@ -306,11 +313,179 @@
       "sortOrder": 1
     },
     {
+      "label": "count",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int count",
+      "sortOrder": 2
+    },
+    {
+      "label": "global_counter",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int global_counter",
+      "sortOrder": 2
+    },
+    {
+      "label": "i",
+      "kind": "variable",
+      "type": "int",
+      "detail": "int i",
+      "sortOrder": 2
+    },
+    {
+      "label": "message",
+      "kind": "variable",
+      "type": "char*",
+      "detail": "char* message",
+      "sortOrder": 2
+    },
+    {
+      "label": "pi",
+      "kind": "variable",
+      "type": "float",
+      "detail": "float pi",
+      "sortOrder": 2
+    },
+    {
+      "label": "precision",
+      "kind": "variable",
+      "type": "double",
+      "detail": "double precision",
+      "sortOrder": 2
+    },
+    {
+      "label": "char",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "double",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "float",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "int",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
       "label": "struct",
       "kind": "type",
       "type": "keyword",
       "detail": "primitive type",
       "sortOrder": 4
+    },
+    {
+      "label": "void",
+      "kind": "type",
+      "type": "keyword",
+      "detail": "primitive type",
+      "sortOrder": 4
+    },
+    {
+      "label": "add",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int, int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "count_even",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int[], int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "create_point",
+      "kind": "function",
+      "type": "struct Point",
+      "detail": "(int, int) -> struct Point",
+      "sortOrder": 5
+    },
+    {
+      "label": "factorial",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "free",
+      "kind": "function",
+      "type": "void",
+      "detail": "(void*) -> void",
+      "sortOrder": 5
+    },
+    {
+      "label": "increment_point",
+      "kind": "function",
+      "type": "void",
+      "detail": "(struct Point*) -> void",
+      "sortOrder": 5
+    },
+    {
+      "label": "malloc",
+      "kind": "function",
+      "type": "void*",
+      "detail": "(int) -> void*",
+      "sortOrder": 5
+    },
+    {
+      "label": "print_point",
+      "kind": "function",
+      "type": "void",
+      "detail": "(struct Point) -> void",
+      "sortOrder": 5
+    },
+    {
+      "label": "printf",
+      "kind": "function",
+      "type": "int",
+      "detail": "(...) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "scanf",
+      "kind": "function",
+      "type": "int",
+      "detail": "(...) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "sum_array",
+      "kind": "function",
+      "type": "int",
+      "detail": "(int[], int) -> int",
+      "sortOrder": 5
+    },
+    {
+      "label": "Node",
+      "kind": "struct",
+      "type": "struct Node",
+      "detail": "struct Node Node",
+      "sortOrder": 6
+    },
+    {
+      "label": "Point",
+      "kind": "struct",
+      "type": "struct Point",
+      "detail": "struct Point Point",
+      "sortOrder": 6
     }
   ]
 }

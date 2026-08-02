@@ -23,6 +23,21 @@ class AutoCompleter:
         else:
             return self._get_scope_completions(context.get("prefix", ""), line, col)
 
+        context = self._detect_context(source, line, col)
+
+        if context["type"] == "member_access":
+            obj_type = context.get("obj_type")
+            if obj_type:
+                return self._get_member_completions(obj_type, context.get("prefix", ""))
+        elif context["type"] == "function_args":
+            return self._get_function_arg_completions(context, line, col)
+        # --- خطوط جدید ---
+        elif context["type"] == "assignment":
+            return self._get_assignment_completions(context, line, col)
+        # ----------------
+        else:
+            return self._get_scope_completions(context.get("prefix", ""), line, col)
+        
         return []
 
     def _detect_context(self, source: str, line: int, col: int) -> dict:
@@ -31,7 +46,11 @@ class AutoCompleter:
             return {"type": "general", "prefix": ""}
 
         current_line = lines[line - 1]
-        text_before_cursor = current_line[:col]
+        
+        # اصلاح دقیق مشکل کرسر:
+        # مقدار col را فقط برای برش متن یک واحد کم می‌کنیم تا با 0-based بودن پایتون هماهنگ شود
+        slice_index = max(0, col - 1)
+        text_before_cursor = current_line[:slice_index]
 
         match = re.search(r'([a-zA-Z_][a-zA-Z0-9_]*)$', text_before_cursor)
         typing_prefix = match.group(1) if match else ""
@@ -56,6 +75,18 @@ class AutoCompleter:
                 "type": "function_args",
                 "func_name": func_name,
                 "arg_index": arg_index,
+                "prefix": typing_prefix
+            }
+
+        assign_match = re.search(r'(?:([a-zA-Z_][a-zA-Z0-9_]*)\s+)?([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*([a-zA-Z0-9_]*)$', text_before_cursor)
+        if assign_match:
+            type_hint = assign_match.group(1) # مثلاً int در int c =
+            lhs_name = assign_match.group(2)  # مثلاً c
+            typing_prefix = assign_match.group(3)
+            return {
+                "type": "assignment",
+                "type_hint": type_hint,
+                "lhs_name": lhs_name,
                 "prefix": typing_prefix
             }
 
@@ -112,19 +143,26 @@ class AutoCompleter:
 
         filtered = []
         for comp in completions:
-            if comp["kind"] == "type":
-                filtered.append(comp)
-                continue
-                
-            if comp["kind"] == "function":
-                continue
-                
             if expected_type:
-                comp_type = comp.get("type", "").replace("[]", "*").strip()
                 exp_type = expected_type.replace("[]", "*").strip()
+                
+                # ۱. بررسی تایپ‌های اولیه (مثل int, float)
+                if comp["kind"] == "type":
+                    # اگر اسم تایپ (label) دقیقاً با تایپ مورد انتظار یکی بود، پیشنهادش بده
+                    if comp["label"] == exp_type:
+                        filtered.append(comp)
+                    continue
+                    
+                # ۲. توابع را نادیده بگیر
+                if comp["kind"] == "function":
+                    continue
+                    
+                # ۳. بررسی متغیرها
+                comp_type = comp.get("type", "").replace("[]", "*").strip()
                 if comp_type == exp_type or exp_type == "void*":
                     filtered.append(comp)
             else:
+                # اگر تایپ مورد انتظار به هر دلیلی پیدا نشد، همه پیشنهادها را برگردان
                 filtered.append(comp)
 
         return filtered
@@ -242,3 +280,50 @@ class AutoCompleter:
             "global": 7,
         }
         return priority.get(kind, 10)
+
+    def _get_assignment_completions(self, context: dict, current_line: int, current_col: int) -> list:
+        lhs_name = context.get("lhs_name")
+        type_hint = context.get("type_hint")
+        prefix = context.get("prefix", "")
+
+        completions = self._get_scope_completions(prefix, current_line, current_col)
+        
+        expected_type = None
+        # ۱. ابتدا بررسی می‌کنیم که آیا در همان خط تایپ متغیر نوشته شده است (مثل: int c =)
+        if type_hint and type_hint in ["int", "float", "char", "double", "void"]:
+            expected_type = type_hint
+        # ۲. اگر تایپ نوشته نشده بود (مثل: c =)، سعی می‌کنیم تایپش را از جدول نمادها پیدا کنیم
+        elif hasattr(self.symbol_table, 'resolve'):
+            sym = self.symbol_table.resolve(lhs_name)
+            if sym:
+                expected_type = getattr(sym, 'type', None)
+
+        if not expected_type:
+            return completions
+
+        filtered = []
+        exp_type = expected_type.replace("[]", "*").strip()
+
+        for comp in completions:
+            # الف) فیلتر کردن کلمات کلیدی تایپ‌ها
+            if comp["kind"] == "type":
+                if comp["label"] == exp_type:
+                    filtered.append(comp)
+                continue
+                
+            # ب) فیلتر کردن توابع بر اساس نوع خروجی‌شان (Return Type)
+            if comp["kind"] == "function":
+                sig = comp.get("detail", "")
+                if "->" in sig:
+                    # استخراج نوع خروجی از امضای تابع (مثلاً int از (int, float) -> int)
+                    ret_type = sig.split("->")[1].strip()
+                    if ret_type == exp_type or exp_type == "void*":
+                        filtered.append(comp)
+                continue
+                
+            # ج) فیلتر کردن متغیرها بر اساس تایپ آن‌ها
+            comp_type = comp.get("type", "").replace("[]", "*").strip()
+            if comp_type == exp_type or exp_type == "void*":
+                filtered.append(comp)
+
+        return filtered

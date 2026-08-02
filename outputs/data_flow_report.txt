@@ -18,25 +18,25 @@ DATA FLOW & DEAD CODE REPORT
   16. Unreachable Code: Block 34 [UNREACHABLE] in function 'power' can never be executed.
   17. Unreachable Code: Block 37 [UNREACHABLE] in function 'expression_demo' can never be executed.
   18. Dead Store: Value assigned to 'x3' in function 'expression_demo' is never used subsequently.
-  19. Dead Store: Value assigned to 'first' in function 'expression_demo' is never used subsequently.
-  20. Dead Store: Value assigned to 'last' in function 'expression_demo' is never used subsequently.
-  21. Dead Store: Value assigned to 'x1' in function 'expression_demo' is never used subsequently.
-  22. Dead Store: Value assigned to 'f' in function 'expression_demo' is never used subsequently.
-  23. Dead Store: Value assigned to 'g' in function 'expression_demo' is never used subsequently.
-  24. Dead Store: Value assigned to 'i' in function 'expression_demo' is never used subsequently.
-  25. Dead Store: Value assigned to 'x2' in function 'expression_demo' is never used subsequently.
-  26. Dead Store: Value assigned to 'e' in function 'expression_demo' is never used subsequently.
-  27. Dead Store: Value assigned to 'c' in function 'expression_demo' is never used subsequently.
-  28. Dead Store: Value assigned to 'h' in function 'expression_demo' is never used subsequently.
-  29. Dead Store: Value assigned to 'd' in function 'expression_demo' is never used subsequently.
+  19. Dead Store: Value assigned to 'last' in function 'expression_demo' is never used subsequently.
+  20. Dead Store: Value assigned to 'c' in function 'expression_demo' is never used subsequently.
+  21. Dead Store: Value assigned to 'g' in function 'expression_demo' is never used subsequently.
+  22. Dead Store: Value assigned to 'd' in function 'expression_demo' is never used subsequently.
+  23. Dead Store: Value assigned to 'x1' in function 'expression_demo' is never used subsequently.
+  24. Dead Store: Value assigned to 'f' in function 'expression_demo' is never used subsequently.
+  25. Dead Store: Value assigned to 'i' in function 'expression_demo' is never used subsequently.
+  26. Dead Store: Value assigned to 'first' in function 'expression_demo' is never used subsequently.
+  27. Dead Store: Value assigned to 'h' in function 'expression_demo' is never used subsequently.
+  28. Dead Store: Value assigned to 'e' in function 'expression_demo' is never used subsequently.
+  29. Dead Store: Value assigned to 'x2' in function 'expression_demo' is never used subsequently.
   30. Unreachable Code: Block 46 [UNREACHABLE] in function 'find_first' can never be executed.
   31. Unreachable Code: Block 47 [UNREACHABLE] in function 'find_first' can never be executed.
   32. Unreachable Code: Block 60 [UNREACHABLE] in function 'main' can never be executed.
   33. Unreachable Code: Block 67 [UNREACHABLE] in function 'main' can never be executed.
   34. Unreachable Code: Block 68 [UNREACHABLE] in function 'main' can never be executed.
-  35. Dead Store: Value assigned to 'p' in function 'main' is never used subsequently.
-  36. Dead Store: Value assigned to 'fact' in function 'main' is never used subsequently.
-  37. Dead Store: Value assigned to 'z' in function 'main' is never used subsequently.
+  35. Dead Store: Value assigned to 'fact' in function 'main' is never used subsequently.
+  36. Dead Store: Value assigned to 'z' in function 'main' is never used subsequently.
+  37. Dead Store: Value assigned to 'p' in function 'main' is never used subsequently.
   38. Unreachable Code: Block 71 [UNREACHABLE] in function 'add' can never be executed.
   39. Dead Store: Value assigned to 'dummy' in function 'print_point' is never used subsequently.
 ======================================================================
