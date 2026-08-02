@@ -157,7 +157,11 @@ class CFGBuilder:
 
         elif isinstance(node, ForStmt):
             if node.init:
-                self.current_block.add_statement(node.init)
+                if isinstance(node.init, list):
+                    for stmt in node.init:
+                        self.current_block.add_statement(stmt)
+                else:
+                    self.current_block.add_statement(node.init)
 
             loop_head = self.new_block("FOR_COND")
             loop_body = self.new_block("FOR_BODY")

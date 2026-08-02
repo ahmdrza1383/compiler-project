@@ -586,13 +586,17 @@ class TypeChecker:
 
     def _visit_ForStmt(self, node):
         self.scope_stack.append(set())
-        if hasattr(node, "init"):
-            self._visit(node.init)
-        if hasattr(node, "condition"):
+        if hasattr(node, "init") and node.init:
+            if isinstance(node.init, list):
+                for stmt in node.init:
+                    self._visit(stmt)
+            else:
+                self._visit(node.init)
+        if hasattr(node, "condition") and node.condition:
             self._visit(node.condition)
-        if hasattr(node, "step"):
+        if hasattr(node, "step") and node.step:
             self._visit(node.step)
-        if hasattr(node, "body"):
+        if hasattr(node, "body") and node.body:
             self._visit(node.body)
         self.scope_stack.pop()
         return None

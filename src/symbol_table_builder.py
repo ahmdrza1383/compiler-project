@@ -416,16 +416,18 @@ class SymbolTableBuilder:
 
         elif isinstance(node, ForStmt):
             self.symbol_table.enter_scope("for_loop")
-
-            if hasattr(node, "init"):
-                self._pass2_resolution(node.init)
-            if hasattr(node, "condition"):
+            if hasattr(node, "init") and node.init:
+                if isinstance(node.init, list):
+                    for stmt in node.init:
+                        self._pass2_resolution(stmt)
+                else:
+                    self._pass2_resolution(node.init)
+            if hasattr(node, "condition") and node.condition:
                 self._pass2_resolution(node.condition)
-            if hasattr(node, "step"):
+            if hasattr(node, "step") and node.step:
                 self._pass2_resolution(node.step)
-            if hasattr(node, "body"):
+            if hasattr(node, "body") and node.body:
                 self._pass2_resolution(node.body)
-
             self.symbol_table.exit_scope()
             return
 
