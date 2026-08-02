@@ -129,6 +129,8 @@ class TypeChecker:
         line, col = "?", "?"
         if hasattr(node, "line") and hasattr(node, "col"):
             line, col = node.line, node.col
+        elif hasattr(node, "member") and hasattr(node.member, "line") and hasattr(node.member, "col"):
+            line, col = node.member.line, node.member.col
         elif hasattr(node, "var_name") and hasattr(node.var_name, "line"):
             line, col = node.var_name.line, node.var_name.col
         elif hasattr(node, "left") and hasattr(node.left, "line"):
@@ -223,7 +225,7 @@ class TypeChecker:
                     result_name = order[max(left_idx, right_idx)]
                     node.inferred_type = PrimitiveType(result_name)
                     return node.inferred_type
-                    
+                
         if op in ["<", "<=", ">", ">=", "==", "!="]:
             is_ptr_and_int = (
                 isinstance(left_type, PointerType)
@@ -404,14 +406,15 @@ class TypeChecker:
             return node.inferred_type
 
         struct_type = None
-        if isinstance(obj_type, StructType):
+        
+        # بررسی تطابق نوع با عملگر (.) یا (->)
+        if not node.is_pointer and isinstance(obj_type, StructType):
             struct_type = obj_type
-        elif isinstance(obj_type, PointerType) and isinstance(
-            obj_type.base_type, StructType
-        ):
+        elif node.is_pointer and isinstance(obj_type, PointerType) and isinstance(obj_type.base_type, StructType):
             struct_type = obj_type.base_type
         else:
-            self._report_error(node, f"Member access on non-struct type: {obj_type}")
+            op_str = "->" if node.is_pointer else "."
+            self._report_error(node, f"Invalid member access operator '{op_str}' for type {obj_type}")
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
@@ -437,7 +440,6 @@ class TypeChecker:
 
                 node.inferred_type = self._parse_type(field_symbol.type)
                 return node.inferred_type
-        # ==========================================================
 
         self._report_error(
             node, f"Field '{field_name}' not found in struct '{struct_type.name}'"
