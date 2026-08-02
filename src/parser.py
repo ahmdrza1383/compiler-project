@@ -253,8 +253,10 @@ class Parser:
         initz = None
         if self.match("["):
             is_array = True
-            array_size = self.parse_expr()
+            if not self.check("]"):
+                array_size = self.parse_expr()
             self.consume("]", "Expected ']'")
+            
         if self.match("="):
             initz = self.parse_initializer()
 
@@ -272,8 +274,10 @@ class Parser:
         initializer = None
         if self.match("["):
             is_array = True
-            array_size = self.parse_expr()
+            if not self.check("]"):
+                array_size = self.parse_expr()
             self.consume("]", "Expected ']'")
+
         if self.match("="):
             initializer = self.parse_initializer()
             
