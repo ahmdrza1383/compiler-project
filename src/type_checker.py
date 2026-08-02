@@ -212,29 +212,18 @@ class TypeChecker:
                 if left_type.name in order and right_type.name in order:
                     left_idx = order.index(left_type.name)
                     right_idx = order.index(right_type.name)
+                    
+                    # بررسی اختصاصی برای عملگر ماژولو (%)
+                    if op == "%":
+                        if left_type.name not in ["char", "int"] or right_type.name not in ["char", "int"]:
+                            self._report_error(node, f"Invalid operands for '%' operator: {left_type} and {right_type}")
+                            node.inferred_type = PrimitiveType("int")
+                            return node.inferred_type
+
                     result_name = order[max(left_idx, right_idx)]
                     node.inferred_type = PrimitiveType(result_name)
                     return node.inferred_type
-
-            if isinstance(left_type, PointerType) and isinstance(right_type, PrimitiveType):
-                if right_type.name in ["int", "char"]:
-                    node.inferred_type = left_type
-                else:
-                    self._report_error(node, f"Cannot apply operator '{op}' between pointer and {right_type.name}")
-                    node.inferred_type = PrimitiveType("int")
-                return node.inferred_type
-                
-            if isinstance(left_type, PrimitiveType) and isinstance(right_type, PointerType):
-                if left_type.name in ["int", "char"]:
-                    node.inferred_type = right_type
-                else:
-                    self._report_error(node, f"Cannot apply operator '{op}' between {left_type.name} and pointer")
-                    node.inferred_type = PrimitiveType("int")
-                return node.inferred_type
-            
-            node.inferred_type = PrimitiveType("int")
-            return node.inferred_type
-
+                    
         if op in ["<", "<=", ">", ">=", "==", "!="]:
             is_ptr_and_int = (
                 isinstance(left_type, PointerType)
