@@ -20,24 +20,11 @@ class AutoCompleter:
                 return self._get_member_completions(obj_type, context.get("prefix", ""))
         elif context["type"] == "function_args":
             return self._get_function_arg_completions(context, line, col)
-        else:
-            return self._get_scope_completions(context.get("prefix", ""), line, col)
-
-        context = self._detect_context(source, line, col)
-
-        if context["type"] == "member_access":
-            obj_type = context.get("obj_type")
-            if obj_type:
-                return self._get_member_completions(obj_type, context.get("prefix", ""))
-        elif context["type"] == "function_args":
-            return self._get_function_arg_completions(context, line, col)
-        # --- خطوط جدید ---
         elif context["type"] == "assignment":
             return self._get_assignment_completions(context, line, col)
-        # ----------------
         else:
             return self._get_scope_completions(context.get("prefix", ""), line, col)
-        
+
         return []
 
     def _detect_context(self, source: str, line: int, col: int) -> dict:
