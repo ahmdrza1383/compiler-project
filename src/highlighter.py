@@ -2,9 +2,6 @@ from src.token import TokenType
 from src.ast_node import (
     ASTNode,
     Identifier,
-    Literal,
-    SymbolCategory,
-    TypeSpecifier,
     FunctionDef,
     FunctionDecl,
     StructDef,

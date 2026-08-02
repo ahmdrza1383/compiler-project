@@ -3,6 +3,7 @@ from .ast_node import *
 from .symbol_table import SymbolTable, Symbol
 from .token import SourceLocation
 
+
 class AutoCompleter:
     def __init__(self, symbol_table: SymbolTable, ast_root):
         self.symbol_table = symbol_table
@@ -22,31 +23,30 @@ class AutoCompleter:
             return self._get_function_arg_completions(context, line, col)
         elif context["type"] == "assignment":
             return self._get_assignment_completions(context, line, col)
-        # --- خطوط جدید ---
         elif context["type"] == "return_statement":
             return self._get_return_completions(context, line, col)
-        # ----------------
         else:
             return self._get_scope_completions(context.get("prefix", ""), line, col)
 
         return []
-    
+
     def _detect_context(self, source: str, line: int, col: int) -> dict:
         lines = source.split("\n")
         if line > len(lines) or line < 1:
             return {"type": "general", "prefix": ""}
 
         current_line = lines[line - 1]
-        
-        # اصلاح دقیق مشکل کرسر:
-        # مقدار col را فقط برای برش متن یک واحد کم می‌کنیم تا با 0-based بودن پایتون هماهنگ شود
+
         slice_index = max(0, col - 1)
         text_before_cursor = current_line[:slice_index]
 
-        match = re.search(r'([a-zA-Z_][a-zA-Z0-9_]*)$', text_before_cursor)
+        match = re.search(r"([a-zA-Z_][a-zA-Z0-9_]*)$", text_before_cursor)
         typing_prefix = match.group(1) if match else ""
 
-        member_match = re.search(r"([a-zA-Z_][a-zA-Z0-9_]*)\s*(?:\.|->)\s*([a-zA-Z0-9_]*)$", text_before_cursor)
+        member_match = re.search(
+            r"([a-zA-Z_][a-zA-Z0-9_]*)\s*(?:\.|->)\s*([a-zA-Z0-9_]*)$",
+            text_before_cursor,
+        )
         if member_match:
             obj_expr = member_match.group(1)
             obj_type = self._infer_object_type(obj_expr)
@@ -54,44 +54,43 @@ class AutoCompleter:
                 "type": "member_access",
                 "obj_expr": obj_expr,
                 "obj_type": obj_type,
-                "prefix": member_match.group(2) 
+                "prefix": member_match.group(2),
             }
 
-        func_match = re.search(r'([a-zA-Z_][a-zA-Z0-9_]*)\s*\([^)]*$', text_before_cursor)
+        func_match = re.search(
+            r"([a-zA-Z_][a-zA-Z0-9_]*)\s*\([^)]*$", text_before_cursor
+        )
         if func_match:
             func_name = func_match.group(1)
-            args_str = text_before_cursor[func_match.start():]
-            arg_index = args_str.count(',') 
+            args_str = text_before_cursor[func_match.start() :]
+            arg_index = args_str.count(",")
             return {
                 "type": "function_args",
                 "func_name": func_name,
                 "arg_index": arg_index,
-                "prefix": typing_prefix
+                "prefix": typing_prefix,
             }
 
-        assign_match = re.search(r'(?:([a-zA-Z_][a-zA-Z0-9_]*)\s+)?([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*([a-zA-Z0-9_]*)$', text_before_cursor)
+        assign_match = re.search(
+            r"(?:([a-zA-Z_][a-zA-Z0-9_]*)\s+)?([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*([a-zA-Z0-9_]*)$",
+            text_before_cursor,
+        )
         if assign_match:
-            type_hint = assign_match.group(1) # مثلاً int در int c =
-            lhs_name = assign_match.group(2)  # مثلاً c
+            type_hint = assign_match.group(1)
+            lhs_name = assign_match.group(2)
             typing_prefix = assign_match.group(3)
             return {
                 "type": "assignment",
                 "type_hint": type_hint,
                 "lhs_name": lhs_name,
-                "prefix": typing_prefix
+                "prefix": typing_prefix,
             }
 
-        # --- کدهای جدید برای تشخیص return ---
-        return_match = re.search(r'\breturn\b\s+([^;]*)$', text_before_cursor)
+        return_match = re.search(r"\breturn\b\s+([^;]*)$", text_before_cursor)
         if return_match:
-            return {
-                "type": "return_statement",
-                "prefix": typing_prefix
-            }
-        # -----------------------------------
-        
-        return {"type": "general", "prefix": typing_prefix}
+            return {"type": "return_statement", "prefix": typing_prefix}
 
+        return {"type": "general", "prefix": typing_prefix}
 
     def _infer_object_type(self, obj_expr: str) -> str:
         symbol = self.symbol_table.resolve(obj_expr)
@@ -107,33 +106,43 @@ class AutoCompleter:
         if clean_type.startswith("struct "):
             struct_name = clean_type[7:].strip()
             completions = []
-            struct_scope = getattr(self.symbol_table, 'struct_scopes', {}).get(struct_name)
-            
+            struct_scope = getattr(self.symbol_table, "struct_scopes", {}).get(
+                struct_name
+            )
+
             if struct_scope:
                 for name, symbol in struct_scope.symbols.items():
                     if prefix and not name.startswith(prefix):
                         continue
-                    completions.append({
-                        "label": name,
-                        "kind": "field",
-                        "type": getattr(symbol, 'type', 'unknown'),
-                        "detail": f"{getattr(symbol, 'type', '')} {name}",
-                        "sortOrder": self._get_sort_order("field"),
-                    })
+                    completions.append(
+                        {
+                            "label": name,
+                            "kind": "field",
+                            "type": getattr(symbol, "type", "unknown"),
+                            "detail": f"{getattr(symbol, 'type', '')} {name}",
+                            "sortOrder": self._get_sort_order("field"),
+                        }
+                    )
             return completions
         return []
 
-    def _get_function_arg_completions(self, context: dict, current_line: int, current_col: int) -> list:
+    def _get_function_arg_completions(
+        self, context: dict, current_line: int, current_col: int
+    ) -> list:
         func_name = context.get("func_name")
         arg_index = context.get("arg_index", 0)
         prefix = context.get("prefix", "")
 
         completions = self._get_scope_completions(prefix, current_line, current_col)
-        
+
         expected_type = None
-        if hasattr(self.symbol_table, 'resolve'):
+        if hasattr(self.symbol_table, "resolve"):
             func_symbol = self.symbol_table.resolve(func_name)
-            if func_symbol and func_symbol.kind == "function" and getattr(func_symbol, 'signature', None):
+            if (
+                func_symbol
+                and func_symbol.kind == "function"
+                and getattr(func_symbol, "signature", None)
+            ):
                 sig = func_symbol.signature
                 if "->" in sig:
                     params_part = sig.split("->")[0].strip().strip("()")
@@ -146,103 +155,116 @@ class AutoCompleter:
         for comp in completions:
             if expected_type:
                 exp_type = expected_type.replace("[]", "*").strip()
-                
-                # ۱. بررسی تایپ‌های اولیه (مثل int, float)
+
                 if comp["kind"] == "type":
-                    # اگر اسم تایپ (label) دقیقاً با تایپ مورد انتظار یکی بود، پیشنهادش بده
                     if comp["label"] == exp_type:
                         filtered.append(comp)
                     continue
-                    
-                # ۲. توابع را نادیده بگیر
+
                 if comp["kind"] == "function":
                     continue
-                    
-                # ۳. بررسی متغیرها
+
                 comp_type = comp.get("type", "").replace("[]", "*").strip()
                 if comp_type == exp_type or exp_type == "void*":
                     filtered.append(comp)
             else:
-                # اگر تایپ مورد انتظار به هر دلیلی پیدا نشد، همه پیشنهادها را برگردان
                 filtered.append(comp)
 
         return filtered
 
-    def _get_scope_completions(self, prefix: str, current_line: int, current_col: int) -> list:
+    def _get_scope_completions(
+        self, prefix: str, current_line: int, current_col: int
+    ) -> list:
         completions = []
-        
+
         primitive_types = ["int", "float", "char", "double", "void", "struct"]
         for pt in primitive_types:
             if not prefix or pt.startswith(prefix):
-                completions.append({
-                    "label": pt,
-                    "kind": "type",
-                    "type": "keyword",
-                    "detail": "primitive type",
-                    "sortOrder": self._get_sort_order("type")
-                })
+                completions.append(
+                    {
+                        "label": pt,
+                        "kind": "type",
+                        "type": "keyword",
+                        "detail": "primitive type",
+                        "sortOrder": self._get_sort_order("type"),
+                    }
+                )
 
         symbols = self._find_active_scope_symbols(current_line, current_col, prefix)
         for symbol in symbols:
             if prefix and not symbol.name.startswith(prefix):
                 continue
 
-            kind = getattr(symbol, 'kind', 'variable')
+            kind = getattr(symbol, "kind", "variable")
             if kind == "function":
-                sig = getattr(symbol, 'signature', None)
+                sig = getattr(symbol, "signature", None)
                 detail = sig if sig else f"{getattr(symbol, 'type', '')} function"
             else:
                 detail = f"{getattr(symbol, 'type', '')} {symbol.name}"
 
-            completions.append({
-                "label": symbol.name,
-                "kind": kind,
-                "type": getattr(symbol, 'type', ''),
-                "detail": detail,
-                "sortOrder": self._get_sort_order(kind),
-            })
+            completions.append(
+                {
+                    "label": symbol.name,
+                    "kind": kind,
+                    "type": getattr(symbol, "type", ""),
+                    "detail": detail,
+                    "sortOrder": self._get_sort_order(kind),
+                }
+            )
 
         completions.sort(key=lambda x: (x["sortOrder"], x["label"]))
         return completions
 
-    def _find_active_scope_symbols(self, current_line: int, current_col: int, prefix: str) -> list:
+    def _find_active_scope_symbols(
+        self, current_line: int, current_col: int, prefix: str
+    ) -> list:
         symbols = []
         seen = set()
 
-        if hasattr(self.symbol_table, 'global_scope'):
+        if hasattr(self.symbol_table, "global_scope"):
             for name, symbol in self.symbol_table.global_scope.symbols.items():
-                def_line, def_col = self._get_loc_details(getattr(symbol, 'definition_loc', None))
-                if def_line < current_line or (def_line == current_line and def_col < current_col - len(prefix)):
+                def_line, def_col = self._get_loc_details(
+                    getattr(symbol, "definition_loc", None)
+                )
+                if def_line < current_line or (
+                    def_line == current_line and def_col < current_col - len(prefix)
+                ):
                     seen.add(name)
                     symbols.append(symbol)
 
-        # ۲. محاسبه مرز توابع
         func_starts = []
-        if hasattr(self.symbol_table, 'all_symbols'):
+        if hasattr(self.symbol_table, "all_symbols"):
             for symbol in self.symbol_table.all_symbols:
                 if symbol.kind == "function":
-                    func_starts.append((symbol.name, self._get_loc_details(symbol.definition_loc)[0]))
-        
+                    func_starts.append(
+                        (symbol.name, self._get_loc_details(symbol.definition_loc)[0])
+                    )
+
         func_starts.sort(key=lambda x: x[1])
-        
+
         active_func_start = -1
-        active_func_end = float('inf')
-        
+        active_func_end = float("inf")
+
         for i in range(len(func_starts)):
             if func_starts[i][1] <= current_line:
                 active_func_start = func_starts[i][1]
                 if i + 1 < len(func_starts):
-                    active_func_end = func_starts[i+1][1] - 1
+                    active_func_end = func_starts[i + 1][1] - 1
                 else:
-                    active_func_end = float('inf')
+                    active_func_end = float("inf")
 
-        if hasattr(self.symbol_table, 'all_symbols'):
+        if hasattr(self.symbol_table, "all_symbols"):
             for symbol in self.symbol_table.all_symbols:
-                if getattr(symbol, 'scope', '') != "global" and symbol.kind != "struct":
-                    def_line, def_col = self._get_loc_details(getattr(symbol, 'definition_loc', None))
-                    
+                if getattr(symbol, "scope", "") != "global" and symbol.kind != "struct":
+                    def_line, def_col = self._get_loc_details(
+                        getattr(symbol, "definition_loc", None)
+                    )
+
                     if active_func_start <= def_line <= current_line:
-                        if def_line < current_line or (def_line == current_line and def_col < current_col - len(prefix)):
+                        if def_line < current_line or (
+                            def_line == current_line
+                            and def_col < current_col - len(prefix)
+                        ):
                             if symbol.name not in seen:
                                 seen.add(symbol.name)
                                 symbols.append(symbol)
@@ -255,16 +277,15 @@ class AutoCompleter:
             return 0, 0
         try:
             if isinstance(loc, str):
-                parts = loc.split(':')
-                # پشتیبانی از فرمت‌های "filename:line:col" و "line:col"
+                parts = loc.split(":")
                 if len(parts) >= 3:
                     return int(parts[-2]), int(parts[-1])
                 elif len(parts) == 2:
                     return int(parts[0]), int(parts[1])
                 return 0, 0
-            
-            line = getattr(loc, 'line', 0)
-            col = getattr(loc, 'column', getattr(loc, 'col', 0))
+
+            line = getattr(loc, "line", 0)
+            col = getattr(loc, "column", getattr(loc, "col", 0))
             return line, col
         except (IndexError, ValueError, AttributeError):
             return 0, 0
@@ -275,29 +296,29 @@ class AutoCompleter:
             "parameter": 1,
             "variable": 2,
             "field": 3,
-            "type": 4,       
+            "type": 4,
             "function": 5,
             "struct": 6,
             "global": 7,
         }
         return priority.get(kind, 10)
 
-    def _get_assignment_completions(self, context: dict, current_line: int, current_col: int) -> list:
+    def _get_assignment_completions(
+        self, context: dict, current_line: int, current_col: int
+    ) -> list:
         lhs_name = context.get("lhs_name")
         type_hint = context.get("type_hint")
         prefix = context.get("prefix", "")
 
         completions = self._get_scope_completions(prefix, current_line, current_col)
-        
+
         expected_type = None
-        # ۱. ابتدا بررسی می‌کنیم که آیا در همان خط تایپ متغیر نوشته شده است (مثل: int c =)
         if type_hint and type_hint in ["int", "float", "char", "double", "void"]:
             expected_type = type_hint
-        # ۲. اگر تایپ نوشته نشده بود (مثل: c =)، سعی می‌کنیم تایپش را از جدول نمادها پیدا کنیم
-        elif hasattr(self.symbol_table, 'resolve'):
+        elif hasattr(self.symbol_table, "resolve"):
             sym = self.symbol_table.resolve(lhs_name)
             if sym:
-                expected_type = getattr(sym, 'type', None)
+                expected_type = getattr(sym, "type", None)
 
         if not expected_type:
             return completions
@@ -306,23 +327,19 @@ class AutoCompleter:
         exp_type = expected_type.replace("[]", "*").strip()
 
         for comp in completions:
-            # الف) فیلتر کردن کلمات کلیدی تایپ‌ها
             if comp["kind"] == "type":
                 if comp["label"] == exp_type:
                     filtered.append(comp)
                 continue
-                
-            # ب) فیلتر کردن توابع بر اساس نوع خروجی‌شان (Return Type)
+
             if comp["kind"] == "function":
                 sig = comp.get("detail", "")
                 if "->" in sig:
-                    # استخراج نوع خروجی از امضای تابع (مثلاً int از (int, float) -> int)
                     ret_type = sig.split("->")[1].strip()
                     if ret_type == exp_type or exp_type == "void*":
                         filtered.append(comp)
                 continue
-                
-            # ج) فیلتر کردن متغیرها بر اساس تایپ آن‌ها
+
             comp_type = comp.get("type", "").replace("[]", "*").strip()
             if comp_type == exp_type or exp_type == "void*":
                 filtered.append(comp)
@@ -330,40 +347,40 @@ class AutoCompleter:
         return filtered
 
     def _get_enclosing_function_return_type(self, current_line: int) -> str:
-        """پیدا کردن تایپ خروجیِ تابعی که کرسر در حال حاضر درون آن است"""
-        if not hasattr(self.symbol_table, 'all_symbols'):
+        if not hasattr(self.symbol_table, "all_symbols"):
             return None
-        
+
         func_starts = []
         for symbol in self.symbol_table.all_symbols:
             if symbol.kind == "function":
-                def_line, _ = self._get_loc_details(getattr(symbol, 'definition_loc', None))
+                def_line, _ = self._get_loc_details(
+                    getattr(symbol, "definition_loc", None)
+                )
                 func_starts.append((symbol, def_line))
-        
-        # مرتب‌سازی توابع بر اساس خط شروع آن‌ها
+
         func_starts.sort(key=lambda x: x[1])
-        
+
         active_func = None
         for symbol, start_line in func_starts:
             if start_line <= current_line:
                 active_func = symbol
             else:
-                break # چون از خط فعلی رد شدیم، متوقف می‌شویم
-                
-        if active_func and getattr(active_func, 'signature', None):
+                break
+
+        if active_func and getattr(active_func, "signature", None):
             sig = active_func.signature
             if "->" in sig:
                 return sig.split("->")[1].strip()
         return None
 
-    def _get_return_completions(self, context: dict, current_line: int, current_col: int) -> list:
+    def _get_return_completions(
+        self, context: dict, current_line: int, current_col: int
+    ) -> list:
         prefix = context.get("prefix", "")
         completions = self._get_scope_completions(prefix, current_line, current_col)
-        
-        # پیدا کردن تایپِ مورد انتظار از تابعی که داخلش هستیم
+
         expected_type = self._get_enclosing_function_return_type(current_line)
-        
-        # اگر تابع پیدا نشد، همه پیشنهادها را برگردان
+
         if not expected_type:
             return completions
 
@@ -371,13 +388,11 @@ class AutoCompleter:
         exp_type = expected_type.replace("[]", "*").strip()
 
         for comp in completions:
-            # ۱. فیلتر کردن کلمات کلیدی تایپ‌ها (مثل float و char)
             if comp["kind"] == "type":
                 if comp["label"] == exp_type:
                     filtered.append(comp)
                 continue
-                
-            # ۲. فیلتر کردن توابع بر اساس خروجی آن‌ها
+
             if comp["kind"] == "function":
                 sig = comp.get("detail", "")
                 if "->" in sig:
@@ -385,8 +400,7 @@ class AutoCompleter:
                     if ret_type == exp_type or exp_type == "void*":
                         filtered.append(comp)
                 continue
-                
-            # ۳. فیلتر کردن متغیرها/پارامترها بر اساس تایپ آن‌ها
+
             comp_type = comp.get("type", "").replace("[]", "*").strip()
             if comp_type == exp_type or exp_type == "void*":
                 filtered.append(comp)

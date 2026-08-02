@@ -169,31 +169,28 @@ class Parser:
         return fields
 
     def parse_type_rest(self, base_type_spec):
-        # پوینترهایی که قبلاً توسط parse_basic_type_spec جذب شده‌اند را می‌گیریم
         pointers = base_type_spec.pointers
-        
+
         while self.match("*"):
             pointers += 1
-            
-        # یک نمونه کاملاً خام و بدون پوینتر (pointers=0) برای متغیرهای دوم به بعد می‌سازیم
+
         pure_base_type = TypeSpecifier(
             base_type_spec.type_name,
             0,
             getattr(base_type_spec, "line", 0),
-            getattr(base_type_spec, "col", 0)
+            getattr(base_type_spec, "col", 0),
         )
 
-        # نوع متغیر اول (با احتساب تمام پوینترها)
         current_type_spec = TypeSpecifier(
             base_type_spec.type_name,
             pointers,
             getattr(base_type_spec, "line", 0),
-            getattr(base_type_spec, "col", 0)
+            getattr(base_type_spec, "col", 0),
         )
 
         ident_tok = self.consume_type(TokenType.IDENTIFIER, "Expected identifier")
         line, col = self._loc(ident_tok)
-        
+
         if self.match("("):
             ident = Identifier(ident_tok.lexeme, SymbolCategory.FUNCTION, line, col)
             params = []
@@ -208,9 +205,8 @@ class Parser:
                 return FunctionDecl(current_type_spec, ident, params)
         else:
             ident = Identifier(ident_tok.lexeme, SymbolCategory.VARIABLE, line, col)
-            # هر دو نمونه خام و اختصاصی را به تابع بعدی پاس می‌دهیم
             return self.parse_var_tail(pure_base_type, current_type_spec, ident)
-            
+
     def parse_non_struct_decl(self):
         type_spec = self.parse_basic_type_spec()
         return self.parse_type_rest(type_spec)
@@ -256,7 +252,7 @@ class Parser:
             if not self.check("]"):
                 array_size = self.parse_expr()
             self.consume("]", "Expected ']'")
-            
+
         if self.match("="):
             initz = self.parse_initializer()
 
@@ -280,17 +276,17 @@ class Parser:
 
         if self.match("="):
             initializer = self.parse_initializer()
-            
-        # متغیر اول با تایپ اختصاصی خودش ساخته می‌شود (مثلاً int*)
-        decls = [VarDecl(first_type_spec, first_ident, is_array, array_size, initializer)]
-        
+
+        decls = [
+            VarDecl(first_type_spec, first_ident, is_array, array_size, initializer)
+        ]
+
         while self.match(","):
-            # متغیرهای بعدی با تایپ کاملاً خام ساخته می‌شوند (مثلاً int)
             decls.append(self.parse_var_init(base_type_spec))
-            
+
         self.consume(";", "Expected ';' after variable declaration")
         return decls[0] if len(decls) == 1 else decls
-    
+
     def parse_param_list(self):
         params = [self.parse_param()]
         while self.match(","):
@@ -378,12 +374,9 @@ class Parser:
         self.consume("(", "Expected '('")
 
         init = None
-        # بررسی اینکه آیا با تعریف متغیر (مثل C99) روبرو هستیم یا نه
         if self.peek().lexeme in ["struct", "int", "float", "double", "char", "void"]:
-            # تابع parse_declaration خودش سیمیکالون (;) را بررسی و مصرف می‌کند
             init = self.parse_declaration()
         else:
-            # حالت کلاسیک: یک عبارت معمولی یا بخش خالی
             if not self.check(";"):
                 init = self.parse_expr()
             self.consume(";", "Expected ';'")

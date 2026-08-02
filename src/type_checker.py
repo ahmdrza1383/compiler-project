@@ -215,7 +215,6 @@ class TypeChecker:
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
-        # بررسی عملگرهای حسابی با در نظر گرفتن قوانین پوینترها
         if op in ["+", "-"]:
             is_left_ptr = isinstance(left_type, PointerType)
             is_right_ptr = isinstance(right_type, PointerType)
@@ -229,11 +228,9 @@ class TypeChecker:
                 right_type, PrimitiveType
             ) and right_type.name in ["char", "int", "float", "double"]
 
-            # حالت ۱: پوینتر + عدد صحیح (یا برعکس در جمع)
             if (is_left_ptr and is_right_arith) or (
                 op == "+" and is_left_arith and is_right_ptr
             ):
-                # بررسی اینکه عدد اعشاری نباشد (پوینتر فقط با int/char جمع/تفریق می‌شود)
                 arith_type = left_type if is_left_arith else right_type
                 if arith_type.name not in ["char", "int"]:
                     self._report_error(
@@ -244,12 +241,10 @@ class TypeChecker:
                 node.inferred_type = left_type if is_left_ptr else right_type
                 return node.inferred_type
 
-            # حالت ۲: تفریق دو پوینتر
             if op == "-" and is_left_ptr and is_right_ptr:
                 node.inferred_type = PrimitiveType("int")
                 return node.inferred_type
 
-            # حالت‌های غیرمجاز پوینتر (مثلاً جمع دو پوینتر یا پوینتر با float)
             if is_left_ptr or is_right_ptr:
                 self._report_error(
                     node,
@@ -258,7 +253,6 @@ class TypeChecker:
                 node.inferred_type = PrimitiveType("int")
                 return node.inferred_type
 
-            # حالت معمولی حسابی روی اعداد
             if is_left_arith and is_right_arith:
                 order = ["char", "int", "float", "double"]
                 left_idx = order.index(left_type.name)
@@ -276,7 +270,6 @@ class TypeChecker:
                     left_idx = order.index(left_type.name)
                     right_idx = order.index(right_type.name)
 
-                    # بررسی اختصاصی برای عملگر ماژولو (%)
                     if op == "%":
                         if left_type.name not in [
                             "char",
@@ -460,7 +453,6 @@ class TypeChecker:
 
         self.scope_stack.append(set())
 
-        # پیمایش پارامترها در داخل Scope اختصاصی تابع
         if hasattr(node, "params"):
             for param in node.params:
                 self._visit(param)
@@ -479,7 +471,6 @@ class TypeChecker:
 
         struct_type = None
 
-        # بررسی تطابق نوع با عملگر (.) یا (->)
         if not node.is_pointer and isinstance(obj_type, StructType):
             struct_type = obj_type
         elif (

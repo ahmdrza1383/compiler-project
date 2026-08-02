@@ -112,7 +112,7 @@ class SymbolTableBuilder:
                         self.errors.append(f"Redefinition of function '{func_name}'")
                     else:
                         existing.is_defined = True
-                        existing.set_initialized()  # <--- این خط اضافه شود
+                        existing.set_initialized()  
             else:
                 func_symbol.is_defined = isinstance(node, FunctionDef)
                 if isinstance(node, FunctionDef):

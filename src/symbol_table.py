@@ -2,7 +2,6 @@ from src.token import SourceLocation
 from typing import List, Optional, Dict, Any
 
 
-
 class Symbol:
     """
     Fields:
@@ -29,7 +28,7 @@ class Symbol:
         self.name = name
         self.kind = kind
         self.type = type_spec
-        self.scope = None  # Reference به Scope والد
+        self.scope = None
         self.definition_loc = definition_loc
         self.references: List[SourceLocation] = []
         self.signature = signature
@@ -63,10 +62,9 @@ class Symbol:
 
 
 class Scope:
-
     def __init__(self, parent: Optional["Scope"] = None, scope_type: str = "global"):
-        self.parent = parent  # Reference به Scope والد
-        self.scope_type = scope_type  # 'global', 'function', 'block', 'struct'
+        self.parent = parent
+        self.scope_type = scope_type
         self.symbols: Dict[str, Symbol] = {}
         self.children: List["Scope"] = []
 
@@ -121,7 +119,6 @@ class SymbolTable:
     def get_global_scope(self) -> Scope:
         return self.global_scope
 
-
     def define(self, symbol: Symbol) -> bool:
         if self.current_scope.define(symbol):
             self.all_symbols.append(symbol)
@@ -133,7 +130,6 @@ class SymbolTable:
 
     def resolve_global(self, name: str) -> Optional[Symbol]:
         return self.global_scope.resolve_local(name)
-
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -150,7 +146,7 @@ class SymbolTable:
 
     def print_table(self):
         print("\n" + "=" * 70)
-        print("📋 SYMBOL TABLE (بخش 5.1)")
+        print("SYMBOL TABLE")
         print("=" * 70)
         self._print_scope(self.global_scope, 0)
         print("=" * 70)
@@ -159,15 +155,15 @@ class SymbolTable:
         prefix = "  " * indent
 
         if scope.scope_type == "global":
-            print(f"{prefix}🌐 Global Scope")
+            print(f"{prefix} Global Scope")
         elif scope.scope_type == "function":
-            print(f"{prefix}📦 Function Scope")
+            print(f"{prefix} Function Scope")
         elif scope.scope_type == "block":
-            print(f"{prefix}📦 Block Scope")
+            print(f"{prefix} Block Scope")
         elif scope.scope_type == "struct":
-            print(f"{prefix}🏗️  Struct Scope")
+            print(f"{prefix}  Struct Scope")
         else:
-            print(f"{prefix}📦 {scope.scope_type.capitalize()} Scope")
+            print(f"{prefix} {scope.scope_type.capitalize()} Scope")
 
         for name, symbol in scope.symbols.items():
             loc = symbol.definition_loc
