@@ -22,11 +22,15 @@ class AutoCompleter:
             return self._get_function_arg_completions(context, line, col)
         elif context["type"] == "assignment":
             return self._get_assignment_completions(context, line, col)
+        # --- خطوط جدید ---
+        elif context["type"] == "return_statement":
+            return self._get_return_completions(context, line, col)
+        # ----------------
         else:
             return self._get_scope_completions(context.get("prefix", ""), line, col)
 
         return []
-
+    
     def _detect_context(self, source: str, line: int, col: int) -> dict:
         lines = source.split("\n")
         if line > len(lines) or line < 1:
@@ -77,7 +81,17 @@ class AutoCompleter:
                 "prefix": typing_prefix
             }
 
+        # --- کدهای جدید برای تشخیص return ---
+        return_match = re.search(r'\breturn\b\s+([^;]*)$', text_before_cursor)
+        if return_match:
+            return {
+                "type": "return_statement",
+                "prefix": typing_prefix
+            }
+        # -----------------------------------
+        
         return {"type": "general", "prefix": typing_prefix}
+
 
     def _infer_object_type(self, obj_expr: str) -> str:
         symbol = self.symbol_table.resolve(obj_expr)
@@ -309,6 +323,70 @@ class AutoCompleter:
                 continue
                 
             # ج) فیلتر کردن متغیرها بر اساس تایپ آن‌ها
+            comp_type = comp.get("type", "").replace("[]", "*").strip()
+            if comp_type == exp_type or exp_type == "void*":
+                filtered.append(comp)
+
+        return filtered
+
+    def _get_enclosing_function_return_type(self, current_line: int) -> str:
+        """پیدا کردن تایپ خروجیِ تابعی که کرسر در حال حاضر درون آن است"""
+        if not hasattr(self.symbol_table, 'all_symbols'):
+            return None
+        
+        func_starts = []
+        for symbol in self.symbol_table.all_symbols:
+            if symbol.kind == "function":
+                def_line, _ = self._get_loc_details(getattr(symbol, 'definition_loc', None))
+                func_starts.append((symbol, def_line))
+        
+        # مرتب‌سازی توابع بر اساس خط شروع آن‌ها
+        func_starts.sort(key=lambda x: x[1])
+        
+        active_func = None
+        for symbol, start_line in func_starts:
+            if start_line <= current_line:
+                active_func = symbol
+            else:
+                break # چون از خط فعلی رد شدیم، متوقف می‌شویم
+                
+        if active_func and getattr(active_func, 'signature', None):
+            sig = active_func.signature
+            if "->" in sig:
+                return sig.split("->")[1].strip()
+        return None
+
+    def _get_return_completions(self, context: dict, current_line: int, current_col: int) -> list:
+        prefix = context.get("prefix", "")
+        completions = self._get_scope_completions(prefix, current_line, current_col)
+        
+        # پیدا کردن تایپِ مورد انتظار از تابعی که داخلش هستیم
+        expected_type = self._get_enclosing_function_return_type(current_line)
+        
+        # اگر تابع پیدا نشد، همه پیشنهادها را برگردان
+        if not expected_type:
+            return completions
+
+        filtered = []
+        exp_type = expected_type.replace("[]", "*").strip()
+
+        for comp in completions:
+            # ۱. فیلتر کردن کلمات کلیدی تایپ‌ها (مثل float و char)
+            if comp["kind"] == "type":
+                if comp["label"] == exp_type:
+                    filtered.append(comp)
+                continue
+                
+            # ۲. فیلتر کردن توابع بر اساس خروجی آن‌ها
+            if comp["kind"] == "function":
+                sig = comp.get("detail", "")
+                if "->" in sig:
+                    ret_type = sig.split("->")[1].strip()
+                    if ret_type == exp_type or exp_type == "void*":
+                        filtered.append(comp)
+                continue
+                
+            # ۳. فیلتر کردن متغیرها/پارامترها بر اساس تایپ آن‌ها
             comp_type = comp.get("type", "").replace("[]", "*").strip()
             if comp_type == exp_type or exp_type == "void*":
                 filtered.append(comp)
