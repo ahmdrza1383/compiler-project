@@ -409,6 +409,17 @@ int main() {
         </div>
 
         <div id="tab-cfg" class="tab-content">
+          <div class="mb-4 flex gap-4">
+            <select
+              id="cfgSelector"
+              onchange="renderSelectedCfgGraph()"
+              class="bg-slate-800 text-slate-200 border border-slate-700 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-blue-500 transition cursor-pointer"
+            >
+              <option value="cfg">Standard CFG (Control Flow)</option>
+              <option value="dom">Dominator Tree</option>
+              <option value="pdom">Post-Dominator Tree</option>
+            </select>
+          </div>
           <div id="cfgContainer" class="mermaid w-full overflow-auto">
             graph TD;
           </div>
@@ -474,6 +485,8 @@ int main() {
 
       // Store graph definitions to render them when tabs become visible
       let pendingCfgData = "";
+      let pendingDomData = "";
+      let pendingPDomData = "";
       let pendingCallGraphData = "";
 
       function flattenSymbolTable(scope, path = "global") {
@@ -556,7 +569,6 @@ int main() {
         return html;
       }
 
-      // ===== Compile / Analyze =====
       async function compileCode() {
         const code = document.getElementById("sourceCode").value;
         const statusDiv = document.getElementById("compileStatus");
@@ -629,32 +641,60 @@ int main() {
           }
 
           let mermaidCfg = "graph TD;\n";
+          let mermaidDom = "graph TD;\n";
+          let mermaidPDom = "graph TD;\n";
+
           if (data.cfg && Object.keys(data.cfg).length > 0) {
             for (let func in data.cfg) {
               let cfg = data.cfg[func];
+
               if (cfg.blocks) {
                 cfg.blocks.forEach((b) => {
                   let label = `<b>Block ${b.id}</b><br/><i>${b.label}</i>`;
-
                   if (b.statements && b.statements.length > 0) {
                     label += `<br/><hr/>`;
                     b.statements.forEach((stmt) => {
                       label += `<span style='font-size: 11px'>- ${stmt}</span><br/>`;
                     });
                   }
-
-                  mermaidCfg += `    F_${func}_${b.id}["${label}"]\n`;
+                  let nodeStr = `    F_${func}_${b.id}["${label}"]\n`;
+                  mermaidCfg += nodeStr;
+                  mermaidDom += nodeStr;
+                  mermaidPDom += nodeStr;
 
                   b.successors.forEach((succId) => {
                     mermaidCfg += `    F_${func}_${b.id} --> F_${func}_${succId}\n`;
                   });
                 });
               }
+
+              if (cfg.idoms) {
+                for (let bId in cfg.idoms) {
+                  let idom = cfg.idoms[bId];
+                  if (idom !== null && idom != bId) {
+                    mermaidDom += `    F_${func}_${idom} ==>|Dominates| F_${func}_${bId}\n`;
+                  }
+                }
+              }
+
+              if (cfg.ipdoms) {
+                for (let bId in cfg.ipdoms) {
+                  let ipdom = cfg.ipdoms[bId];
+                  if (ipdom !== null && ipdom != bId) {
+                    mermaidPDom += `    F_${func}_${ipdom} ==>|Post-Dominates| F_${func}_${bId}\n`;
+                  }
+                }
+              }
             }
           } else {
             mermaidCfg = "graph TD; A[No CFG Generated];";
+            mermaidDom = "graph TD; A[No Dominator Tree];";
+            mermaidPDom = "graph TD; A[No Post-Dominator Tree];";
           }
+
           pendingCfgData = mermaidCfg;
+          pendingDomData = mermaidDom;
+          pendingPDomData = mermaidPDom;
 
           let mermaidCg = "graph TD;\n";
           if (data.call_graph && Object.keys(data.call_graph).length > 0) {
@@ -927,18 +967,26 @@ int main() {
       }
 
       // ===== Graph Rendering Logic =====
+      async function renderSelectedCfgGraph() {
+        const type = document.getElementById("cfgSelector").value;
+        let dataToRender = pendingCfgData;
+        if (type === "dom") dataToRender = pendingDomData;
+        if (type === "pdom") dataToRender = pendingPDomData;
+
+        const container = document.getElementById("cfgContainer");
+        container.removeAttribute("data-processed");
+        container.innerHTML = dataToRender; // استفاده از innerHTML برای مقداردهی
+
+        try {
+          await mermaid.run({ nodes: [container] });
+        } catch (e) {
+          console.log("Mermaid rendering error:", e);
+        }
+      }
+
       async function renderVisibleGraphs() {
-        // Only render mermaid if the tab is visible to avoid 0x0 size SVGs
-        if (
-          document.getElementById("tab-cfg").classList.contains("active") &&
-          pendingCfgData
-        ) {
-          const container = document.getElementById("cfgContainer");
-          container.removeAttribute("data-processed");
-          container.textContent = pendingCfgData;
-          await mermaid
-            .run({ nodes: [container] })
-            .catch((e) => console.log(e));
+        if (document.getElementById("tab-cfg").classList.contains("active")) {
+          await renderSelectedCfgGraph();
         }
         if (
           document
