@@ -206,7 +206,44 @@ class TypeChecker:
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
-        if op in ["+", "-", "*", "/", "%"]:
+        # بررسی عملگرهای حسابی با در نظر گرفتن قوانین پوینترها
+        if op in ["+", "-"]:
+            is_left_ptr = isinstance(left_type, PointerType)
+            is_right_ptr = isinstance(right_type, PointerType)
+            is_left_arith = isinstance(left_type, PrimitiveType) and left_type.name in ["char", "int", "float", "double"]
+            is_right_arith = isinstance(right_type, PrimitiveType) and right_type.name in ["char", "int", "float", "double"]
+
+            # حالت ۱: پوینتر + عدد صحیح (یا برعکس در جمع)
+            if (is_left_ptr and is_right_arith) or (op == "+" and is_left_arith and is_right_ptr):
+                # بررسی اینکه عدد اعشاری نباشد (پوینتر فقط با int/char جمع/تفریق می‌شود)
+                arith_type = left_type if is_left_arith else right_type
+                if arith_type.name not in ["char", "int"]:
+                    self._report_error(node, f"Invalid operand type for pointer arithmetic: {arith_type}")
+                
+                node.inferred_type = left_type if is_left_ptr else right_type
+                return node.inferred_type
+
+            # حالت ۲: تفریق دو پوینتر
+            if op == "-" and is_left_ptr and is_right_ptr:
+                node.inferred_type = PrimitiveType("int")
+                return node.inferred_type
+
+            # حالت‌های غیرمجاز پوینتر (مثلاً جمع دو پوینتر یا پوینتر با float)
+            if is_left_ptr or is_right_ptr:
+                self._report_error(node, f"Invalid operands for pointer arithmetic: {left_type} and {right_type}")
+                node.inferred_type = PrimitiveType("int")
+                return node.inferred_type
+
+            # حالت معمولی حسابی روی اعداد
+            if is_left_arith and is_right_arith:
+                order = ["char", "int", "float", "double"]
+                left_idx = order.index(left_type.name)
+                right_idx = order.index(right_type.name)
+                result_name = order[max(left_idx, right_idx)]
+                node.inferred_type = PrimitiveType(result_name)
+                return node.inferred_type
+
+        if op in ["*", "/", "%"]:
             if isinstance(left_type, PrimitiveType) and isinstance(
                 right_type, PrimitiveType
             ):
@@ -225,7 +262,9 @@ class TypeChecker:
                     result_name = order[max(left_idx, right_idx)]
                     node.inferred_type = PrimitiveType(result_name)
                     return node.inferred_type
-                
+            else:
+                self._report_error(node, f"Invalid operands for multiplicative operator '{op}': {left_type} and {right_type}")
+
         if op in ["<", "<=", ">", ">=", "==", "!="]:
             is_ptr_and_int = (
                 isinstance(left_type, PointerType)
@@ -264,7 +303,7 @@ class TypeChecker:
 
         node.inferred_type = PrimitiveType("int")
         return node.inferred_type
-
+    
     def _visit_UnaryExpr(self, node):
         operand_type = self._visit(node.operand)
         if node.op in ["+", "-"]:
