@@ -23,237 +23,242 @@
             white-space: pre-wrap;
         }
         
-            .kw { color: #0000FF; font-weight: bold; }
-            .type { color: #00FF00; }
-            .class { color: #00FF00; font-weight: bold; }
-            .func { color: #FFD700; }
-            .ident { color: #FFFFFF; }
-            .num { color: #FFA500; }
-            .str { color: #32CD32; }
-            .char { color: #32CD32; }
-            .op { color: #D3D3D3; }
-            .comment { color: #808080; font-style: italic; }
-            .preproc { color: #FF00FF; }
-            .error { color: #FF0000; text-decoration: underline; }
+            .kw { color: #3b82f6; font-weight: bold; }
+            .type { color: #06b6d4; }
+            .class { color: #22c55e; font-weight: bold; }
+            .func { color: #eab308; }
+            .ident { color: #e2e8f0; }
+            .num { color: #f97316; }
+            .str { color: #84cc16; }
+            .char { color: #84cc16; }
+            .op { color: #d1d5db; }
+            .comment { color: #6b7280; font-style: italic; }
+            .preproc { color: #d946ef; }
+            .error { color: #ef4444; text-decoration: underline wavy #ef4444; }
+            .line-number { 
+                color: #475569; display: inline-block; min-width: 2.5rem; 
+                text-align: right; margin-right: 0.75rem; border-right: 1px solid #334155; 
+                padding-right: 0.75rem; user-select: none; 
+            }
         
     </style>
 </head>
 <body>
-    <pre>// ============================================================
-//  Complete C program covering all grammar rules of the project
-//  (grammer.txt) – without using printf (output via return values)
-// ============================================================
-
-// --- Struct definition (struct_prefix) ---
-<span class="kw" data-line="7" data-col="1">struct</span> <span class="class" data-line="7" data-col="8">Point</span> {
-    <span class="type" data-line="8" data-col="5">int</span> <span class="ident" data-line="8" data-col="9">x</span>;
-    <span class="type" data-line="9" data-col="5">int</span> <span class="ident" data-line="9" data-col="9">y</span>;
-};
-
-// --- Struct with pointer fields ---
-<span class="kw" data-line="13" data-col="1">struct</span> <span class="class" data-line="13" data-col="8">Node</span> {
-    <span class="type" data-line="14" data-col="5">int</span> <span class="ident" data-line="14" data-col="9">value</span>;
-    <span class="kw" data-line="15" data-col="5">struct</span> <span class="class" data-line="15" data-col="12">Node</span><span class="op" data-line="15" data-col="16">*</span> <span class="ident" data-line="15" data-col="18">next</span>;
-};
-
-// --- Global variable declarations (non_struct_decl) ---
-<span class="type" data-line="19" data-col="1">int</span> <span class="ident" data-line="19" data-col="5">global_counter</span> <span class="op" data-line="19" data-col="20">=</span> <span class="num" data-line="19" data-col="22">0</span>;
-<span class="type" data-line="20" data-col="1">float</span> <span class="ident" data-line="20" data-col="7">pi</span> <span class="op" data-line="20" data-col="10">=</span> <span class="num" data-line="20" data-col="12">3.14159f</span>;
-<span class="type" data-line="21" data-col="1">char</span><span class="op" data-line="21" data-col="5">*</span> <span class="ident" data-line="21" data-col="7">message</span> <span class="op" data-line="21" data-col="15">=</span> <span class="str" data-line="21" data-col="17">&quot;Hello&quot;</span>;
-<span class="type" data-line="22" data-col="1">double</span> <span class="ident" data-line="22" data-col="8">precision</span> <span class="op" data-line="22" data-col="18">=</span> <span class="num" data-line="22" data-col="20">1e-10</span>;
-
-// --- Function prototypes (function declarations) ---
-<span class="type" data-line="25" data-col="1">int</span> <span class="func" data-line="25" data-col="5">add</span>(<span class="type" data-line="25" data-col="9">int</span> <span class="ident" data-line="25" data-col="13">a</span>, <span class="type" data-line="25" data-col="16">int</span> <span class="ident" data-line="25" data-col="20">b</span>);
-<span class="type" data-line="26" data-col="1">void</span> <span class="func" data-line="26" data-col="6">print_point</span>(<span class="kw" data-line="26" data-col="18">struct</span> <span class="class" data-line="26" data-col="25">Point</span> <span class="ident" data-line="26" data-col="31">p</span>);
-<span class="kw" data-line="27" data-col="1">struct</span> <span class="class" data-line="27" data-col="8">Point</span><span class="op" data-line="27" data-col="13">*</span> <span class="func" data-line="27" data-col="15">create_point</span>(<span class="type" data-line="27" data-col="28">int</span> <span class="ident" data-line="27" data-col="32">x</span>, <span class="type" data-line="27" data-col="35">int</span> <span class="ident" data-line="27" data-col="39">y</span>);
-<span class="type" data-line="28" data-col="1">int</span> <span class="func" data-line="28" data-col="5">sum_array</span>(<span class="type" data-line="28" data-col="15">int</span> <span class="ident" data-line="28" data-col="19">arr</span>[], <span class="type" data-line="28" data-col="26">int</span> <span class="ident" data-line="28" data-col="30">size</span>);
-
-// --- Function definition with parameters and local vars ---
-<span class="type" data-line="31" data-col="1">int</span> <span class="func" data-line="31" data-col="5">factorial</span>(<span class="type" data-line="31" data-col="15">int</span> <span class="ident" data-line="31" data-col="19">n</span>) {
-    <span class="kw" data-line="32" data-col="5">if</span> (<span class="ident" data-line="32" data-col="9">n</span> <span class="op" data-line="32" data-col="11">&lt;=</span> <span class="num" data-line="32" data-col="14">1</span>) {
-        <span class="kw" data-line="33" data-col="9">return</span> <span class="num" data-line="33" data-col="16">1</span>;
-    }
-    <span class="kw" data-line="35" data-col="5">return</span> <span class="ident" data-line="35" data-col="12">n</span> <span class="op" data-line="35" data-col="14">*</span> <span class="func" data-line="35" data-col="16">factorial</span>(<span class="ident" data-line="35" data-col="26">n</span> <span class="op" data-line="35" data-col="28">-</span> <span class="num" data-line="35" data-col="30">1</span>);
-}
-
-// --- Function using pointers, structs, and member access ---
-<span class="type" data-line="39" data-col="1">void</span> <span class="func" data-line="39" data-col="6">increment_point</span>(<span class="kw" data-line="39" data-col="22">struct</span> <span class="class" data-line="39" data-col="29">Point</span><span class="op" data-line="39" data-col="34">*</span> <span class="ident" data-line="39" data-col="36">p</span>) {
-    <span class="ident" data-line="40" data-col="5">p</span><span class="op" data-line="40" data-col="6">-&gt;</span><span class="ident" data-line="40" data-col="8">x</span> <span class="op" data-line="40" data-col="10">+=</span> <span class="num" data-line="40" data-col="13">1</span>;       // pointer member access (->)
-    (<span class="op" data-line="41" data-col="6">*</span><span class="ident" data-line="41" data-col="7">p</span>).<span class="ident" data-line="41" data-col="10">y</span> <span class="op" data-line="41" data-col="12">+=</span> <span class="num" data-line="41" data-col="15">1</span>;     // dereference + dot member access
-}
-
-// --- Function with array parameter and for loop ---
-<span class="type" data-line="45" data-col="1">int</span> <span class="func" data-line="45" data-col="5">sum_array</span>(<span class="type" data-line="45" data-col="15">int</span> <span class="ident" data-line="45" data-col="19">arr</span>[], <span class="type" data-line="45" data-col="26">int</span> <span class="ident" data-line="45" data-col="30">size</span>) {
-    <span class="type" data-line="46" data-col="5">int</span> <span class="ident" data-line="46" data-col="9">sum</span> <span class="op" data-line="46" data-col="13">=</span> <span class="num" data-line="46" data-col="15">0</span>;
-    <span class="kw" data-line="47" data-col="5">for</span> (<span class="type" data-line="47" data-col="10">int</span> <span class="ident" data-line="47" data-col="14">i</span> <span class="op" data-line="47" data-col="16">=</span> <span class="num" data-line="47" data-col="18">0</span>; <span class="ident" data-line="47" data-col="21">i</span> <span class="op" data-line="47" data-col="23">&lt;</span> <span class="ident" data-line="47" data-col="25">size</span>; <span class="ident" data-line="47" data-col="31">i</span> <span class="op" data-line="47" data-col="33">=</span> <span class="ident" data-line="47" data-col="35">i</span> <span class="op" data-line="47" data-col="37">+</span> <span class="num" data-line="47" data-col="39">1</span>) {
-        <span class="ident" data-line="48" data-col="9">sum</span> <span class="op" data-line="48" data-col="13">=</span> <span class="ident" data-line="48" data-col="15">sum</span> <span class="op" data-line="48" data-col="19">+</span> <span class="ident" data-line="48" data-col="21">arr</span>[<span class="ident" data-line="48" data-col="25">i</span>];
-    }
-    <span class="kw" data-line="50" data-col="5">return</span> <span class="ident" data-line="50" data-col="12">sum</span>;
-}
-
-// --- Function with while loop and break/continue ---
-<span class="type" data-line="54" data-col="1">int</span> <span class="func" data-line="54" data-col="5">count_even</span>(<span class="type" data-line="54" data-col="16">int</span> <span class="ident" data-line="54" data-col="20">arr</span>[], <span class="type" data-line="54" data-col="27">int</span> <span class="ident" data-line="54" data-col="31">size</span>) {
-    <span class="type" data-line="55" data-col="5">int</span> <span class="ident" data-line="55" data-col="9">count</span> <span class="op" data-line="55" data-col="15">=</span> <span class="num" data-line="55" data-col="17">0</span>;
-    <span class="type" data-line="56" data-col="5">int</span> <span class="ident" data-line="56" data-col="9">i</span> <span class="op" data-line="56" data-col="11">=</span> <span class="num" data-line="56" data-col="13">0</span>;
-    <span class="kw" data-line="57" data-col="5">while</span> (<span class="ident" data-line="57" data-col="12">i</span> <span class="op" data-line="57" data-col="14">&lt;</span> <span class="ident" data-line="57" data-col="16">size</span>) {
-        <span class="kw" data-line="58" data-col="9">if</span> (<span class="ident" data-line="58" data-col="13">arr</span>[<span class="ident" data-line="58" data-col="17">i</span>] <span class="op" data-line="58" data-col="20">==</span> <span class="num" data-line="58" data-col="23">0</span>) {
-            <span class="ident" data-line="59" data-col="13">i</span> <span class="op" data-line="59" data-col="15">=</span> <span class="ident" data-line="59" data-col="17">i</span> <span class="op" data-line="59" data-col="19">+</span> <span class="num" data-line="59" data-col="21">1</span>;
-            <span class="kw" data-line="60" data-col="13">continue</span>;   // skip zero
-        }
-        <span class="kw" data-line="62" data-col="9">if</span> (<span class="ident" data-line="62" data-col="13">arr</span>[<span class="ident" data-line="62" data-col="17">i</span>] <span class="op" data-line="62" data-col="20">%</span> <span class="num" data-line="62" data-col="22">2</span> <span class="op" data-line="62" data-col="24">==</span> <span class="num" data-line="62" data-col="27">0</span>) {
-            <span class="ident" data-line="63" data-col="13">count</span> <span class="op" data-line="63" data-col="19">=</span> <span class="ident" data-line="63" data-col="21">count</span> <span class="op" data-line="63" data-col="27">+</span> <span class="num" data-line="63" data-col="29">1</span>;
-        }
-        <span class="ident" data-line="65" data-col="9">i</span> <span class="op" data-line="65" data-col="11">=</span> <span class="ident" data-line="65" data-col="13">i</span> <span class="op" data-line="65" data-col="15">+</span> <span class="num" data-line="65" data-col="17">1</span>;
-    }
-    <span class="kw" data-line="67" data-col="5">return</span> <span class="ident" data-line="67" data-col="12">count</span>;
-}
-
-// --- Function using multiple parameters and logical operators ---
-<span class="type" data-line="71" data-col="1">int</span> <span class="func" data-line="71" data-col="5">is_in_range</span>(<span class="type" data-line="71" data-col="17">int</span> <span class="ident" data-line="71" data-col="21">value</span>, <span class="type" data-line="71" data-col="28">int</span> <span class="ident" data-line="71" data-col="32">low</span>, <span class="type" data-line="71" data-col="37">int</span> <span class="ident" data-line="71" data-col="41">high</span>) {
-    <span class="kw" data-line="72" data-col="5">return</span> (<span class="ident" data-line="72" data-col="13">value</span> <span class="op" data-line="72" data-col="19">&gt;=</span> <span class="ident" data-line="72" data-col="22">low</span>) <span class="op" data-line="72" data-col="27">&amp;&amp;</span> (<span class="ident" data-line="72" data-col="31">value</span> <span class="op" data-line="72" data-col="37">&lt;=</span> <span class="ident" data-line="72" data-col="40">high</span>);
-}
-
-// --- Function returning pointer to struct (malloc usage) ---
-// struct Point* create_point(int x, int y) {
-//     struct Point* p = (struct Point*)malloc(sizeof(struct Point));
-//     p-&gt;x = x;
-//     p-&gt;y = y;
-//     return p;
-// }
-
-// --- Function with recursion and binary operations ---
-<span class="type" data-line="84" data-col="1">int</span> <span class="func" data-line="84" data-col="5">power</span>(<span class="type" data-line="84" data-col="11">int</span> <span class="ident" data-line="84" data-col="15">base</span>, <span class="type" data-line="84" data-col="21">int</span> <span class="ident" data-line="84" data-col="25">exp</span>) {
-    <span class="kw" data-line="85" data-col="5">if</span> (<span class="ident" data-line="85" data-col="9">exp</span> <span class="op" data-line="85" data-col="13">==</span> <span class="num" data-line="85" data-col="16">0</span>) {
-        <span class="kw" data-line="86" data-col="9">return</span> <span class="num" data-line="86" data-col="16">1</span>;
-    }
-    <span class="kw" data-line="88" data-col="5">return</span> <span class="ident" data-line="88" data-col="12">base</span> <span class="op" data-line="88" data-col="17">*</span> <span class="func" data-line="88" data-col="19">power</span>(<span class="ident" data-line="88" data-col="25">base</span>, <span class="ident" data-line="88" data-col="31">exp</span> <span class="op" data-line="88" data-col="35">-</span> <span class="num" data-line="88" data-col="37">1</span>);
-}
-
-// --- Function demonstrating all expression types ---
-<span class="type" data-line="92" data-col="1">int</span> <span class="func" data-line="92" data-col="5">expression_demo</span>() {
-    <span class="type" data-line="93" data-col="5">int</span> <span class="ident" data-line="93" data-col="9">a</span> <span class="op" data-line="93" data-col="11">=</span> <span class="num" data-line="93" data-col="13">10</span>;
-    <span class="type" data-line="94" data-col="5">int</span> <span class="ident" data-line="94" data-col="9">b</span> <span class="op" data-line="94" data-col="11">=</span> <span class="num" data-line="94" data-col="13">20</span>;
-    <span class="type" data-line="95" data-col="5">int</span> <span class="ident" data-line="95" data-col="9">c</span>;
-
-    // Arithmetic
-    <span class="ident" data-line="98" data-col="5">c</span> <span class="op" data-line="98" data-col="7">=</span> <span class="ident" data-line="98" data-col="9">a</span> <span class="op" data-line="98" data-col="11">+</span> <span class="ident" data-line="98" data-col="13">b</span> <span class="op" data-line="98" data-col="15">-</span> <span class="num" data-line="98" data-col="17">3</span> <span class="op" data-line="98" data-col="19">*</span> <span class="num" data-line="98" data-col="21">4</span> <span class="op" data-line="98" data-col="23">/</span> <span class="num" data-line="98" data-col="25">2</span>;
-
-    // Relational
-    <span class="type" data-line="101" data-col="5">int</span> <span class="ident" data-line="101" data-col="9">flag</span> <span class="op" data-line="101" data-col="14">=</span> (<span class="ident" data-line="101" data-col="17">a</span> <span class="op" data-line="101" data-col="19">&lt;</span> <span class="ident" data-line="101" data-col="21">b</span>) <span class="op" data-line="101" data-col="24">&amp;&amp;</span> (<span class="ident" data-line="101" data-col="28">b</span> <span class="op" data-line="101" data-col="30">&gt;</span> <span class="num" data-line="101" data-col="32">15</span>) <span class="op" data-line="101" data-col="36">||</span> (<span class="ident" data-line="101" data-col="40">a</span> <span class="op" data-line="101" data-col="42">==</span> <span class="num" data-line="101" data-col="45">10</span>);
-
-    // Assignment operators
-    <span class="ident" data-line="104" data-col="5">a</span> <span class="op" data-line="104" data-col="7">+=</span> <span class="num" data-line="104" data-col="10">5</span>;
-    <span class="ident" data-line="105" data-col="5">b</span> <span class="op" data-line="105" data-col="7">-=</span> <span class="num" data-line="105" data-col="10">2</span>;
-    <span class="ident" data-line="106" data-col="5">c</span> <span class="op" data-line="106" data-col="7">*=</span> <span class="num" data-line="106" data-col="10">2</span>;
-    <span class="ident" data-line="107" data-col="5">c</span> <span class="op" data-line="107" data-col="7">/=</span> <span class="num" data-line="107" data-col="10">3</span>;
-
-    // Unary operators
-    <span class="type" data-line="110" data-col="5">int</span> <span class="ident" data-line="110" data-col="9">d</span> <span class="op" data-line="110" data-col="11">=</span> <span class="op" data-line="110" data-col="13">-</span><span class="ident" data-line="110" data-col="14">a</span>;
-    <span class="type" data-line="111" data-col="5">int</span> <span class="ident" data-line="111" data-col="9">e</span> <span class="op" data-line="111" data-col="11">=</span> <span class="op" data-line="111" data-col="13">+</span><span class="ident" data-line="111" data-col="14">b</span>;
-    <span class="type" data-line="112" data-col="5">int</span> <span class="ident" data-line="112" data-col="9">f</span> <span class="op" data-line="112" data-col="11">=</span> <span class="op" data-line="112" data-col="13">!</span><span class="ident" data-line="112" data-col="14">flag</span>;
-    <span class="type" data-line="113" data-col="5">int</span> <span class="ident" data-line="113" data-col="9">g</span> <span class="op" data-line="113" data-col="11">=</span> <span class="op" data-line="113" data-col="13">*</span>(<span class="op" data-line="113" data-col="15">&amp;</span><span class="ident" data-line="113" data-col="16">a</span>);   // pointer dereference
-    <span class="type" data-line="114" data-col="5">int</span> <span class="ident" data-line="114" data-col="9">h</span> <span class="op" data-line="114" data-col="11">=</span> <span class="op" data-line="114" data-col="13">++</span><span class="ident" data-line="114" data-col="15">a</span>;     // pre-increment
-    <span class="type" data-line="115" data-col="5">int</span> <span class="ident" data-line="115" data-col="9">i</span> <span class="op" data-line="115" data-col="11">=</span> <span class="ident" data-line="115" data-col="13">b</span><span class="op" data-line="115" data-col="14">--</span>;     // post-decrement
-
-    // Array access
-    <span class="type" data-line="118" data-col="5">int</span> <span class="ident" data-line="118" data-col="9">arr</span>[<span class="num" data-line="118" data-col="13">5</span>] <span class="op" data-line="118" data-col="16">=</span> {<span class="num" data-line="118" data-col="19">1</span>, <span class="num" data-line="118" data-col="22">2</span>, <span class="num" data-line="118" data-col="25">3</span>, <span class="num" data-line="118" data-col="28">4</span>, <span class="num" data-line="118" data-col="31">5</span>};
-    <span class="type" data-line="119" data-col="5">int</span> <span class="ident" data-line="119" data-col="9">first</span> <span class="op" data-line="119" data-col="15">=</span> <span class="ident" data-line="119" data-col="17">arr</span>[<span class="num" data-line="119" data-col="21">0</span>];
-    <span class="type" data-line="120" data-col="5">int</span> <span class="ident" data-line="120" data-col="9">last</span> <span class="op" data-line="120" data-col="14">=</span> <span class="ident" data-line="120" data-col="16">arr</span>[<span class="num" data-line="120" data-col="20">4</span>];
-
-    // Function calls
-    <span class="type" data-line="123" data-col="5">int</span> <span class="ident" data-line="123" data-col="9">sum</span> <span class="op" data-line="123" data-col="13">=</span> <span class="func" data-line="123" data-col="15">add</span>(<span class="ident" data-line="123" data-col="19">a</span>, <span class="ident" data-line="123" data-col="22">b</span>);
-    <span class="type" data-line="124" data-col="5">int</span> <span class="ident" data-line="124" data-col="9">fact</span> <span class="op" data-line="124" data-col="14">=</span> <span class="func" data-line="124" data-col="16">factorial</span>(<span class="num" data-line="124" data-col="26">5</span>);
-
-    // Struct member access (dot)
-    <span class="kw" data-line="127" data-col="5">struct</span> <span class="class" data-line="127" data-col="12">Point</span> <span class="ident" data-line="127" data-col="18">p1</span> <span class="op" data-line="127" data-col="21">=</span> {<span class="num" data-line="127" data-col="24">1</span>, <span class="num" data-line="127" data-col="27">2</span>};
-    <span class="type" data-line="128" data-col="5">int</span> <span class="ident" data-line="128" data-col="9">px</span> <span class="op" data-line="128" data-col="12">=</span> <span class="ident" data-line="128" data-col="14">p1</span>.<span class="ident" data-line="128" data-col="17">x</span>;
-    <span class="type" data-line="129" data-col="5">int</span> <span class="ident" data-line="129" data-col="9">py</span> <span class="op" data-line="129" data-col="12">=</span> <span class="ident" data-line="129" data-col="14">p1</span>.<span class="ident" data-line="129" data-col="17">y</span>;
-
-    // Pointer to struct and member access (-&gt;)
-    // struct Point* p2 = create_point(3, 4);
-    // int px2 = p2-&gt;x;
-    // int py2 = p2-&gt;y;
-
-    // Multiple variable declaration with initialization
-    <span class="type" data-line="137" data-col="5">int</span> <span class="ident" data-line="137" data-col="9">x1</span> <span class="op" data-line="137" data-col="12">=</span> <span class="num" data-line="137" data-col="14">0</span>, <span class="ident" data-line="137" data-col="17">x2</span> <span class="op" data-line="137" data-col="20">=</span> <span class="num" data-line="137" data-col="22">1</span>, <span class="ident" data-line="137" data-col="25">x3</span> <span class="op" data-line="137" data-col="28">=</span> <span class="num" data-line="137" data-col="30">2</span>;
-
-    // Array initialization with braces
-    // int matrix[2][2] = {{1, 2}, {3, 4}};
-
-    // Return a dummy value to show we executed
-    <span class="kw" data-line="143" data-col="5">return</span> <span class="ident" data-line="143" data-col="12">px</span> <span class="op" data-line="143" data-col="15">+</span> <span class="ident" data-line="143" data-col="17">py</span> <span class="op" data-line="143" data-col="20">+</span>  <span class="ident" data-line="143" data-col="23">sum</span> <span class="op" data-line="143" data-col="27">+</span> <span class="ident" data-line="143" data-col="29">fact</span>;
-}
-
-// --- Function using for loop with break ---
-<span class="type" data-line="147" data-col="1">int</span> <span class="func" data-line="147" data-col="5">find_first</span>(<span class="type" data-line="147" data-col="16">int</span> <span class="ident" data-line="147" data-col="20">arr</span>[], <span class="type" data-line="147" data-col="27">int</span> <span class="ident" data-line="147" data-col="31">size</span>, <span class="type" data-line="147" data-col="37">int</span> <span class="ident" data-line="147" data-col="41">target</span>) {
-    <span class="kw" data-line="148" data-col="5">for</span> (<span class="type" data-line="148" data-col="10">int</span> <span class="ident" data-line="148" data-col="14">i</span> <span class="op" data-line="148" data-col="16">=</span> <span class="num" data-line="148" data-col="18">0</span>; <span class="ident" data-line="148" data-col="21">i</span> <span class="op" data-line="148" data-col="23">&lt;</span> <span class="ident" data-line="148" data-col="25">size</span>; <span class="ident" data-line="148" data-col="31">i</span> <span class="op" data-line="148" data-col="33">=</span> <span class="ident" data-line="148" data-col="35">i</span> <span class="op" data-line="148" data-col="37">+</span> <span class="num" data-line="148" data-col="39">1</span>) {
-        <span class="kw" data-line="149" data-col="9">if</span> (<span class="ident" data-line="149" data-col="13">arr</span>[<span class="ident" data-line="149" data-col="17">i</span>] <span class="op" data-line="149" data-col="20">==</span> <span class="ident" data-line="149" data-col="23">target</span>) {
-            <span class="kw" data-line="150" data-col="13">return</span> <span class="ident" data-line="150" data-col="20">i</span>;
-        }
-    }
-    <span class="kw" data-line="153" data-col="5">return</span> <span class="op" data-line="153" data-col="12">-</span><span class="num" data-line="153" data-col="13">1</span>;
-}
-
-// --- Function with void return and no parameters ---
-<span class="type" data-line="157" data-col="1">void</span> <span class="func" data-line="157" data-col="6">do_nothing</span>() {
-    // empty body
-}
-
-// --- Main function ---
-<span class="type" data-line="162" data-col="1">int</span> <span class="func" data-line="162" data-col="5">main</span>() {
-    // Variable declarations with initialization
-    <span class="type" data-line="164" data-col="5">int</span> <span class="ident" data-line="164" data-col="9">x</span> <span class="op" data-line="164" data-col="11">=</span> <span class="num" data-line="164" data-col="13">10</span>;
-    <span class="type" data-line="165" data-col="5">int</span> <span class="ident" data-line="165" data-col="9">y</span> <span class="op" data-line="165" data-col="11">=</span> <span class="num" data-line="165" data-col="13">20</span>;
-    <span class="type" data-line="166" data-col="5">int</span> <span class="ident" data-line="166" data-col="9">z</span> <span class="op" data-line="166" data-col="11">=</span> <span class="num" data-line="166" data-col="13">30</span>;
-
-    // Struct declaration and initialization
-    <span class="kw" data-line="169" data-col="5">struct</span> <span class="class" data-line="169" data-col="12">Point</span> <span class="ident" data-line="169" data-col="18">p</span> <span class="op" data-line="169" data-col="20">=</span> {<span class="num" data-line="169" data-col="23">5</span>, <span class="num" data-line="169" data-col="26">7</span>};
-    // struct Point* pp = create_point(8, 9);
-
-    // Function calls
-    <span class="type" data-line="173" data-col="5">int</span> <span class="ident" data-line="173" data-col="9">result</span> <span class="op" data-line="173" data-col="16">=</span> <span class="func" data-line="173" data-col="18">add</span>(<span class="ident" data-line="173" data-col="22">x</span>, <span class="ident" data-line="173" data-col="25">y</span>);
-    <span class="type" data-line="174" data-col="5">int</span> <span class="ident" data-line="174" data-col="9">fact</span> <span class="op" data-line="174" data-col="14">=</span> <span class="func" data-line="174" data-col="16">factorial</span>(<span class="num" data-line="174" data-col="26">5</span>);
-    // int even_count = count_even((int[]){1, 2, 3, 4, 5, 6}, 6);
-    // int idx = find_first((int[]){1, 2, 3, 4, 5}, 5, 3);
-
-    // Conditional statements
-    <span class="kw" data-line="179" data-col="5">if</span> (<span class="ident" data-line="179" data-col="9">result</span> <span class="op" data-line="179" data-col="16">&gt;</span> <span class="num" data-line="179" data-col="18">0</span>) {
-        <span class="func" data-line="180" data-col="9">do_nothing</span>();   // then branch
-    } <span class="kw" data-line="181" data-col="7">else</span> {
-        <span class="func" data-line="182" data-col="9">do_nothing</span>();   // else branch
-    }
-
-    // While loop
-    <span class="type" data-line="186" data-col="5">int</span> <span class="ident" data-line="186" data-col="9">i</span> <span class="op" data-line="186" data-col="11">=</span> <span class="num" data-line="186" data-col="13">0</span>;
-    <span class="kw" data-line="187" data-col="5">while</span> (<span class="ident" data-line="187" data-col="12">i</span> <span class="op" data-line="187" data-col="14">&lt;</span> <span class="num" data-line="187" data-col="16">10</span>) {
-        <span class="ident" data-line="188" data-col="9">i</span> <span class="op" data-line="188" data-col="11">=</span> <span class="ident" data-line="188" data-col="13">i</span> <span class="op" data-line="188" data-col="15">+</span> <span class="num" data-line="188" data-col="17">1</span>;
-        <span class="kw" data-line="189" data-col="9">if</span> (<span class="ident" data-line="189" data-col="13">i</span> <span class="op" data-line="189" data-col="15">==</span> <span class="num" data-line="189" data-col="18">5</span>) {
-            <span class="kw" data-line="190" data-col="13">continue</span>;
-        }
-        <span class="func" data-line="192" data-col="9">do_nothing</span>();   // dummy operation
-    }
-
-    // For loop with break
-    <span class="kw" data-line="196" data-col="5">for</span> (<span class="type" data-line="196" data-col="10">int</span> <span class="ident" data-line="196" data-col="14">j</span> <span class="op" data-line="196" data-col="16">=</span> <span class="num" data-line="196" data-col="18">0</span>; <span class="ident" data-line="196" data-col="21">j</span> <span class="op" data-line="196" data-col="23">&lt;</span> <span class="num" data-line="196" data-col="25">10</span>; <span class="ident" data-line="196" data-col="29">j</span> <span class="op" data-line="196" data-col="31">=</span> <span class="ident" data-line="196" data-col="33">j</span> <span class="op" data-line="196" data-col="35">+</span> <span class="num" data-line="196" data-col="37">1</span>) {
-        <span class="kw" data-line="197" data-col="9">if</span> (<span class="ident" data-line="197" data-col="13">j</span> <span class="op" data-line="197" data-col="15">==</span> <span class="num" data-line="197" data-col="18">7</span>) {
-            <span class="kw" data-line="198" data-col="13">break</span>;
-        }
-        <span class="func" data-line="200" data-col="9">do_nothing</span>();
-    }
-
-    // Return statement
-    <span class="kw" data-line="204" data-col="5">return</span> <span class="num" data-line="204" data-col="12">0</span>;
-}
-
-// --- Function definition after main (prototype already declared) ---
-<span class="type" data-line="208" data-col="1">int</span> <span class="func" data-line="208" data-col="5">add</span>(<span class="type" data-line="208" data-col="9">int</span> <span class="ident" data-line="208" data-col="13">a</span>, <span class="type" data-line="208" data-col="16">int</span> <span class="ident" data-line="208" data-col="20">b</span>) {
-    <span class="kw" data-line="209" data-col="5">return</span> <span class="ident" data-line="209" data-col="12">a</span> <span class="op" data-line="209" data-col="14">+</span> <span class="ident" data-line="209" data-col="16">b</span>;
-}
-
-// --- Function definition using struct parameter ---
-<span class="type" data-line="213" data-col="1">void</span> <span class="func" data-line="213" data-col="6">print_point</span>(<span class="kw" data-line="213" data-col="18">struct</span> <span class="class" data-line="213" data-col="25">Point</span> <span class="ident" data-line="213" data-col="31">p</span>) {
-    // No printf, just a dummy statement to avoid unused warning
-    <span class="type" data-line="215" data-col="5">int</span> <span class="ident" data-line="215" data-col="9">dummy</span> <span class="op" data-line="215" data-col="15">=</span> <span class="ident" data-line="215" data-col="17">p</span>.<span class="ident" data-line="215" data-col="19">x</span> <span class="op" data-line="215" data-col="21">+</span> <span class="ident" data-line="215" data-col="23">p</span>.<span class="ident" data-line="215" data-col="25">y</span>;
-}</pre>
+    <pre><span class="line-number">1</span>// ============================================================
+<span class="line-number">2</span>//  Complete C program covering all grammar rules of the project
+<span class="line-number">3</span>//  (grammer.txt) – without using printf (output via return values)
+<span class="line-number">4</span>// ============================================================
+<span class="line-number">5</span>
+<span class="line-number">6</span>// --- Struct definition (struct_prefix) ---
+<span class="line-number">7</span><span class="kw" data-line="7" data-col="1">struct</span> <span class="class" data-line="7" data-col="8">Point</span> {
+<span class="line-number">8</span>    <span class="type" data-line="8" data-col="5">int</span> <span class="ident" data-line="8" data-col="9">x</span>;
+<span class="line-number">9</span>    <span class="type" data-line="9" data-col="5">int</span> <span class="ident" data-line="9" data-col="9">y</span>;
+<span class="line-number">10</span>};
+<span class="line-number">11</span>
+<span class="line-number">12</span>// --- Struct with pointer fields ---
+<span class="line-number">13</span><span class="kw" data-line="13" data-col="1">struct</span> <span class="class" data-line="13" data-col="8">Node</span> {
+<span class="line-number">14</span>    <span class="type" data-line="14" data-col="5">int</span> <span class="ident" data-line="14" data-col="9">value</span>;
+<span class="line-number">15</span>    <span class="kw" data-line="15" data-col="5">struct</span> <span class="class" data-line="15" data-col="12">Node</span><span class="op" data-line="15" data-col="16">*</span> <span class="ident" data-line="15" data-col="18">next</span>;
+<span class="line-number">16</span>};
+<span class="line-number">17</span>
+<span class="line-number">18</span>// --- Global variable declarations (non_struct_decl) ---
+<span class="line-number">19</span><span class="type" data-line="19" data-col="1">int</span> <span class="ident" data-line="19" data-col="5">global_counter</span> <span class="op" data-line="19" data-col="20">=</span> <span class="num" data-line="19" data-col="22">0</span>;
+<span class="line-number">20</span><span class="type" data-line="20" data-col="1">float</span> <span class="ident" data-line="20" data-col="7">pi</span> <span class="op" data-line="20" data-col="10">=</span> <span class="num" data-line="20" data-col="12">3.14159f</span>;
+<span class="line-number">21</span><span class="type" data-line="21" data-col="1">char</span><span class="op" data-line="21" data-col="5">*</span> <span class="ident" data-line="21" data-col="7">message</span> <span class="op" data-line="21" data-col="15">=</span> <span class="str" data-line="21" data-col="17">&quot;Hello&quot;</span>;
+<span class="line-number">22</span><span class="type" data-line="22" data-col="1">double</span> <span class="ident" data-line="22" data-col="8">precision</span> <span class="op" data-line="22" data-col="18">=</span> <span class="num" data-line="22" data-col="20">1e-10</span>;
+<span class="line-number">23</span>
+<span class="line-number">24</span>// --- Function prototypes (function declarations) ---
+<span class="line-number">25</span><span class="type" data-line="25" data-col="1">int</span> <span class="func" data-line="25" data-col="5">add</span>(<span class="type" data-line="25" data-col="9">int</span> <span class="ident" data-line="25" data-col="13">a</span>, <span class="type" data-line="25" data-col="16">int</span> <span class="ident" data-line="25" data-col="20">b</span>);
+<span class="line-number">26</span><span class="type" data-line="26" data-col="1">void</span> <span class="func" data-line="26" data-col="6">print_point</span>(<span class="kw" data-line="26" data-col="18">struct</span> <span class="class" data-line="26" data-col="25">Point</span> <span class="ident" data-line="26" data-col="31">p</span>);
+<span class="line-number">27</span><span class="kw" data-line="27" data-col="1">struct</span> <span class="class" data-line="27" data-col="8">Point</span><span class="op" data-line="27" data-col="13">*</span> <span class="func" data-line="27" data-col="15">create_point</span>(<span class="type" data-line="27" data-col="28">int</span> <span class="ident" data-line="27" data-col="32">x</span>, <span class="type" data-line="27" data-col="35">int</span> <span class="ident" data-line="27" data-col="39">y</span>);
+<span class="line-number">28</span><span class="type" data-line="28" data-col="1">int</span> <span class="func" data-line="28" data-col="5">sum_array</span>(<span class="type" data-line="28" data-col="15">int</span> <span class="ident" data-line="28" data-col="19">arr</span>[], <span class="type" data-line="28" data-col="26">int</span> <span class="ident" data-line="28" data-col="30">size</span>);
+<span class="line-number">29</span>
+<span class="line-number">30</span>// --- Function definition with parameters and local vars ---
+<span class="line-number">31</span><span class="type" data-line="31" data-col="1">int</span> <span class="func" data-line="31" data-col="5">factorial</span>(<span class="type" data-line="31" data-col="15">int</span> <span class="ident" data-line="31" data-col="19">n</span>) {
+<span class="line-number">32</span>    <span class="kw" data-line="32" data-col="5">if</span> (<span class="ident" data-line="32" data-col="9">n</span> <span class="op" data-line="32" data-col="11">&lt;=</span> <span class="num" data-line="32" data-col="14">1</span>) {
+<span class="line-number">33</span>        <span class="kw" data-line="33" data-col="9">return</span> <span class="num" data-line="33" data-col="16">1</span>;
+<span class="line-number">34</span>    }
+<span class="line-number">35</span>    <span class="kw" data-line="35" data-col="5">return</span> <span class="ident" data-line="35" data-col="12">n</span> <span class="op" data-line="35" data-col="14">*</span> <span class="func" data-line="35" data-col="16">factorial</span>(<span class="ident" data-line="35" data-col="26">n</span> <span class="op" data-line="35" data-col="28">-</span> <span class="num" data-line="35" data-col="30">1</span>);
+<span class="line-number">36</span>}
+<span class="line-number">37</span>
+<span class="line-number">38</span>// --- Function using pointers, structs, and member access ---
+<span class="line-number">39</span><span class="type" data-line="39" data-col="1">void</span> <span class="func" data-line="39" data-col="6">increment_point</span>(<span class="kw" data-line="39" data-col="22">struct</span> <span class="class" data-line="39" data-col="29">Point</span><span class="op" data-line="39" data-col="34">*</span> <span class="ident" data-line="39" data-col="36">p</span>) {
+<span class="line-number">40</span>    <span class="ident" data-line="40" data-col="5">p</span><span class="op" data-line="40" data-col="6">-&gt;</span><span class="ident" data-line="40" data-col="8">x</span> <span class="op" data-line="40" data-col="10">+=</span> <span class="num" data-line="40" data-col="13">1</span>;       // pointer member access (->)
+<span class="line-number">41</span>    (<span class="op" data-line="41" data-col="6">*</span><span class="ident" data-line="41" data-col="7">p</span>).<span class="ident" data-line="41" data-col="10">y</span> <span class="op" data-line="41" data-col="12">+=</span> <span class="num" data-line="41" data-col="15">1</span>;     // dereference + dot member access
+<span class="line-number">42</span>}
+<span class="line-number">43</span>
+<span class="line-number">44</span>// --- Function with array parameter and for loop ---
+<span class="line-number">45</span><span class="type" data-line="45" data-col="1">int</span> <span class="func" data-line="45" data-col="5">sum_array</span>(<span class="type" data-line="45" data-col="15">int</span> <span class="ident" data-line="45" data-col="19">arr</span>[], <span class="type" data-line="45" data-col="26">int</span> <span class="ident" data-line="45" data-col="30">size</span>) {
+<span class="line-number">46</span>    <span class="type" data-line="46" data-col="5">int</span> <span class="ident" data-line="46" data-col="9">sum</span> <span class="op" data-line="46" data-col="13">=</span> <span class="num" data-line="46" data-col="15">0</span>;
+<span class="line-number">47</span>    <span class="kw" data-line="47" data-col="5">for</span> (<span class="type" data-line="47" data-col="10">int</span> <span class="ident" data-line="47" data-col="14">i</span> <span class="op" data-line="47" data-col="16">=</span> <span class="num" data-line="47" data-col="18">0</span>; <span class="ident" data-line="47" data-col="21">i</span> <span class="op" data-line="47" data-col="23">&lt;</span> <span class="ident" data-line="47" data-col="25">size</span>; <span class="ident" data-line="47" data-col="31">i</span> <span class="op" data-line="47" data-col="33">=</span> <span class="ident" data-line="47" data-col="35">i</span> <span class="op" data-line="47" data-col="37">+</span> <span class="num" data-line="47" data-col="39">1</span>) {
+<span class="line-number">48</span>        <span class="ident" data-line="48" data-col="9">sum</span> <span class="op" data-line="48" data-col="13">=</span> <span class="ident" data-line="48" data-col="15">sum</span> <span class="op" data-line="48" data-col="19">+</span> <span class="ident" data-line="48" data-col="21">arr</span>[<span class="ident" data-line="48" data-col="25">i</span>];
+<span class="line-number">49</span>    }
+<span class="line-number">50</span>    <span class="kw" data-line="50" data-col="5">return</span> <span class="ident" data-line="50" data-col="12">sum</span>;
+<span class="line-number">51</span>}
+<span class="line-number">52</span>
+<span class="line-number">53</span>// --- Function with while loop and break/continue ---
+<span class="line-number">54</span><span class="type" data-line="54" data-col="1">int</span> <span class="func" data-line="54" data-col="5">count_even</span>(<span class="type" data-line="54" data-col="16">int</span> <span class="ident" data-line="54" data-col="20">arr</span>[], <span class="type" data-line="54" data-col="27">int</span> <span class="ident" data-line="54" data-col="31">size</span>) {
+<span class="line-number">55</span>    <span class="type" data-line="55" data-col="5">int</span> <span class="ident" data-line="55" data-col="9">count</span> <span class="op" data-line="55" data-col="15">=</span> <span class="num" data-line="55" data-col="17">0</span>;
+<span class="line-number">56</span>    <span class="type" data-line="56" data-col="5">int</span> <span class="ident" data-line="56" data-col="9">i</span> <span class="op" data-line="56" data-col="11">=</span> <span class="num" data-line="56" data-col="13">0</span>;
+<span class="line-number">57</span>    <span class="kw" data-line="57" data-col="5">while</span> (<span class="ident" data-line="57" data-col="12">i</span> <span class="op" data-line="57" data-col="14">&lt;</span> <span class="ident" data-line="57" data-col="16">size</span>) {
+<span class="line-number">58</span>        <span class="kw" data-line="58" data-col="9">if</span> (<span class="ident" data-line="58" data-col="13">arr</span>[<span class="ident" data-line="58" data-col="17">i</span>] <span class="op" data-line="58" data-col="20">==</span> <span class="num" data-line="58" data-col="23">0</span>) {
+<span class="line-number">59</span>            <span class="ident" data-line="59" data-col="13">i</span> <span class="op" data-line="59" data-col="15">=</span> <span class="ident" data-line="59" data-col="17">i</span> <span class="op" data-line="59" data-col="19">+</span> <span class="num" data-line="59" data-col="21">1</span>;
+<span class="line-number">60</span>            <span class="kw" data-line="60" data-col="13">continue</span>;   // skip zero
+<span class="line-number">61</span>        }
+<span class="line-number">62</span>        <span class="kw" data-line="62" data-col="9">if</span> (<span class="ident" data-line="62" data-col="13">arr</span>[<span class="ident" data-line="62" data-col="17">i</span>] <span class="op" data-line="62" data-col="20">%</span> <span class="num" data-line="62" data-col="22">2</span> <span class="op" data-line="62" data-col="24">==</span> <span class="num" data-line="62" data-col="27">0</span>) {
+<span class="line-number">63</span>            <span class="ident" data-line="63" data-col="13">count</span> <span class="op" data-line="63" data-col="19">=</span> <span class="ident" data-line="63" data-col="21">count</span> <span class="op" data-line="63" data-col="27">+</span> <span class="num" data-line="63" data-col="29">1</span>;
+<span class="line-number">64</span>        }
+<span class="line-number">65</span>        <span class="ident" data-line="65" data-col="9">i</span> <span class="op" data-line="65" data-col="11">=</span> <span class="ident" data-line="65" data-col="13">i</span> <span class="op" data-line="65" data-col="15">+</span> <span class="num" data-line="65" data-col="17">1</span>;
+<span class="line-number">66</span>    }
+<span class="line-number">67</span>    <span class="kw" data-line="67" data-col="5">return</span> <span class="ident" data-line="67" data-col="12">count</span>;
+<span class="line-number">68</span>}
+<span class="line-number">69</span>
+<span class="line-number">70</span>// --- Function using multiple parameters and logical operators ---
+<span class="line-number">71</span><span class="type" data-line="71" data-col="1">int</span> <span class="func" data-line="71" data-col="5">is_in_range</span>(<span class="type" data-line="71" data-col="17">int</span> <span class="ident" data-line="71" data-col="21">value</span>, <span class="type" data-line="71" data-col="28">int</span> <span class="ident" data-line="71" data-col="32">low</span>, <span class="type" data-line="71" data-col="37">int</span> <span class="ident" data-line="71" data-col="41">high</span>) {
+<span class="line-number">72</span>    <span class="kw" data-line="72" data-col="5">return</span> (<span class="ident" data-line="72" data-col="13">value</span> <span class="op" data-line="72" data-col="19">&gt;=</span> <span class="ident" data-line="72" data-col="22">low</span>) <span class="op" data-line="72" data-col="27">&amp;&amp;</span> (<span class="ident" data-line="72" data-col="31">value</span> <span class="op" data-line="72" data-col="37">&lt;=</span> <span class="ident" data-line="72" data-col="40">high</span>);
+<span class="line-number">73</span>}
+<span class="line-number">74</span>
+<span class="line-number">75</span>// --- Function returning pointer to struct (malloc usage) ---
+<span class="line-number">76</span>// struct Point* create_point(int x, int y) {
+<span class="line-number">77</span>//     struct Point* p = (struct Point*)malloc(sizeof(struct Point));
+<span class="line-number">78</span>//     p-&gt;x = x;
+<span class="line-number">79</span>//     p-&gt;y = y;
+<span class="line-number">80</span>//     return p;
+<span class="line-number">81</span>// }
+<span class="line-number">82</span>
+<span class="line-number">83</span>// --- Function with recursion and binary operations ---
+<span class="line-number">84</span><span class="type" data-line="84" data-col="1">int</span> <span class="func" data-line="84" data-col="5">power</span>(<span class="type" data-line="84" data-col="11">int</span> <span class="ident" data-line="84" data-col="15">base</span>, <span class="type" data-line="84" data-col="21">int</span> <span class="ident" data-line="84" data-col="25">exp</span>) {
+<span class="line-number">85</span>    <span class="kw" data-line="85" data-col="5">if</span> (<span class="ident" data-line="85" data-col="9">exp</span> <span class="op" data-line="85" data-col="13">==</span> <span class="num" data-line="85" data-col="16">0</span>) {
+<span class="line-number">86</span>        <span class="kw" data-line="86" data-col="9">return</span> <span class="num" data-line="86" data-col="16">1</span>;
+<span class="line-number">87</span>    }
+<span class="line-number">88</span>    <span class="kw" data-line="88" data-col="5">return</span> <span class="ident" data-line="88" data-col="12">base</span> <span class="op" data-line="88" data-col="17">*</span> <span class="func" data-line="88" data-col="19">power</span>(<span class="ident" data-line="88" data-col="25">base</span>, <span class="ident" data-line="88" data-col="31">exp</span> <span class="op" data-line="88" data-col="35">-</span> <span class="num" data-line="88" data-col="37">1</span>);
+<span class="line-number">89</span>}
+<span class="line-number">90</span>
+<span class="line-number">91</span>// --- Function demonstrating all expression types ---
+<span class="line-number">92</span><span class="type" data-line="92" data-col="1">int</span> <span class="func" data-line="92" data-col="5">expression_demo</span>() {
+<span class="line-number">93</span>    <span class="type" data-line="93" data-col="5">int</span> <span class="ident" data-line="93" data-col="9">a</span> <span class="op" data-line="93" data-col="11">=</span> <span class="num" data-line="93" data-col="13">10</span>;
+<span class="line-number">94</span>    <span class="type" data-line="94" data-col="5">int</span> <span class="ident" data-line="94" data-col="9">b</span> <span class="op" data-line="94" data-col="11">=</span> <span class="num" data-line="94" data-col="13">20</span>;
+<span class="line-number">95</span>    <span class="type" data-line="95" data-col="5">int</span> <span class="ident" data-line="95" data-col="9">c</span>;
+<span class="line-number">96</span>
+<span class="line-number">97</span>    // Arithmetic
+<span class="line-number">98</span>    <span class="ident" data-line="98" data-col="5">c</span> <span class="op" data-line="98" data-col="7">=</span> <span class="ident" data-line="98" data-col="9">a</span> <span class="op" data-line="98" data-col="11">+</span> <span class="ident" data-line="98" data-col="13">b</span> <span class="op" data-line="98" data-col="15">-</span> <span class="num" data-line="98" data-col="17">3</span> <span class="op" data-line="98" data-col="19">*</span> <span class="num" data-line="98" data-col="21">4</span> <span class="op" data-line="98" data-col="23">/</span> <span class="num" data-line="98" data-col="25">2</span>;
+<span class="line-number">99</span>
+<span class="line-number">100</span>    // Relational
+<span class="line-number">101</span>    <span class="type" data-line="101" data-col="5">int</span> <span class="ident" data-line="101" data-col="9">flag</span> <span class="op" data-line="101" data-col="14">=</span> (<span class="ident" data-line="101" data-col="17">a</span> <span class="op" data-line="101" data-col="19">&lt;</span> <span class="ident" data-line="101" data-col="21">b</span>) <span class="op" data-line="101" data-col="24">&amp;&amp;</span> (<span class="ident" data-line="101" data-col="28">b</span> <span class="op" data-line="101" data-col="30">&gt;</span> <span class="num" data-line="101" data-col="32">15</span>) <span class="op" data-line="101" data-col="36">||</span> (<span class="ident" data-line="101" data-col="40">a</span> <span class="op" data-line="101" data-col="42">==</span> <span class="num" data-line="101" data-col="45">10</span>);
+<span class="line-number">102</span>
+<span class="line-number">103</span>    // Assignment operators
+<span class="line-number">104</span>    <span class="ident" data-line="104" data-col="5">a</span> <span class="op" data-line="104" data-col="7">+=</span> <span class="num" data-line="104" data-col="10">5</span>;
+<span class="line-number">105</span>    <span class="ident" data-line="105" data-col="5">b</span> <span class="op" data-line="105" data-col="7">-=</span> <span class="num" data-line="105" data-col="10">2</span>;
+<span class="line-number">106</span>    <span class="ident" data-line="106" data-col="5">c</span> <span class="op" data-line="106" data-col="7">*=</span> <span class="num" data-line="106" data-col="10">2</span>;
+<span class="line-number">107</span>    <span class="ident" data-line="107" data-col="5">c</span> <span class="op" data-line="107" data-col="7">/=</span> <span class="num" data-line="107" data-col="10">3</span>;
+<span class="line-number">108</span>
+<span class="line-number">109</span>    // Unary operators
+<span class="line-number">110</span>    <span class="type" data-line="110" data-col="5">int</span> <span class="ident" data-line="110" data-col="9">d</span> <span class="op" data-line="110" data-col="11">=</span> <span class="op" data-line="110" data-col="13">-</span><span class="ident" data-line="110" data-col="14">a</span>;
+<span class="line-number">111</span>    <span class="type" data-line="111" data-col="5">int</span> <span class="ident" data-line="111" data-col="9">e</span> <span class="op" data-line="111" data-col="11">=</span> <span class="op" data-line="111" data-col="13">+</span><span class="ident" data-line="111" data-col="14">b</span>;
+<span class="line-number">112</span>    <span class="type" data-line="112" data-col="5">int</span> <span class="ident" data-line="112" data-col="9">f</span> <span class="op" data-line="112" data-col="11">=</span> <span class="op" data-line="112" data-col="13">!</span><span class="ident" data-line="112" data-col="14">flag</span>;
+<span class="line-number">113</span>    <span class="type" data-line="113" data-col="5">int</span> <span class="ident" data-line="113" data-col="9">g</span> <span class="op" data-line="113" data-col="11">=</span> <span class="op" data-line="113" data-col="13">*</span>(<span class="op" data-line="113" data-col="15">&amp;</span><span class="ident" data-line="113" data-col="16">a</span>);   // pointer dereference
+<span class="line-number">114</span>    <span class="type" data-line="114" data-col="5">int</span> <span class="ident" data-line="114" data-col="9">h</span> <span class="op" data-line="114" data-col="11">=</span> <span class="op" data-line="114" data-col="13">++</span><span class="ident" data-line="114" data-col="15">a</span>;     // pre-increment
+<span class="line-number">115</span>    <span class="type" data-line="115" data-col="5">int</span> <span class="ident" data-line="115" data-col="9">i</span> <span class="op" data-line="115" data-col="11">=</span> <span class="ident" data-line="115" data-col="13">b</span><span class="op" data-line="115" data-col="14">--</span>;     // post-decrement
+<span class="line-number">116</span>
+<span class="line-number">117</span>    // Array access
+<span class="line-number">118</span>    <span class="type" data-line="118" data-col="5">int</span> <span class="ident" data-line="118" data-col="9">arr</span>[<span class="num" data-line="118" data-col="13">5</span>] <span class="op" data-line="118" data-col="16">=</span> {<span class="num" data-line="118" data-col="19">1</span>, <span class="num" data-line="118" data-col="22">2</span>, <span class="num" data-line="118" data-col="25">3</span>, <span class="num" data-line="118" data-col="28">4</span>, <span class="num" data-line="118" data-col="31">5</span>};
+<span class="line-number">119</span>    <span class="type" data-line="119" data-col="5">int</span> <span class="ident" data-line="119" data-col="9">first</span> <span class="op" data-line="119" data-col="15">=</span> <span class="ident" data-line="119" data-col="17">arr</span>[<span class="num" data-line="119" data-col="21">0</span>];
+<span class="line-number">120</span>    <span class="type" data-line="120" data-col="5">int</span> <span class="ident" data-line="120" data-col="9">last</span> <span class="op" data-line="120" data-col="14">=</span> <span class="ident" data-line="120" data-col="16">arr</span>[<span class="num" data-line="120" data-col="20">4</span>];
+<span class="line-number">121</span>
+<span class="line-number">122</span>    // Function calls
+<span class="line-number">123</span>    <span class="type" data-line="123" data-col="5">int</span> <span class="ident" data-line="123" data-col="9">sum</span> <span class="op" data-line="123" data-col="13">=</span> <span class="func" data-line="123" data-col="15">add</span>(<span class="ident" data-line="123" data-col="19">a</span>, <span class="ident" data-line="123" data-col="22">b</span>);
+<span class="line-number">124</span>    <span class="type" data-line="124" data-col="5">int</span> <span class="ident" data-line="124" data-col="9">fact</span> <span class="op" data-line="124" data-col="14">=</span> <span class="func" data-line="124" data-col="16">factorial</span>(<span class="num" data-line="124" data-col="26">5</span>);
+<span class="line-number">125</span>
+<span class="line-number">126</span>    // Struct member access (dot)
+<span class="line-number">127</span>    <span class="kw" data-line="127" data-col="5">struct</span> <span class="class" data-line="127" data-col="12">Point</span> <span class="ident" data-line="127" data-col="18">p1</span> <span class="op" data-line="127" data-col="21">=</span> {<span class="num" data-line="127" data-col="24">1</span>, <span class="num" data-line="127" data-col="27">2</span>};
+<span class="line-number">128</span>    <span class="type" data-line="128" data-col="5">int</span> <span class="ident" data-line="128" data-col="9">px</span> <span class="op" data-line="128" data-col="12">=</span> <span class="ident" data-line="128" data-col="14">p1</span>.<span class="ident" data-line="128" data-col="17">x</span>;
+<span class="line-number">129</span>    <span class="type" data-line="129" data-col="5">int</span> <span class="ident" data-line="129" data-col="9">py</span> <span class="op" data-line="129" data-col="12">=</span> <span class="ident" data-line="129" data-col="14">p1</span>.<span class="ident" data-line="129" data-col="17">y</span>;
+<span class="line-number">130</span>
+<span class="line-number">131</span>    // Pointer to struct and member access (-&gt;)
+<span class="line-number">132</span>    // struct Point* p2 = create_point(3, 4);
+<span class="line-number">133</span>    // int px2 = p2-&gt;x;
+<span class="line-number">134</span>    // int py2 = p2-&gt;y;
+<span class="line-number">135</span>
+<span class="line-number">136</span>    // Multiple variable declaration with initialization
+<span class="line-number">137</span>    <span class="type" data-line="137" data-col="5">int</span> <span class="ident" data-line="137" data-col="9">x1</span> <span class="op" data-line="137" data-col="12">=</span> <span class="num" data-line="137" data-col="14">0</span>, <span class="ident" data-line="137" data-col="17">x2</span> <span class="op" data-line="137" data-col="20">=</span> <span class="num" data-line="137" data-col="22">1</span>, <span class="ident" data-line="137" data-col="25">x3</span> <span class="op" data-line="137" data-col="28">=</span> <span class="num" data-line="137" data-col="30">2</span>;
+<span class="line-number">138</span>
+<span class="line-number">139</span>    // Array initialization with braces
+<span class="line-number">140</span>    // int matrix[2][2] = {{1, 2}, {3, 4}};
+<span class="line-number">141</span>
+<span class="line-number">142</span>    // Return a dummy value to show we executed
+<span class="line-number">143</span>    <span class="kw" data-line="143" data-col="5">return</span> <span class="ident" data-line="143" data-col="12">px</span> <span class="op" data-line="143" data-col="15">+</span> <span class="ident" data-line="143" data-col="17">py</span> <span class="op" data-line="143" data-col="20">+</span>  <span class="ident" data-line="143" data-col="23">sum</span> <span class="op" data-line="143" data-col="27">+</span> <span class="ident" data-line="143" data-col="29">fact</span>;
+<span class="line-number">144</span>}
+<span class="line-number">145</span>
+<span class="line-number">146</span>// --- Function using for loop with break ---
+<span class="line-number">147</span><span class="type" data-line="147" data-col="1">int</span> <span class="func" data-line="147" data-col="5">find_first</span>(<span class="type" data-line="147" data-col="16">int</span> <span class="ident" data-line="147" data-col="20">arr</span>[], <span class="type" data-line="147" data-col="27">int</span> <span class="ident" data-line="147" data-col="31">size</span>, <span class="type" data-line="147" data-col="37">int</span> <span class="ident" data-line="147" data-col="41">target</span>) {
+<span class="line-number">148</span>    <span class="kw" data-line="148" data-col="5">for</span> (<span class="type" data-line="148" data-col="10">int</span> <span class="ident" data-line="148" data-col="14">i</span> <span class="op" data-line="148" data-col="16">=</span> <span class="num" data-line="148" data-col="18">0</span>; <span class="ident" data-line="148" data-col="21">i</span> <span class="op" data-line="148" data-col="23">&lt;</span> <span class="ident" data-line="148" data-col="25">size</span>; <span class="ident" data-line="148" data-col="31">i</span> <span class="op" data-line="148" data-col="33">=</span> <span class="ident" data-line="148" data-col="35">i</span> <span class="op" data-line="148" data-col="37">+</span> <span class="num" data-line="148" data-col="39">1</span>) {
+<span class="line-number">149</span>        <span class="kw" data-line="149" data-col="9">if</span> (<span class="ident" data-line="149" data-col="13">arr</span>[<span class="ident" data-line="149" data-col="17">i</span>] <span class="op" data-line="149" data-col="20">==</span> <span class="ident" data-line="149" data-col="23">target</span>) {
+<span class="line-number">150</span>            <span class="kw" data-line="150" data-col="13">return</span> <span class="ident" data-line="150" data-col="20">i</span>;
+<span class="line-number">151</span>        }
+<span class="line-number">152</span>    }
+<span class="line-number">153</span>    <span class="kw" data-line="153" data-col="5">return</span> <span class="op" data-line="153" data-col="12">-</span><span class="num" data-line="153" data-col="13">1</span>;
+<span class="line-number">154</span>}
+<span class="line-number">155</span>
+<span class="line-number">156</span>// --- Function with void return and no parameters ---
+<span class="line-number">157</span><span class="type" data-line="157" data-col="1">void</span> <span class="func" data-line="157" data-col="6">do_nothing</span>() {
+<span class="line-number">158</span>    // empty body
+<span class="line-number">159</span>}
+<span class="line-number">160</span>
+<span class="line-number">161</span>// --- Main function ---
+<span class="line-number">162</span><span class="type" data-line="162" data-col="1">int</span> <span class="func" data-line="162" data-col="5">main</span>() {
+<span class="line-number">163</span>    // Variable declarations with initialization
+<span class="line-number">164</span>    <span class="type" data-line="164" data-col="5">int</span> <span class="ident" data-line="164" data-col="9">x</span> <span class="op" data-line="164" data-col="11">=</span> <span class="num" data-line="164" data-col="13">10</span>;
+<span class="line-number">165</span>    <span class="type" data-line="165" data-col="5">int</span> <span class="ident" data-line="165" data-col="9">y</span> <span class="op" data-line="165" data-col="11">=</span> <span class="num" data-line="165" data-col="13">20</span>;
+<span class="line-number">166</span>    <span class="type" data-line="166" data-col="5">int</span> <span class="ident" data-line="166" data-col="9">z</span> <span class="op" data-line="166" data-col="11">=</span> <span class="num" data-line="166" data-col="13">30</span>;
+<span class="line-number">167</span>
+<span class="line-number">168</span>    // Struct declaration and initialization
+<span class="line-number">169</span>    <span class="kw" data-line="169" data-col="5">struct</span> <span class="class" data-line="169" data-col="12">Point</span> <span class="ident" data-line="169" data-col="18">p</span> <span class="op" data-line="169" data-col="20">=</span> {<span class="num" data-line="169" data-col="23">5</span>, <span class="num" data-line="169" data-col="26">7</span>};
+<span class="line-number">170</span>    // struct Point* pp = create_point(8, 9);
+<span class="line-number">171</span>
+<span class="line-number">172</span>    // Function calls
+<span class="line-number">173</span>    <span class="type" data-line="173" data-col="5">int</span> <span class="ident" data-line="173" data-col="9">result</span> <span class="op" data-line="173" data-col="16">=</span> <span class="func" data-line="173" data-col="18">add</span>(<span class="ident" data-line="173" data-col="22">x</span>, <span class="ident" data-line="173" data-col="25">y</span>);
+<span class="line-number">174</span>    <span class="type" data-line="174" data-col="5">int</span> <span class="ident" data-line="174" data-col="9">fact</span> <span class="op" data-line="174" data-col="14">=</span> <span class="func" data-line="174" data-col="16">factorial</span>(<span class="num" data-line="174" data-col="26">5</span>);
+<span class="line-number">175</span>    // int even_count = count_even((int[]){1, 2, 3, 4, 5, 6}, 6);
+<span class="line-number">176</span>    // int idx = find_first((int[]){1, 2, 3, 4, 5}, 5, 3);
+<span class="line-number">177</span>
+<span class="line-number">178</span>    // Conditional statements
+<span class="line-number">179</span>    <span class="kw" data-line="179" data-col="5">if</span> (<span class="ident" data-line="179" data-col="9">result</span> <span class="op" data-line="179" data-col="16">&gt;</span> <span class="num" data-line="179" data-col="18">0</span>) {
+<span class="line-number">180</span>        <span class="func" data-line="180" data-col="9">do_nothing</span>();   // then branch
+<span class="line-number">181</span>    } <span class="kw" data-line="181" data-col="7">else</span> {
+<span class="line-number">182</span>        <span class="func" data-line="182" data-col="9">do_nothing</span>();   // else branch
+<span class="line-number">183</span>    }
+<span class="line-number">184</span>
+<span class="line-number">185</span>    // While loop
+<span class="line-number">186</span>    <span class="type" data-line="186" data-col="5">int</span> <span class="ident" data-line="186" data-col="9">i</span> <span class="op" data-line="186" data-col="11">=</span> <span class="num" data-line="186" data-col="13">0</span>;
+<span class="line-number">187</span>    <span class="kw" data-line="187" data-col="5">while</span> (<span class="ident" data-line="187" data-col="12">i</span> <span class="op" data-line="187" data-col="14">&lt;</span> <span class="num" data-line="187" data-col="16">10</span>) {
+<span class="line-number">188</span>        <span class="ident" data-line="188" data-col="9">i</span> <span class="op" data-line="188" data-col="11">=</span> <span class="ident" data-line="188" data-col="13">i</span> <span class="op" data-line="188" data-col="15">+</span> <span class="num" data-line="188" data-col="17">1</span>;
+<span class="line-number">189</span>        <span class="kw" data-line="189" data-col="9">if</span> (<span class="ident" data-line="189" data-col="13">i</span> <span class="op" data-line="189" data-col="15">==</span> <span class="num" data-line="189" data-col="18">5</span>) {
+<span class="line-number">190</span>            <span class="kw" data-line="190" data-col="13">continue</span>;
+<span class="line-number">191</span>        }
+<span class="line-number">192</span>        <span class="func" data-line="192" data-col="9">do_nothing</span>();   // dummy operation
+<span class="line-number">193</span>    }
+<span class="line-number">194</span>
+<span class="line-number">195</span>    // For loop with break
+<span class="line-number">196</span>    <span class="kw" data-line="196" data-col="5">for</span> (<span class="type" data-line="196" data-col="10">int</span> <span class="ident" data-line="196" data-col="14">j</span> <span class="op" data-line="196" data-col="16">=</span> <span class="num" data-line="196" data-col="18">0</span>; <span class="ident" data-line="196" data-col="21">j</span> <span class="op" data-line="196" data-col="23">&lt;</span> <span class="num" data-line="196" data-col="25">10</span>; <span class="ident" data-line="196" data-col="29">j</span> <span class="op" data-line="196" data-col="31">=</span> <span class="ident" data-line="196" data-col="33">j</span> <span class="op" data-line="196" data-col="35">+</span> <span class="num" data-line="196" data-col="37">1</span>) {
+<span class="line-number">197</span>        <span class="kw" data-line="197" data-col="9">if</span> (<span class="ident" data-line="197" data-col="13">j</span> <span class="op" data-line="197" data-col="15">==</span> <span class="num" data-line="197" data-col="18">7</span>) {
+<span class="line-number">198</span>            <span class="kw" data-line="198" data-col="13">break</span>;
+<span class="line-number">199</span>        }
+<span class="line-number">200</span>        <span class="func" data-line="200" data-col="9">do_nothing</span>();
+<span class="line-number">201</span>    }
+<span class="line-number">202</span>
+<span class="line-number">203</span>    // Return statement
+<span class="line-number">204</span>    <span class="kw" data-line="204" data-col="5">return</span> <span class="num" data-line="204" data-col="12">0</span>;
+<span class="line-number">205</span>}
+<span class="line-number">206</span>
+<span class="line-number">207</span>// --- Function definition after main (prototype already declared) ---
+<span class="line-number">208</span><span class="type" data-line="208" data-col="1">int</span> <span class="func" data-line="208" data-col="5">add</span>(<span class="type" data-line="208" data-col="9">int</span> <span class="ident" data-line="208" data-col="13">a</span>, <span class="type" data-line="208" data-col="16">int</span> <span class="ident" data-line="208" data-col="20">b</span>) {
+<span class="line-number">209</span>    <span class="kw" data-line="209" data-col="5">return</span> <span class="ident" data-line="209" data-col="12">a</span> <span class="op" data-line="209" data-col="14">+</span> <span class="ident" data-line="209" data-col="16">b</span>;
+<span class="line-number">210</span>}
+<span class="line-number">211</span>
+<span class="line-number">212</span>// --- Function definition using struct parameter ---
+<span class="line-number">213</span><span class="type" data-line="213" data-col="1">void</span> <span class="func" data-line="213" data-col="6">print_point</span>(<span class="kw" data-line="213" data-col="18">struct</span> <span class="class" data-line="213" data-col="25">Point</span> <span class="ident" data-line="213" data-col="31">p</span>) {
+<span class="line-number">214</span>    // No printf, just a dummy statement to avoid unused warning
+<span class="line-number">215</span>    <span class="type" data-line="215" data-col="5">int</span> <span class="ident" data-line="215" data-col="9">dummy</span> <span class="op" data-line="215" data-col="15">=</span> <span class="ident" data-line="215" data-col="17">p</span>.<span class="ident" data-line="215" data-col="19">x</span> <span class="op" data-line="215" data-col="21">+</span> <span class="ident" data-line="215" data-col="23">p</span>.<span class="ident" data-line="215" data-col="25">y</span>;
+<span class="line-number">216</span>}</pre>
 </body>
 </html>

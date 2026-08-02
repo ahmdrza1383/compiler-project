@@ -54,12 +54,12 @@
         "definition_loc": "test_code.c:7:8",
         "references": [
           "test_code.c:7:8",
-          "test_code.c:26:31",
-          "test_code.c:27:15",
-          "test_code.c:39:36",
-          "test_code.c:127:18",
-          "test_code.c:169:18",
-          "test_code.c:213:31"
+          "test_code.c:26:25",
+          "test_code.c:27:8",
+          "test_code.c:39:29",
+          "test_code.c:127:12",
+          "test_code.c:169:12",
+          "test_code.c:213:25"
         ],
         "signature": null,
         "is_initialized": false,
@@ -72,7 +72,7 @@
         "scope": "global",
         "definition_loc": "test_code.c:13:8",
         "references": [
-          "test_code.c:15:18",
+          "test_code.c:15:12",
           "test_code.c:13:8"
         ],
         "signature": null,
@@ -1359,12 +1359,12 @@
       "definition_loc": "test_code.c:7:8",
       "references": [
         "test_code.c:7:8",
-        "test_code.c:26:31",
-        "test_code.c:27:15",
-        "test_code.c:39:36",
-        "test_code.c:127:18",
-        "test_code.c:169:18",
-        "test_code.c:213:31"
+        "test_code.c:26:25",
+        "test_code.c:27:8",
+        "test_code.c:39:29",
+        "test_code.c:127:12",
+        "test_code.c:169:12",
+        "test_code.c:213:25"
       ],
       "signature": null,
       "is_initialized": false,
@@ -1377,7 +1377,7 @@
       "scope": "global",
       "definition_loc": "test_code.c:13:8",
       "references": [
-        "test_code.c:15:18",
+        "test_code.c:15:12",
         "test_code.c:13:8"
       ],
       "signature": null,

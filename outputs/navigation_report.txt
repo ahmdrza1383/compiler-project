@@ -25,10 +25,10 @@
   - Go-to-Definition: {'file': 'test_code.c', 'line': 7, 'col': 8}
   - Total References Found: 7
     [Def] File: test_code.c, Line: 7, Col: 8
-    [Ref] File: test_code.c, Line: 26, Col: 31
-    [Ref] File: test_code.c, Line: 27, Col: 15
-    [Ref] File: test_code.c, Line: 39, Col: 36
-    [Ref] File: test_code.c, Line: 127, Col: 18
-    [Ref] File: test_code.c, Line: 169, Col: 18
-    [Ref] File: test_code.c, Line: 213, Col: 31
+    [Ref] File: test_code.c, Line: 26, Col: 25
+    [Ref] File: test_code.c, Line: 27, Col: 8
+    [Ref] File: test_code.c, Line: 39, Col: 29
+    [Ref] File: test_code.c, Line: 127, Col: 12
+    [Ref] File: test_code.c, Line: 169, Col: 12
+    [Ref] File: test_code.c, Line: 213, Col: 25
 ------------------------------------------------------------

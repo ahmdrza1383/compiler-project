@@ -87,37 +87,37 @@
         {
           "file": "test_code.c",
           "line": 26,
-          "col": 31,
+          "col": 25,
           "is_definition": false
         },
         {
           "file": "test_code.c",
           "line": 27,
-          "col": 15,
+          "col": 8,
           "is_definition": false
         },
         {
           "file": "test_code.c",
           "line": 39,
-          "col": 36,
+          "col": 29,
           "is_definition": false
         },
         {
           "file": "test_code.c",
           "line": 127,
-          "col": 18,
+          "col": 12,
           "is_definition": false
         },
         {
           "file": "test_code.c",
           "line": 169,
-          "col": 18,
+          "col": 12,
           "is_definition": false
         },
         {
           "file": "test_code.c",
           "line": 213,
-          "col": 31,
+          "col": 25,
           "is_definition": false
         }
       ]

@@ -17,7 +17,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 8,
+            "col": 5
           },
           "var_name": {
             "name": "ID: x (Variable)",
@@ -36,7 +38,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 9,
+            "col": 5
           },
           "var_name": {
             "name": "ID: y (Variable)",
@@ -67,7 +71,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 14,
+            "col": 5
           },
           "var_name": {
             "name": "ID: value (Variable)",
@@ -86,7 +92,9 @@
             "name": "Type: struct Node*",
             "type_name": "struct Node",
             "pointers": 1,
-            "category": "Type"
+            "category": "Type",
+            "line": 15,
+            "col": 12
           },
           "var_name": {
             "name": "ID: next (Variable)",
@@ -107,7 +115,9 @@
         "name": "Type: int",
         "type_name": "int",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 19,
+        "col": 1
       },
       "var_name": {
         "name": "ID: global_counter (Variable)",
@@ -126,7 +136,9 @@
         "name": "Type: float",
         "type_name": "float",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 20,
+        "col": 1
       },
       "var_name": {
         "name": "ID: pi (Variable)",
@@ -145,7 +157,9 @@
         "name": "Type: char*",
         "type_name": "char",
         "pointers": 1,
-        "category": "Type"
+        "category": "Type",
+        "line": 21,
+        "col": 1
       },
       "var_name": {
         "name": "ID: message (Variable)",
@@ -164,7 +178,9 @@
         "name": "Type: double",
         "type_name": "double",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 22,
+        "col": 1
       },
       "var_name": {
         "name": "ID: precision (Variable)",
@@ -183,7 +199,9 @@
         "name": "Type: int",
         "type_name": "int",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 25,
+        "col": 1
       },
       "func_name": {
         "name": "ID: add (Function)",
@@ -199,7 +217,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 25,
+            "col": 9
           },
           "var_name": {
             "name": "ID: a (Variable)",
@@ -218,7 +238,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 25,
+            "col": 16
           },
           "var_name": {
             "name": "ID: b (Variable)",
@@ -239,7 +261,9 @@
         "name": "Type: void",
         "type_name": "void",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 26,
+        "col": 1
       },
       "func_name": {
         "name": "ID: print_point (Function)",
@@ -255,7 +279,9 @@
             "name": "Type: struct Point",
             "type_name": "struct Point",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 26,
+            "col": 25
           },
           "var_name": {
             "name": "ID: p (Variable)",
@@ -276,7 +302,9 @@
         "name": "Type: struct Point*",
         "type_name": "struct Point",
         "pointers": 1,
-        "category": "Type"
+        "category": "Type",
+        "line": 27,
+        "col": 8
       },
       "func_name": {
         "name": "ID: create_point (Function)",
@@ -292,7 +320,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 27,
+            "col": 28
           },
           "var_name": {
             "name": "ID: x (Variable)",
@@ -311,7 +341,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 27,
+            "col": 35
           },
           "var_name": {
             "name": "ID: y (Variable)",
@@ -332,7 +364,9 @@
         "name": "Type: int",
         "type_name": "int",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 28,
+        "col": 1
       },
       "func_name": {
         "name": "ID: sum_array (Function)",
@@ -348,7 +382,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 28,
+            "col": 15
           },
           "var_name": {
             "name": "ID: arr (Variable)",
@@ -367,7 +403,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 28,
+            "col": 26
           },
           "var_name": {
             "name": "ID: size (Variable)",
@@ -388,7 +426,9 @@
         "name": "Type: int",
         "type_name": "int",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 31,
+        "col": 1
       },
       "func_name": {
         "name": "ID: factorial (Function)",
@@ -404,7 +444,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 31,
+            "col": 15
           },
           "var_name": {
             "name": "ID: n (Variable)",
@@ -497,7 +539,9 @@
         "name": "Type: void",
         "type_name": "void",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 39,
+        "col": 1
       },
       "func_name": {
         "name": "ID: increment_point (Function)",
@@ -513,7 +557,9 @@
             "name": "Type: struct Point*",
             "type_name": "struct Point",
             "pointers": 1,
-            "category": "Type"
+            "category": "Type",
+            "line": 39,
+            "col": 29
           },
           "var_name": {
             "name": "ID: p (Variable)",
@@ -590,7 +636,9 @@
         "name": "Type: int",
         "type_name": "int",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 45,
+        "col": 1
       },
       "func_name": {
         "name": "ID: sum_array (Function)",
@@ -606,7 +654,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 45,
+            "col": 15
           },
           "var_name": {
             "name": "ID: arr (Variable)",
@@ -625,7 +675,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 45,
+            "col": 26
           },
           "var_name": {
             "name": "ID: size (Variable)",
@@ -648,7 +700,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 46,
+              "col": 5
             },
             "var_name": {
               "name": "ID: sum (Variable)",
@@ -669,7 +723,9 @@
                 "name": "Type: int",
                 "type_name": "int",
                 "pointers": 0,
-                "category": "Type"
+                "category": "Type",
+                "line": 47,
+                "col": 10
               },
               "var_name": {
                 "name": "ID: i (Variable)",
@@ -789,7 +845,9 @@
         "name": "Type: int",
         "type_name": "int",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 54,
+        "col": 1
       },
       "func_name": {
         "name": "ID: count_even (Function)",
@@ -805,7 +863,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 54,
+            "col": 16
           },
           "var_name": {
             "name": "ID: arr (Variable)",
@@ -824,7 +884,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 54,
+            "col": 27
           },
           "var_name": {
             "name": "ID: size (Variable)",
@@ -847,7 +909,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 55,
+              "col": 5
             },
             "var_name": {
               "name": "ID: count (Variable)",
@@ -866,7 +930,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 56,
+              "col": 5
             },
             "var_name": {
               "name": "ID: i (Variable)",
@@ -1065,7 +1131,9 @@
         "name": "Type: int",
         "type_name": "int",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 71,
+        "col": 1
       },
       "func_name": {
         "name": "ID: is_in_range (Function)",
@@ -1081,7 +1149,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 71,
+            "col": 17
           },
           "var_name": {
             "name": "ID: value (Variable)",
@@ -1100,7 +1170,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 71,
+            "col": 28
           },
           "var_name": {
             "name": "ID: low (Variable)",
@@ -1119,7 +1191,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 71,
+            "col": 37
           },
           "var_name": {
             "name": "ID: high (Variable)",
@@ -1190,7 +1264,9 @@
         "name": "Type: int",
         "type_name": "int",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 84,
+        "col": 1
       },
       "func_name": {
         "name": "ID: power (Function)",
@@ -1206,7 +1282,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 84,
+            "col": 11
           },
           "var_name": {
             "name": "ID: base (Variable)",
@@ -1225,7 +1303,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 84,
+            "col": 21
           },
           "var_name": {
             "name": "ID: exp (Variable)",
@@ -1325,7 +1405,9 @@
         "name": "Type: int",
         "type_name": "int",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 92,
+        "col": 1
       },
       "func_name": {
         "name": "ID: expression_demo (Function)",
@@ -1344,7 +1426,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 93,
+              "col": 5
             },
             "var_name": {
               "name": "ID: a (Variable)",
@@ -1363,7 +1447,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 94,
+              "col": 5
             },
             "var_name": {
               "name": "ID: b (Variable)",
@@ -1382,7 +1468,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 95,
+              "col": 5
             },
             "var_name": {
               "name": "ID: c (Variable)",
@@ -1445,7 +1533,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 101,
+              "col": 5
             },
             "var_name": {
               "name": "ID: flag (Variable)",
@@ -1561,7 +1651,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 110,
+              "col": 5
             },
             "var_name": {
               "name": "ID: d (Variable)",
@@ -1591,7 +1683,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 111,
+              "col": 5
             },
             "var_name": {
               "name": "ID: e (Variable)",
@@ -1621,7 +1715,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 112,
+              "col": 5
             },
             "var_name": {
               "name": "ID: f (Variable)",
@@ -1651,7 +1747,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 113,
+              "col": 5
             },
             "var_name": {
               "name": "ID: g (Variable)",
@@ -1686,7 +1784,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 114,
+              "col": 5
             },
             "var_name": {
               "name": "ID: h (Variable)",
@@ -1716,7 +1816,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 115,
+              "col": 5
             },
             "var_name": {
               "name": "ID: i (Variable)",
@@ -1746,7 +1848,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 118,
+              "col": 5
             },
             "var_name": {
               "name": "ID: arr (Variable)",
@@ -1809,7 +1913,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 119,
+              "col": 5
             },
             "var_name": {
               "name": "ID: first (Variable)",
@@ -1838,7 +1944,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 120,
+              "col": 5
             },
             "var_name": {
               "name": "ID: last (Variable)",
@@ -1867,7 +1975,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 123,
+              "col": 5
             },
             "var_name": {
               "name": "ID: sum (Variable)",
@@ -1911,7 +2021,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 124,
+              "col": 5
             },
             "var_name": {
               "name": "ID: fact (Variable)",
@@ -1949,7 +2061,9 @@
               "name": "Type: struct Point",
               "type_name": "struct Point",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 127,
+              "col": 12
             },
             "var_name": {
               "name": "ID: p1 (Variable)",
@@ -1988,7 +2102,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 128,
+              "col": 5
             },
             "var_name": {
               "name": "ID: px (Variable)",
@@ -2024,7 +2140,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 129,
+              "col": 5
             },
             "var_name": {
               "name": "ID: py (Variable)",
@@ -2060,7 +2178,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 137,
+              "col": 5
             },
             "var_name": {
               "name": "ID: x1 (Variable)",
@@ -2079,7 +2199,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 137,
+              "col": 5
             },
             "var_name": {
               "name": "ID: x2 (Variable)",
@@ -2098,7 +2220,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 137,
+              "col": 5
             },
             "var_name": {
               "name": "ID: x3 (Variable)",
@@ -2165,7 +2289,9 @@
         "name": "Type: int",
         "type_name": "int",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 147,
+        "col": 1
       },
       "func_name": {
         "name": "ID: find_first (Function)",
@@ -2181,7 +2307,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 147,
+            "col": 16
           },
           "var_name": {
             "name": "ID: arr (Variable)",
@@ -2200,7 +2328,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 147,
+            "col": 27
           },
           "var_name": {
             "name": "ID: size (Variable)",
@@ -2219,7 +2349,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 147,
+            "col": 37
           },
           "var_name": {
             "name": "ID: target (Variable)",
@@ -2244,7 +2376,9 @@
                 "name": "Type: int",
                 "type_name": "int",
                 "pointers": 0,
-                "category": "Type"
+                "category": "Type",
+                "line": 148,
+                "col": 10
               },
               "var_name": {
                 "name": "ID: i (Variable)",
@@ -2373,7 +2507,9 @@
         "name": "Type: void",
         "type_name": "void",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 157,
+        "col": 1
       },
       "func_name": {
         "name": "ID: do_nothing (Function)",
@@ -2394,7 +2530,9 @@
         "name": "Type: int",
         "type_name": "int",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 162,
+        "col": 1
       },
       "func_name": {
         "name": "ID: main (Function)",
@@ -2413,7 +2551,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 164,
+              "col": 5
             },
             "var_name": {
               "name": "ID: x (Variable)",
@@ -2432,7 +2572,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 165,
+              "col": 5
             },
             "var_name": {
               "name": "ID: y (Variable)",
@@ -2451,7 +2593,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 166,
+              "col": 5
             },
             "var_name": {
               "name": "ID: z (Variable)",
@@ -2470,7 +2614,9 @@
               "name": "Type: struct Point",
               "type_name": "struct Point",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 169,
+              "col": 12
             },
             "var_name": {
               "name": "ID: p (Variable)",
@@ -2509,7 +2655,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 173,
+              "col": 5
             },
             "var_name": {
               "name": "ID: result (Variable)",
@@ -2553,7 +2701,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 174,
+              "col": 5
             },
             "var_name": {
               "name": "ID: fact (Variable)",
@@ -2638,7 +2788,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 186,
+              "col": 5
             },
             "var_name": {
               "name": "ID: i (Variable)",
@@ -2737,7 +2889,9 @@
                 "name": "Type: int",
                 "type_name": "int",
                 "pointers": 0,
-                "category": "Type"
+                "category": "Type",
+                "line": 196,
+                "col": 10
               },
               "var_name": {
                 "name": "ID: j (Variable)",
@@ -2841,7 +2995,9 @@
         "name": "Type: int",
         "type_name": "int",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 208,
+        "col": 1
       },
       "func_name": {
         "name": "ID: add (Function)",
@@ -2857,7 +3013,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 208,
+            "col": 9
           },
           "var_name": {
             "name": "ID: a (Variable)",
@@ -2876,7 +3034,9 @@
             "name": "Type: int",
             "type_name": "int",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 208,
+            "col": 16
           },
           "var_name": {
             "name": "ID: b (Variable)",
@@ -2925,7 +3085,9 @@
         "name": "Type: void",
         "type_name": "void",
         "pointers": 0,
-        "category": "Type"
+        "category": "Type",
+        "line": 213,
+        "col": 1
       },
       "func_name": {
         "name": "ID: print_point (Function)",
@@ -2941,7 +3103,9 @@
             "name": "Type: struct Point",
             "type_name": "struct Point",
             "pointers": 0,
-            "category": "Type"
+            "category": "Type",
+            "line": 213,
+            "col": 25
           },
           "var_name": {
             "name": "ID: p (Variable)",
@@ -2964,7 +3128,9 @@
               "name": "Type: int",
               "type_name": "int",
               "pointers": 0,
-              "category": "Type"
+              "category": "Type",
+              "line": 215,
+              "col": 5
             },
             "var_name": {
               "name": "ID: dummy (Variable)",

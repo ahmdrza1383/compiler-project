@@ -169,19 +169,31 @@ class Parser:
         return fields
 
     def parse_type_rest(self, base_type_spec):
-        pointers = 0
+        # پوینترهایی که قبلاً توسط parse_basic_type_spec جذب شده‌اند را می‌گیریم
+        pointers = base_type_spec.pointers
+        
         while self.match("*"):
             pointers += 1
+            
+        # یک نمونه کاملاً خام و بدون پوینتر (pointers=0) برای متغیرهای دوم به بعد می‌سازیم
+        pure_base_type = TypeSpecifier(
+            base_type_spec.type_name,
+            0,
+            getattr(base_type_spec, "line", 0),
+            getattr(base_type_spec, "col", 0)
+        )
 
-        if pointers > 0:
-            base_type_spec.pointers += pointers
-            base_type_spec.name = f"Type: {base_type_spec.type_name}" + (
-                "*" * base_type_spec.pointers
-            )
+        # نوع متغیر اول (با احتساب تمام پوینترها)
+        current_type_spec = TypeSpecifier(
+            base_type_spec.type_name,
+            pointers,
+            getattr(base_type_spec, "line", 0),
+            getattr(base_type_spec, "col", 0)
+        )
 
         ident_tok = self.consume_type(TokenType.IDENTIFIER, "Expected identifier")
         line, col = self._loc(ident_tok)
-
+        
         if self.match("("):
             ident = Identifier(ident_tok.lexeme, SymbolCategory.FUNCTION, line, col)
             params = []
@@ -190,14 +202,15 @@ class Parser:
             self.consume(")", "Expected ')' after parameters")
             if self.check("{"):
                 body = self.parse_block()
-                return FunctionDef(base_type_spec, ident, params, body)
+                return FunctionDef(current_type_spec, ident, params, body)
             else:
                 self.consume(";", "Expected ';' after function declaration")
-                return FunctionDecl(base_type_spec, ident, params)
+                return FunctionDecl(current_type_spec, ident, params)
         else:
             ident = Identifier(ident_tok.lexeme, SymbolCategory.VARIABLE, line, col)
-            return self.parse_var_tail(base_type_spec, ident)
-
+            # هر دو نمونه خام و اختصاصی را به تابع بعدی پاس می‌دهیم
+            return self.parse_var_tail(pure_base_type, current_type_spec, ident)
+            
     def parse_non_struct_decl(self):
         type_spec = self.parse_basic_type_spec()
         return self.parse_type_rest(type_spec)
@@ -253,27 +266,27 @@ class Parser:
         )
         return VarDecl(var_type, ident, is_array, array_size, initz)
 
-    def parse_var_tail(self, type_spec, first_ident):
+    def parse_var_tail(self, base_type_spec, first_type_spec, first_ident):
         is_array = False
         array_size = None
         initializer = None
-
         if self.match("["):
             is_array = True
             array_size = self.parse_expr()
             self.consume("]", "Expected ']'")
-
         if self.match("="):
             initializer = self.parse_initializer()
-
-        decls = [VarDecl(type_spec, first_ident, is_array, array_size, initializer)]
-
+            
+        # متغیر اول با تایپ اختصاصی خودش ساخته می‌شود (مثلاً int*)
+        decls = [VarDecl(first_type_spec, first_ident, is_array, array_size, initializer)]
+        
         while self.match(","):
-            decls.append(self.parse_var_init(type_spec))
-
+            # متغیرهای بعدی با تایپ کاملاً خام ساخته می‌شوند (مثلاً int)
+            decls.append(self.parse_var_init(base_type_spec))
+            
         self.consume(";", "Expected ';' after variable declaration")
         return decls[0] if len(decls) == 1 else decls
-
+    
     def parse_param_list(self):
         params = [self.parse_param()]
         while self.match(","):

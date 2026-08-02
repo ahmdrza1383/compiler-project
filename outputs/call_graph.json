@@ -10,15 +10,15 @@
     "power"
   ],
   "expression_demo": [
-    "factorial",
-    "add"
+    "add",
+    "factorial"
   ],
   "find_first": [],
   "do_nothing": [],
   "main": [
-    "factorial",
+    "add",
     "do_nothing",
-    "add"
+    "factorial"
   ],
   "add": [],
   "print_point": []
