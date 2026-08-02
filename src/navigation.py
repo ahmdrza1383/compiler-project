@@ -28,6 +28,21 @@ class NavigationEngine:
                                 return sym
                         except ValueError:
                             continue
+
+        # --- فقط این بخش را به انتهای کدهای قبلی خود (قبل از return None) اضافه کنید ---
+        if hasattr(self.symbol_table, 'struct_scopes'):
+            for struct_name, scope in self.symbol_table.struct_scopes.items():
+                for sym in scope.symbols.values():
+                    # بررسی تطابق با محل تعریف
+                    if sym.definition_loc and sym.definition_loc.line == line and sym.definition_loc.column <= col <= sym.definition_loc.column + len(sym.name):
+                        return sym
+                    
+                    # بررسی تطابق با ارجاعات
+                    for ref in sym.references:
+                        if hasattr(ref, 'line') and ref.line == line and ref.column <= col <= ref.column + len(sym.name):
+                            return sym
+        # -------------------------------------------------------------------------------
+        
         return None
 
     def goto_definition(self, line: int, col: int) -> dict:

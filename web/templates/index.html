@@ -801,14 +801,46 @@ int main() {
         }
       }
 
-      function getHover() {
+      async function getHover() {
         if (!selectedLine || !selectedCol)
           return showNavResult("Please click on an identifier first.");
-        const fakeEvent = {
-          clientX: window.innerWidth / 2,
-          clientY: window.innerHeight / 2,
-        };
-        showTooltip(fakeEvent, selectedLine, selectedCol);
+        
+        // ==========================================
+        // در صورتی که خواستید با زدن این دکمه، 
+        // دوباره همان پنجره شناور (Tooltip) هم باز شود، 
+        // کدهای زیر را از حالت کامنت خارج کنید:
+        //
+        // const fakeEvent = {
+        //   clientX: window.innerWidth / 2,
+        //   clientY: window.innerHeight / 2,
+        // };
+        // showTooltip(fakeEvent, selectedLine, selectedCol);
+        // ==========================================
+
+        showNavResult("Fetching hover info...");
+
+        try {
+          const resp = await fetch("/api/hover", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ line: selectedLine, col: selectedCol }),
+          });
+          const data = await resp.json();
+
+          if (data.status === "success") {
+            const h = data.hover;
+            // ساختاربندی متنی برای نمایش در کادر پایین
+            let res = `🔹 Symbol: ${h.symbol}\n`;
+            res += `   Type: ${h.type} | Kind: ${h.kind}\n`;
+            res += `   Scope: ${h.scope} | Init: ${h.initialized ? "Yes" : "No"} | Used: ${h.used ? "Yes" : "No"}`;
+            
+            showNavResult(res);
+          } else {
+            showNavResult(`Error: Could not fetch hover info.`);
+          }
+        } catch (err) {
+          showNavResult("Server error.");
+        }
       }
 
       function showNavResult(text) {
