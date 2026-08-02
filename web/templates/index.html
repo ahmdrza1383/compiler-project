@@ -405,10 +405,7 @@ int main() {
         </div>
 
         <div id="tab-symbols" class="tab-content">
-          <pre
-            id="symbolTableOutput"
-            class="text-emerald-300 text-xs whitespace-pre-wrap font-mono leading-relaxed"
-          ></pre>
+          <div id="symbolTableOutput" class="w-full"></div>
         </div>
 
         <div id="tab-cfg" class="tab-content">
@@ -470,7 +467,6 @@ int main() {
       </div>
     </div>
 
-    <!-- ===== JAVASCRIPT ===== -->
     <script>
       let currentHighlightedHTML = "";
       let selectedLine = null;
@@ -479,6 +475,86 @@ int main() {
       // Store graph definitions to render them when tabs become visible
       let pendingCfgData = "";
       let pendingCallGraphData = "";
+
+      function flattenSymbolTable(scope, path = "global") {
+        let symbols = [];
+        if (scope.symbols) {
+          for (let key in scope.symbols) {
+            let sym = scope.symbols[key];
+            sym.scopePath = path;
+            symbols.push(sym);
+          }
+        }
+        if (scope.children) {
+          scope.children.forEach((child) => {
+            let childType = child.type || "block";
+            let childPath = path + " > " + childType;
+            symbols = symbols.concat(flattenSymbolTable(child, childPath));
+          });
+        }
+        return symbols;
+      }
+
+      function renderSymbolTableHtml(symbolTableData) {
+        if (!symbolTableData || !symbolTableData.global_scope) {
+          return "<p class='text-slate-400'>No symbol table data available.</p>";
+        }
+
+        const symbols = flattenSymbolTable(symbolTableData.global_scope);
+
+        if (symbols.length === 0) {
+          return "<p class='text-slate-400'>No symbols found in the code.</p>";
+        }
+
+        let html = `
+  <div class="overflow-x-auto rounded-xl border border-slate-700/60 shadow-xl bg-slate-900/50">
+    <table class="w-full text-left text-sm text-slate-300 border-collapse">
+      <thead class="bg-slate-800/80 text-xs uppercase text-slate-400 border-b border-slate-700/60">
+        <tr>
+          <th class="px-5 py-4 font-semibold">Name</th>
+          <th class="px-5 py-4 font-semibold">Kind</th>
+          <th class="px-5 py-4 font-semibold">Type / Signature</th>
+          <th class="px-5 py-4 font-semibold">Scope</th>
+          <th class="px-5 py-4 font-semibold">Location</th>
+          <th class="px-5 py-4 font-semibold text-center">Init</th>
+          <th class="px-5 py-4 font-semibold text-center">Used</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-700/50">
+  `;
+
+        symbols.forEach((sym) => {
+          const initBadge = sym.is_initialized
+            ? '<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide">YES</span>'
+            : '<span class="bg-red-500/20 text-red-400 border border-red-500/30 px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide">NO</span>';
+
+          const usedBadge = sym.is_used
+            ? '<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide">YES</span>'
+            : '<span class="bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide">NO</span>';
+
+          let typeDisplay = sym.type || "";
+          if (sym.kind === "function" && sym.signature) {
+            typeDisplay = sym.signature;
+          }
+
+          html += `
+    <tr class="hover:bg-slate-800/40 transition-colors duration-150">
+      <td class="px-5 py-3 font-semibold text-blue-400">${sym.name}</td>
+      <td class="px-5 py-3">
+        <span class="text-purple-300 bg-purple-500/10 px-2 py-0.5 rounded text-xs border border-purple-500/20 capitalize">${sym.kind}</span>
+      </td>
+      <td class="px-5 py-3 text-emerald-300 font-mono text-xs">${typeDisplay}</td>
+      <td class="px-5 py-3 text-slate-400 text-xs">${sym.scopePath}</td>
+      <td class="px-5 py-3 text-slate-500 text-xs font-mono">${sym.definition_loc}</td>
+      <td class="px-5 py-3 text-center">${initBadge}</td>
+      <td class="px-5 py-3 text-center">${usedBadge}</td>
+    </tr>
+    `;
+        });
+
+        html += `</tbody></table></div>`;
+        return html;
+      }
 
       // ===== Compile / Analyze =====
       async function compileCode() {
@@ -536,12 +612,8 @@ int main() {
             errHtml ||
             '<li class="text-emerald-500">No errors or warnings.</li>';
 
-          // Symbol Table
-          symbolOutput.textContent = JSON.stringify(data.symbol_table, null, 2);
-
-          // Highlighted Output (Stripping out the extra <pre> and HTML skeleton from backend)
+          symbolOutput.innerHTML = renderSymbolTableHtml(data.symbol_table);
           if (data.highlighted_html) {
-            // Regex to extract content strictly inside the <pre> tag from the backend HTML response
             const match = data.highlighted_html.match(
               /<pre>([\s\S]*?)<\/pre>/i,
             );
@@ -550,7 +622,6 @@ int main() {
             } else {
               highlightedContainer.innerHTML = data.highlighted_html;
             }
-            // Attach click listeners to the generated span tags!
             attachClickEvents();
           } else {
             highlightedContainer.innerHTML =

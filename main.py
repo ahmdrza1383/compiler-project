@@ -288,6 +288,9 @@ def main():
     highlighter = SyntaxHighlighter(source_code, ast_root, tokens, parser_errors)
     highlighter.extract_tokens()
 
+    print("\n[INFO] Printing ANSI colored code in terminal:")
+    print(highlighter.to_ansi())
+
     html_path = "outputs/highlighted_code.html"
     os.makedirs(os.path.dirname(html_path), exist_ok=True)
     with open(html_path, "w", encoding="utf-8") as f:

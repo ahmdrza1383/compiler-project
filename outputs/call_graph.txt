@@ -19,8 +19,8 @@ Caller: power
   -> Calls: power
 ----------------------------------------------------------------------
 Caller: expression_demo
-  -> Calls: add
   -> Calls: factorial
+  -> Calls: add
 ----------------------------------------------------------------------
 Caller: find_first
   -> (No external calls)
@@ -29,9 +29,9 @@ Caller: do_nothing
   -> (No external calls)
 ----------------------------------------------------------------------
 Caller: main
-  -> Calls: add
   -> Calls: factorial
   -> Calls: do_nothing
+  -> Calls: add
 ----------------------------------------------------------------------
 Caller: add
   -> (No external calls)

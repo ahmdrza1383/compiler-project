@@ -8,7 +8,7 @@
         "id": 0,
         "label": "ENTRY",
         "statements": [
-          "BinaryExpr"
+          "BinaryExpr (<=) (Line 32)"
         ],
         "successors": [
           2,
@@ -25,7 +25,7 @@
         "id": 2,
         "label": "IF_THEN",
         "statements": [
-          "ReturnStmt"
+          "ReturnStmt (Line 33)"
         ],
         "successors": [
           1
@@ -35,24 +35,8 @@
         "id": 3,
         "label": "IF_MERGE",
         "statements": [
-          "ReturnStmt"
+          "ReturnStmt (Line 35)"
         ],
-        "successors": [
-          1
-        ]
-      },
-      {
-        "id": 4,
-        "label": "UNREACHABLE",
-        "statements": [],
-        "successors": [
-          3
-        ]
-      },
-      {
-        "id": 5,
-        "label": "UNREACHABLE",
-        "statements": [],
         "successors": [
           1
         ]
@@ -61,22 +45,22 @@
   },
   "increment_point": {
     "func_name": "increment_point",
-    "entry_block": 6,
-    "exit_block": 7,
+    "entry_block": 4,
+    "exit_block": 5,
     "blocks": [
       {
-        "id": 6,
+        "id": 4,
         "label": "ENTRY",
         "statements": [
-          "BinaryExpr",
-          "BinaryExpr"
+          "BinaryExpr (+=) (Line 40)",
+          "BinaryExpr (+=) (Line 41)"
         ],
         "successors": [
-          7
+          5
         ]
       },
       {
-        "id": 7,
+        "id": 5,
         "label": "EXIT",
         "statements": [],
         "successors": []
@@ -85,223 +69,284 @@
   },
   "sum_array": {
     "func_name": "sum_array",
-    "entry_block": 8,
-    "exit_block": 9,
+    "entry_block": 6,
+    "exit_block": 7,
     "blocks": [
       {
-        "id": 8,
+        "id": 6,
         "label": "ENTRY",
         "statements": [
-          "VarDecl",
-          "VarDecl"
+          "VarDecl (Line 46)",
+          "VarDecl (Line 47)"
         ],
         "successors": [
-          10
+          8
         ]
       },
       {
-        "id": 9,
+        "id": 7,
         "label": "EXIT",
         "statements": [],
         "successors": []
       },
       {
-        "id": 10,
+        "id": 8,
         "label": "FOR_COND",
         "statements": [
-          "BinaryExpr"
+          "BinaryExpr (<) (Line 47)"
         ],
         "successors": [
-          11,
-          13
+          9,
+          11
         ]
       },
       {
-        "id": 11,
+        "id": 9,
         "label": "FOR_BODY",
         "statements": [
-          "BinaryExpr"
-        ],
-        "successors": [
-          12
-        ]
-      },
-      {
-        "id": 12,
-        "label": "FOR_STEP",
-        "statements": [
-          "BinaryExpr"
+          "BinaryExpr (=) (Line 48)"
         ],
         "successors": [
           10
         ]
       },
       {
-        "id": 13,
-        "label": "FOR_EXIT",
+        "id": 10,
+        "label": "FOR_STEP",
         "statements": [
-          "ReturnStmt"
+          "BinaryExpr (=) (Line 47)"
         ],
         "successors": [
-          9
+          8
         ]
       },
       {
-        "id": 14,
-        "label": "UNREACHABLE",
-        "statements": [],
+        "id": 11,
+        "label": "FOR_EXIT",
+        "statements": [
+          "ReturnStmt (Line 50)"
+        ],
         "successors": [
-          9
+          7
         ]
       }
     ]
   },
   "count_even": {
     "func_name": "count_even",
-    "entry_block": 15,
-    "exit_block": 16,
+    "entry_block": 12,
+    "exit_block": 13,
     "blocks": [
       {
-        "id": 15,
+        "id": 12,
         "label": "ENTRY",
         "statements": [
-          "VarDecl",
-          "VarDecl"
+          "VarDecl (Line 55)",
+          "VarDecl (Line 56)"
         ],
         "successors": [
-          17
+          14
         ]
       },
       {
-        "id": 16,
+        "id": 13,
         "label": "EXIT",
         "statements": [],
         "successors": []
       },
       {
-        "id": 17,
+        "id": 14,
         "label": "WHILE_COND",
         "statements": [
-          "BinaryExpr"
+          "BinaryExpr (<) (Line 57)"
         ],
         "successors": [
-          18,
-          19
+          15,
+          16
+        ]
+      },
+      {
+        "id": 15,
+        "label": "WHILE_BODY",
+        "statements": [
+          "BinaryExpr (==) (Line 58)"
+        ],
+        "successors": [
+          17,
+          18
+        ]
+      },
+      {
+        "id": 16,
+        "label": "WHILE_EXIT",
+        "statements": [
+          "ReturnStmt (Line 67)"
+        ],
+        "successors": [
+          13
+        ]
+      },
+      {
+        "id": 17,
+        "label": "IF_THEN",
+        "statements": [
+          "BinaryExpr (=) (Line 59)"
+        ],
+        "successors": [
+          14
         ]
       },
       {
         "id": 18,
-        "label": "WHILE_BODY",
+        "label": "IF_MERGE",
         "statements": [
-          "BinaryExpr"
+          "BinaryExpr (==) (Line 62)"
         ],
         "successors": [
-          20,
-          21
+          19,
+          20
         ]
       },
       {
         "id": 19,
-        "label": "WHILE_EXIT",
+        "label": "IF_THEN",
         "statements": [
-          "ReturnStmt"
+          "BinaryExpr (=) (Line 63)"
         ],
         "successors": [
-          16
+          20
         ]
       },
       {
         "id": 20,
-        "label": "IF_THEN",
-        "statements": [
-          "BinaryExpr"
-        ],
-        "successors": [
-          17
-        ]
-      },
-      {
-        "id": 21,
         "label": "IF_MERGE",
         "statements": [
-          "BinaryExpr"
+          "BinaryExpr (=) (Line 65)"
         ],
         "successors": [
-          23,
-          24
-        ]
-      },
-      {
-        "id": 22,
-        "label": "UNREACHABLE",
-        "statements": [],
-        "successors": [
-          21
-        ]
-      },
-      {
-        "id": 23,
-        "label": "IF_THEN",
-        "statements": [
-          "BinaryExpr"
-        ],
-        "successors": [
-          24
-        ]
-      },
-      {
-        "id": 24,
-        "label": "IF_MERGE",
-        "statements": [
-          "BinaryExpr"
-        ],
-        "successors": [
-          17
-        ]
-      },
-      {
-        "id": 25,
-        "label": "UNREACHABLE",
-        "statements": [],
-        "successors": [
-          16
+          14
         ]
       }
     ]
   },
   "is_in_range": {
     "func_name": "is_in_range",
-    "entry_block": 26,
-    "exit_block": 27,
+    "entry_block": 21,
+    "exit_block": 22,
     "blocks": [
       {
-        "id": 26,
+        "id": 21,
         "label": "ENTRY",
         "statements": [
-          "ReturnStmt"
+          "ReturnStmt (Line 72)"
         ],
         "successors": [
-          27
+          22
         ]
       },
       {
-        "id": 27,
+        "id": 22,
         "label": "EXIT",
         "statements": [],
         "successors": []
-      },
-      {
-        "id": 28,
-        "label": "UNREACHABLE",
-        "statements": [],
-        "successors": [
-          27
-        ]
       }
     ]
   },
   "power": {
     "func_name": "power",
+    "entry_block": 23,
+    "exit_block": 24,
+    "blocks": [
+      {
+        "id": 23,
+        "label": "ENTRY",
+        "statements": [
+          "BinaryExpr (==) (Line 85)"
+        ],
+        "successors": [
+          25,
+          26
+        ]
+      },
+      {
+        "id": 24,
+        "label": "EXIT",
+        "statements": [],
+        "successors": []
+      },
+      {
+        "id": 25,
+        "label": "IF_THEN",
+        "statements": [
+          "ReturnStmt (Line 86)"
+        ],
+        "successors": [
+          24
+        ]
+      },
+      {
+        "id": 26,
+        "label": "IF_MERGE",
+        "statements": [
+          "ReturnStmt (Line 88)"
+        ],
+        "successors": [
+          24
+        ]
+      }
+    ]
+  },
+  "expression_demo": {
+    "func_name": "expression_demo",
+    "entry_block": 27,
+    "exit_block": 28,
+    "blocks": [
+      {
+        "id": 27,
+        "label": "ENTRY",
+        "statements": [
+          "VarDecl (Line 93)",
+          "VarDecl (Line 94)",
+          "VarDecl (Line 95)",
+          "BinaryExpr (=) (Line 98)",
+          "VarDecl (Line 101)",
+          "BinaryExpr (+=) (Line 104)",
+          "BinaryExpr (-=) (Line 105)",
+          "BinaryExpr (*=) (Line 106)",
+          "BinaryExpr (/=) (Line 107)",
+          "VarDecl (Line 110)",
+          "VarDecl (Line 111)",
+          "VarDecl (Line 112)",
+          "VarDecl (Line 113)",
+          "VarDecl (Line 114)",
+          "VarDecl (Line 115)",
+          "VarDecl (Line 118)",
+          "VarDecl (Line 119)",
+          "VarDecl (Line 120)",
+          "VarDecl (Line 123)",
+          "VarDecl (Line 124)",
+          "VarDecl (Line 127)",
+          "VarDecl (Line 128)",
+          "VarDecl (Line 129)",
+          "VarDecl (Line 137)",
+          "VarDecl (Line 137)",
+          "VarDecl (Line 137)",
+          "ReturnStmt (Line 143)"
+        ],
+        "successors": [
+          28
+        ]
+      },
+      {
+        "id": 28,
+        "label": "EXIT",
+        "statements": [],
+        "successors": []
+      }
+    ]
+  },
+  "find_first": {
+    "func_name": "find_first",
     "entry_block": 29,
     "exit_block": 30,
     "blocks": [
@@ -309,11 +354,10 @@
         "id": 29,
         "label": "ENTRY",
         "statements": [
-          "BinaryExpr"
+          "VarDecl (Line 148)"
         ],
         "successors": [
-          31,
-          32
+          31
         ]
       },
       {
@@ -324,213 +368,81 @@
       },
       {
         "id": 31,
-        "label": "IF_THEN",
+        "label": "FOR_COND",
         "statements": [
-          "ReturnStmt"
+          "BinaryExpr (<) (Line 148)"
         ],
         "successors": [
-          30
+          32,
+          34
         ]
       },
       {
         "id": 32,
-        "label": "IF_MERGE",
+        "label": "FOR_BODY",
         "statements": [
-          "ReturnStmt"
+          "BinaryExpr (==) (Line 149)"
         ],
         "successors": [
-          30
+          35,
+          36
         ]
       },
       {
         "id": 33,
-        "label": "UNREACHABLE",
-        "statements": [],
+        "label": "FOR_STEP",
+        "statements": [
+          "BinaryExpr (=) (Line 148)"
+        ],
         "successors": [
-          32
+          31
         ]
       },
       {
         "id": 34,
-        "label": "UNREACHABLE",
-        "statements": [],
+        "label": "FOR_EXIT",
+        "statements": [
+          "ReturnStmt (Line 153)"
+        ],
         "successors": [
           30
         ]
-      }
-    ]
-  },
-  "expression_demo": {
-    "func_name": "expression_demo",
-    "entry_block": 35,
-    "exit_block": 36,
-    "blocks": [
+      },
       {
         "id": 35,
-        "label": "ENTRY",
+        "label": "IF_THEN",
         "statements": [
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "BinaryExpr",
-          "VarDecl",
-          "BinaryExpr",
-          "BinaryExpr",
-          "BinaryExpr",
-          "BinaryExpr",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "ReturnStmt"
+          "ReturnStmt (Line 150)"
         ],
         "successors": [
-          36
+          30
         ]
       },
       {
         "id": 36,
-        "label": "EXIT",
-        "statements": [],
-        "successors": []
-      },
-      {
-        "id": 37,
-        "label": "UNREACHABLE",
-        "statements": [],
-        "successors": [
-          36
-        ]
-      }
-    ]
-  },
-  "find_first": {
-    "func_name": "find_first",
-    "entry_block": 38,
-    "exit_block": 39,
-    "blocks": [
-      {
-        "id": 38,
-        "label": "ENTRY",
-        "statements": [
-          "VarDecl"
-        ],
-        "successors": [
-          40
-        ]
-      },
-      {
-        "id": 39,
-        "label": "EXIT",
-        "statements": [],
-        "successors": []
-      },
-      {
-        "id": 40,
-        "label": "FOR_COND",
-        "statements": [
-          "BinaryExpr"
-        ],
-        "successors": [
-          41,
-          43
-        ]
-      },
-      {
-        "id": 41,
-        "label": "FOR_BODY",
-        "statements": [
-          "BinaryExpr"
-        ],
-        "successors": [
-          44,
-          45
-        ]
-      },
-      {
-        "id": 42,
-        "label": "FOR_STEP",
-        "statements": [
-          "BinaryExpr"
-        ],
-        "successors": [
-          40
-        ]
-      },
-      {
-        "id": 43,
-        "label": "FOR_EXIT",
-        "statements": [
-          "ReturnStmt"
-        ],
-        "successors": [
-          39
-        ]
-      },
-      {
-        "id": 44,
-        "label": "IF_THEN",
-        "statements": [
-          "ReturnStmt"
-        ],
-        "successors": [
-          39
-        ]
-      },
-      {
-        "id": 45,
         "label": "IF_MERGE",
         "statements": [],
         "successors": [
-          42
-        ]
-      },
-      {
-        "id": 46,
-        "label": "UNREACHABLE",
-        "statements": [],
-        "successors": [
-          45
-        ]
-      },
-      {
-        "id": 47,
-        "label": "UNREACHABLE",
-        "statements": [],
-        "successors": [
-          39
+          33
         ]
       }
     ]
   },
   "do_nothing": {
     "func_name": "do_nothing",
-    "entry_block": 48,
-    "exit_block": 49,
+    "entry_block": 37,
+    "exit_block": 38,
     "blocks": [
       {
-        "id": 48,
+        "id": 37,
         "label": "ENTRY",
         "statements": [],
         "successors": [
-          49
+          38
         ]
       },
       {
-        "id": 49,
+        "id": 38,
         "label": "EXIT",
         "statements": [],
         "successors": []
@@ -539,193 +451,169 @@
   },
   "main": {
     "func_name": "main",
-    "entry_block": 50,
-    "exit_block": 51,
+    "entry_block": 39,
+    "exit_block": 40,
     "blocks": [
       {
-        "id": 50,
+        "id": 39,
         "label": "ENTRY",
         "statements": [
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "VarDecl",
-          "BinaryExpr"
+          "VarDecl (Line 164)",
+          "VarDecl (Line 165)",
+          "VarDecl (Line 166)",
+          "VarDecl (Line 169)",
+          "VarDecl (Line 173)",
+          "VarDecl (Line 174)",
+          "BinaryExpr (>) (Line 179)"
         ],
         "successors": [
-          52,
-          54
+          41,
+          43
         ]
       },
       {
-        "id": 51,
+        "id": 40,
         "label": "EXIT",
         "statements": [],
         "successors": []
       },
       {
-        "id": 52,
+        "id": 41,
         "label": "IF_THEN",
         "statements": [
-          "CallExpr"
+          "CallExpr (Line 180)"
         ],
         "successors": [
-          53
+          42
+        ]
+      },
+      {
+        "id": 42,
+        "label": "IF_MERGE",
+        "statements": [
+          "VarDecl (Line 186)"
+        ],
+        "successors": [
+          44
+        ]
+      },
+      {
+        "id": 43,
+        "label": "IF_ELSE",
+        "statements": [
+          "CallExpr (Line 182)"
+        ],
+        "successors": [
+          42
+        ]
+      },
+      {
+        "id": 44,
+        "label": "WHILE_COND",
+        "statements": [
+          "BinaryExpr (<) (Line 187)"
+        ],
+        "successors": [
+          45,
+          46
+        ]
+      },
+      {
+        "id": 45,
+        "label": "WHILE_BODY",
+        "statements": [
+          "BinaryExpr (=) (Line 188)",
+          "BinaryExpr (==) (Line 189)"
+        ],
+        "successors": [
+          47,
+          48
+        ]
+      },
+      {
+        "id": 46,
+        "label": "WHILE_EXIT",
+        "statements": [
+          "VarDecl (Line 196)"
+        ],
+        "successors": [
+          49
+        ]
+      },
+      {
+        "id": 47,
+        "label": "IF_THEN",
+        "statements": [],
+        "successors": [
+          44
+        ]
+      },
+      {
+        "id": 48,
+        "label": "IF_MERGE",
+        "statements": [
+          "CallExpr (Line 192)"
+        ],
+        "successors": [
+          44
+        ]
+      },
+      {
+        "id": 49,
+        "label": "FOR_COND",
+        "statements": [
+          "BinaryExpr (<) (Line 196)"
+        ],
+        "successors": [
+          50,
+          52
+        ]
+      },
+      {
+        "id": 50,
+        "label": "FOR_BODY",
+        "statements": [
+          "BinaryExpr (==) (Line 197)"
+        ],
+        "successors": [
+          53,
+          54
+        ]
+      },
+      {
+        "id": 51,
+        "label": "FOR_STEP",
+        "statements": [
+          "BinaryExpr (=) (Line 196)"
+        ],
+        "successors": [
+          49
+        ]
+      },
+      {
+        "id": 52,
+        "label": "FOR_EXIT",
+        "statements": [
+          "ReturnStmt (Line 204)"
+        ],
+        "successors": [
+          40
         ]
       },
       {
         "id": 53,
-        "label": "IF_MERGE",
-        "statements": [
-          "VarDecl"
-        ],
+        "label": "IF_THEN",
+        "statements": [],
         "successors": [
-          55
+          52
         ]
       },
       {
         "id": 54,
-        "label": "IF_ELSE",
-        "statements": [
-          "CallExpr"
-        ],
-        "successors": [
-          53
-        ]
-      },
-      {
-        "id": 55,
-        "label": "WHILE_COND",
-        "statements": [
-          "BinaryExpr"
-        ],
-        "successors": [
-          56,
-          57
-        ]
-      },
-      {
-        "id": 56,
-        "label": "WHILE_BODY",
-        "statements": [
-          "BinaryExpr",
-          "BinaryExpr"
-        ],
-        "successors": [
-          58,
-          59
-        ]
-      },
-      {
-        "id": 57,
-        "label": "WHILE_EXIT",
-        "statements": [
-          "VarDecl"
-        ],
-        "successors": [
-          61
-        ]
-      },
-      {
-        "id": 58,
-        "label": "IF_THEN",
-        "statements": [],
-        "successors": [
-          55
-        ]
-      },
-      {
-        "id": 59,
         "label": "IF_MERGE",
         "statements": [
-          "CallExpr"
+          "CallExpr (Line 200)"
         ],
-        "successors": [
-          55
-        ]
-      },
-      {
-        "id": 60,
-        "label": "UNREACHABLE",
-        "statements": [],
-        "successors": [
-          59
-        ]
-      },
-      {
-        "id": 61,
-        "label": "FOR_COND",
-        "statements": [
-          "BinaryExpr"
-        ],
-        "successors": [
-          62,
-          64
-        ]
-      },
-      {
-        "id": 62,
-        "label": "FOR_BODY",
-        "statements": [
-          "BinaryExpr"
-        ],
-        "successors": [
-          65,
-          66
-        ]
-      },
-      {
-        "id": 63,
-        "label": "FOR_STEP",
-        "statements": [
-          "BinaryExpr"
-        ],
-        "successors": [
-          61
-        ]
-      },
-      {
-        "id": 64,
-        "label": "FOR_EXIT",
-        "statements": [
-          "ReturnStmt"
-        ],
-        "successors": [
-          51
-        ]
-      },
-      {
-        "id": 65,
-        "label": "IF_THEN",
-        "statements": [],
-        "successors": [
-          64
-        ]
-      },
-      {
-        "id": 66,
-        "label": "IF_MERGE",
-        "statements": [
-          "CallExpr"
-        ],
-        "successors": [
-          63
-        ]
-      },
-      {
-        "id": 67,
-        "label": "UNREACHABLE",
-        "statements": [],
-        "successors": [
-          66
-        ]
-      },
-      {
-        "id": 68,
-        "label": "UNREACHABLE",
-        "statements": [],
         "successors": [
           51
         ]
@@ -734,52 +622,44 @@
   },
   "add": {
     "func_name": "add",
-    "entry_block": 69,
-    "exit_block": 70,
+    "entry_block": 55,
+    "exit_block": 56,
     "blocks": [
       {
-        "id": 69,
+        "id": 55,
         "label": "ENTRY",
         "statements": [
-          "ReturnStmt"
+          "ReturnStmt (Line 209)"
         ],
         "successors": [
-          70
+          56
         ]
       },
       {
-        "id": 70,
+        "id": 56,
         "label": "EXIT",
         "statements": [],
         "successors": []
-      },
-      {
-        "id": 71,
-        "label": "UNREACHABLE",
-        "statements": [],
-        "successors": [
-          70
-        ]
       }
     ]
   },
   "print_point": {
     "func_name": "print_point",
-    "entry_block": 72,
-    "exit_block": 73,
+    "entry_block": 57,
+    "exit_block": 58,
     "blocks": [
       {
-        "id": 72,
+        "id": 57,
         "label": "ENTRY",
         "statements": [
-          "VarDecl"
+          "VarDecl (Line 215)"
         ],
         "successors": [
-          73
+          58
         ]
       },
       {
-        "id": 73,
+        "id": 58,
         "label": "EXIT",
         "statements": [],
         "successors": []
