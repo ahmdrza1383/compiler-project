@@ -804,10 +804,10 @@ int main() {
       async function getHover() {
         if (!selectedLine || !selectedCol)
           return showNavResult("Please click on an identifier first.");
-        
+
         // ==========================================
-        // در صورتی که خواستید با زدن این دکمه، 
-        // دوباره همان پنجره شناور (Tooltip) هم باز شود، 
+        // در صورتی که خواستید با زدن این دکمه،
+        // دوباره همان پنجره شناور (Tooltip) هم باز شود،
         // کدهای زیر را از حالت کامنت خارج کنید:
         //
         // const fakeEvent = {
@@ -833,7 +833,7 @@ int main() {
             let res = `🔹 Symbol: ${h.symbol}\n`;
             res += `   Type: ${h.type} | Kind: ${h.kind}\n`;
             res += `   Scope: ${h.scope} | Init: ${h.initialized ? "Yes" : "No"} | Used: ${h.used ? "Yes" : "No"}`;
-            
+
             showNavResult(res);
           } else {
             showNavResult(`Error: Could not fetch hover info.`);
@@ -955,7 +955,33 @@ int main() {
         isSyncingRight = false;
       });
 
-      sourceCodeEl.addEventListener("input", updateEditorLineNumbers);
+      let compileTimeout = null;
+      sourceCodeEl.addEventListener("input", function () {
+        updateEditorLineNumbers();
+
+        clearTimeout(compileTimeout);
+
+        compileTimeout = setTimeout(() => {
+          compileCode();
+        }, 500);
+      });
+
+      sourceCodeEl.addEventListener("keydown", function (e) {
+        if (e.key === "Tab") {
+          e.preventDefault(); 
+
+          const start = this.selectionStart;
+          const end = this.selectionEnd;
+          const spaces = "    "; 
+
+          this.value =
+            this.value.substring(0, start) + spaces + this.value.substring(end);
+
+          this.selectionStart = this.selectionEnd = start + spaces.length;
+
+          this.dispatchEvent(new Event("input"));
+        }
+      });
 
       // Run on startup
       window.onload = function () {

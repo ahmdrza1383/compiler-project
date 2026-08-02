@@ -1,6 +1,4 @@
-import json
 from src.ast_node import (
-    Program,
     FunctionDef,
     Block,
     IfStmt,
@@ -100,6 +98,9 @@ class CFGBuilder:
         if not node:
             return
 
+        if self.current_block is None:
+            self.current_block = self.new_block("UNREACHABLE")
+
         if isinstance(node, Block):
             for stmt in getattr(node, "statements", []):
                 self._visit(stmt)
@@ -197,17 +198,17 @@ class CFGBuilder:
         elif isinstance(node, ReturnStmt):
             self.current_block.add_statement(node)
             self.current_block.add_successor(self.exit_block)
-            self.current_block = self.new_block("UNREACHABLE")
+            self.current_block = None
 
         elif getattr(node, "name", "") == "BreakStmt":
             if self.loop_exit_stack:
                 self.current_block.add_successor(self.loop_exit_stack[-1])
-            self.current_block = self.new_block("UNREACHABLE")
+            self.current_block = None
 
         elif getattr(node, "name", "") == "ContinueStmt":
             if self.loop_continue_stack:
                 self.current_block.add_successor(self.loop_continue_stack[-1])
-            self.current_block = self.new_block("UNREACHABLE")
+            self.current_block = None
 
         else:
             if self.current_block:
@@ -217,7 +218,7 @@ class CFGBuilder:
 class CallGraphBuilder:
     def __init__(self, ast_root):
         self.ast_root = ast_root
-        self.call_graph = {}  
+        self.call_graph = {}
 
     def build(self):
         for node in getattr(self.ast_root, "declarations", []):
