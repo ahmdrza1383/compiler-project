@@ -87,7 +87,7 @@
         "definition_loc": "test_code.c:19:5",
         "references": [],
         "signature": null,
-        "is_initialized": false,
+        "is_initialized": true,
         "is_used": false
       },
       "pi": {
@@ -98,7 +98,7 @@
         "definition_loc": "test_code.c:20:7",
         "references": [],
         "signature": null,
-        "is_initialized": false,
+        "is_initialized": true,
         "is_used": false
       },
       "message": {
@@ -109,7 +109,7 @@
         "definition_loc": "test_code.c:21:7",
         "references": [],
         "signature": null,
-        "is_initialized": false,
+        "is_initialized": true,
         "is_used": false
       },
       "precision": {
@@ -120,7 +120,7 @@
         "definition_loc": "test_code.c:22:8",
         "references": [],
         "signature": null,
-        "is_initialized": false,
+        "is_initialized": true,
         "is_used": false
       },
       "add": {
@@ -1392,7 +1392,7 @@
       "definition_loc": "test_code.c:19:5",
       "references": [],
       "signature": null,
-      "is_initialized": false,
+      "is_initialized": true,
       "is_used": false
     },
     {
@@ -1403,7 +1403,7 @@
       "definition_loc": "test_code.c:20:7",
       "references": [],
       "signature": null,
-      "is_initialized": false,
+      "is_initialized": true,
       "is_used": false
     },
     {
@@ -1414,7 +1414,7 @@
       "definition_loc": "test_code.c:21:7",
       "references": [],
       "signature": null,
-      "is_initialized": false,
+      "is_initialized": true,
       "is_used": false
     },
     {
@@ -1425,7 +1425,7 @@
       "definition_loc": "test_code.c:22:8",
       "references": [],
       "signature": null,
-      "is_initialized": false,
+      "is_initialized": true,
       "is_used": false
     },
     {

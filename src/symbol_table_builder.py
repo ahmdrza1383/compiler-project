@@ -112,8 +112,11 @@ class SymbolTableBuilder:
                         self.errors.append(f"Redefinition of function '{func_name}'")
                     else:
                         existing.is_defined = True
+                        existing.set_initialized()  # <--- این خط اضافه شود
             else:
                 func_symbol.is_defined = isinstance(node, FunctionDef)
+                if isinstance(node, FunctionDef):
+                    func_symbol.set_initialized()
                 if self.symbol_table.define(func_symbol):
                     if self.verbose:
                         print(f"  Registered function: {func_name} {signature}")
@@ -127,7 +130,7 @@ class SymbolTableBuilder:
                 type_spec=f"struct {struct_name}",
                 definition_loc=loc,
             )
-
+            struct_symbol.set_initialized()
             if self.symbol_table.define(struct_symbol):
                 if self.verbose:
                     print(f"  Registered struct: {struct_name}")
@@ -283,7 +286,6 @@ class SymbolTableBuilder:
 
         elif isinstance(node, VarDecl):
             parent = getattr(node, "parent", None)
-            # اینجا ForStmt اضافه شده تا متغیرهای حلقه را مجاز بشمارد
             if isinstance(parent, (Block, ForStmt)):
                 var_name = node.var_name.id_name
                 var_type = (
@@ -291,7 +293,6 @@ class SymbolTableBuilder:
                     if hasattr(node, "var_type")
                     else "unknown"
                 )
-
                 existing = self.symbol_table.get_current_scope().resolve_local(var_name)
                 if existing:
                     line = node.var_name.line if hasattr(node.var_name, "line") else 0
@@ -302,7 +303,6 @@ class SymbolTableBuilder:
                     if self.verbose:
                         print(f"    Duplicate (same scope): {var_name}")
                     return
-
                 outer_symbol = self.symbol_table.resolve(var_name)
                 if outer_symbol:
                     self.warnings.append(
@@ -310,7 +310,6 @@ class SymbolTableBuilder:
                     )
                     if self.verbose:
                         print(f"    Shadowing: {var_name} shadows outer declaration")
-
                 loc = self._make_location(node.var_name)
                 type_loc = (
                     self._make_location(node.var_type)
@@ -318,7 +317,6 @@ class SymbolTableBuilder:
                     else loc
                 )
                 self._register_type_reference(var_type, type_loc)
-
                 var_symbol = Symbol(
                     name=var_name,
                     kind="variable",
@@ -328,14 +326,15 @@ class SymbolTableBuilder:
                 self.symbol_table.define(var_symbol)
                 if self.verbose:
                     print(f"    Registered local variable: {var_name} : {var_type}")
-
                 if hasattr(node, "initializer") and node.initializer:
                     var_symbol.set_initialized()
                     self._pass2_resolution(node.initializer)
-
                 return
             else:
                 if hasattr(node, "initializer") and node.initializer:
+                    global_sym = self.symbol_table.resolve(node.var_name.id_name)
+                    if global_sym:
+                        global_sym.set_initialized()
                     self._pass2_resolution(node.initializer)
                 return
 

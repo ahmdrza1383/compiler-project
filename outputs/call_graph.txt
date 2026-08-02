@@ -30,8 +30,8 @@ Caller: do_nothing
 ----------------------------------------------------------------------
 Caller: main
   -> Calls: factorial
-  -> Calls: do_nothing
   -> Calls: add
+  -> Calls: do_nothing
 ----------------------------------------------------------------------
 Caller: add
   -> (No external calls)

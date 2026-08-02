@@ -17,8 +17,8 @@
   "do_nothing": [],
   "main": [
     "factorial",
-    "do_nothing",
-    "add"
+    "add",
+    "do_nothing"
   ],
   "add": [],
   "print_point": []

@@ -108,7 +108,7 @@ Block 13 [EXIT]
     (Empty)
 ----------------------------------------------------------------------
 Block 14 [WHILE_COND]
-  Predecessors: [12, 17, 20]
+  Predecessors: [12, 20]
   Successors:   [15, 16]
   Statements:
     - BinaryExpr
@@ -127,12 +127,13 @@ Block 16 [WHILE_EXIT]
 ----------------------------------------------------------------------
 Block 17 [IF_THEN]
   Predecessors: [15]
-  Successors:   [14]
+  Successors:   [18]
   Statements:
     - BinaryExpr
+    - ASTNode
 ----------------------------------------------------------------------
 Block 18 [IF_MERGE]
-  Predecessors: [15]
+  Predecessors: [17, 15]
   Successors:   [19, 20]
   Statements:
     - BinaryExpr
@@ -350,7 +351,7 @@ Block 43 [IF_ELSE]
     - CallExpr
 ----------------------------------------------------------------------
 Block 44 [WHILE_COND]
-  Predecessors: [42, 47, 48]
+  Predecessors: [42, 48]
   Successors:   [45, 46]
   Statements:
     - BinaryExpr
@@ -370,12 +371,12 @@ Block 46 [WHILE_EXIT]
 ----------------------------------------------------------------------
 Block 47 [IF_THEN]
   Predecessors: [45]
-  Successors:   [44]
+  Successors:   [48]
   Statements:
-    (Empty)
+    - ASTNode
 ----------------------------------------------------------------------
 Block 48 [IF_MERGE]
-  Predecessors: [45]
+  Predecessors: [47, 45]
   Successors:   [44]
   Statements:
     - CallExpr
@@ -399,19 +400,19 @@ Block 51 [FOR_STEP]
     - BinaryExpr
 ----------------------------------------------------------------------
 Block 52 [FOR_EXIT]
-  Predecessors: [49, 53]
+  Predecessors: [49]
   Successors:   [40]
   Statements:
     - ReturnStmt
 ----------------------------------------------------------------------
 Block 53 [IF_THEN]
   Predecessors: [50]
-  Successors:   [52]
+  Successors:   [54]
   Statements:
-    (Empty)
+    - ASTNode
 ----------------------------------------------------------------------
 Block 54 [IF_MERGE]
-  Predecessors: [50]
+  Predecessors: [53, 50]
   Successors:   [51]
   Statements:
     - CallExpr
