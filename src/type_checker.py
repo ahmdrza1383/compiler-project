@@ -216,17 +216,22 @@ class TypeChecker:
                     node.inferred_type = PrimitiveType(result_name)
                     return node.inferred_type
 
-            if isinstance(left_type, PointerType) and isinstance(
-                right_type, PrimitiveType
-            ):
-                node.inferred_type = left_type
+            if isinstance(left_type, PointerType) and isinstance(right_type, PrimitiveType):
+                if right_type.name in ["int", "char"]:
+                    node.inferred_type = left_type
+                else:
+                    self._report_error(node, f"Cannot apply operator '{op}' between pointer and {right_type.name}")
+                    node.inferred_type = PrimitiveType("int")
                 return node.inferred_type
-            if isinstance(left_type, PrimitiveType) and isinstance(
-                right_type, PointerType
-            ):
-                node.inferred_type = right_type
+                
+            if isinstance(left_type, PrimitiveType) and isinstance(right_type, PointerType):
+                if left_type.name in ["int", "char"]:
+                    node.inferred_type = right_type
+                else:
+                    self._report_error(node, f"Cannot apply operator '{op}' between {left_type.name} and pointer")
+                    node.inferred_type = PrimitiveType("int")
                 return node.inferred_type
-
+            
             node.inferred_type = PrimitiveType("int")
             return node.inferred_type
 
